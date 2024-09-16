@@ -68,8 +68,6 @@ allprojects {
 
     dependencies {
         implementation("org.jetbrains:annotations:${findProperty("jetbrains.version")}")
-        compileOnly("org.projectlombok:lombok:${findProperty("lombok.version")}")
-        annotationProcessor("org.projectlombok:lombok:${findProperty("lombok.version")}")
 
         testImplementation(platform("org.junit:junit-bom:${findProperty("junit.version")}"))
         testImplementation("org.junit.jupiter:junit-jupiter")
