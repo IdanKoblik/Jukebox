@@ -1,5 +1,5 @@
-import com.github.idan.koblik.NBSDecoder;
 import com.github.idan.koblik.NBSNote;
+import com.github.idan.koblik.NBSParser;
 import com.github.idan.koblik.NBSSong;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.io.TempDir;
@@ -15,14 +15,14 @@ import java.util.List;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
-class NBSDecoderTest {
+class NBSParserTest {
 
     @TempDir
     Path tempDir;
 
     @Test
     void testReadWriteNBS() throws IOException {
-        NBSDecoder decoder = new NBSDecoder();
+        NBSParser decoder = new NBSParser();
 
         List<NBSNote> notes = Arrays.asList(
                 new NBSNote((short) 0, (short) 0, (byte) 0, (byte) 60),
@@ -56,7 +56,7 @@ class NBSDecoderTest {
 
     @Test
     void testEmptySong() throws IOException {
-        NBSDecoder decoder = new NBSDecoder();
+        NBSParser decoder = new NBSParser();
         NBSSong emptySong = new NBSSong("Empty Song", "Test Author", 100.0f, Collections.emptyList());
 
         File tempFile = tempDir.resolve("empty.nbs").toFile();
@@ -72,7 +72,7 @@ class NBSDecoderTest {
 
     @Test
     void testLongSong() throws IOException {
-        NBSDecoder decoder = new NBSDecoder();
+        NBSParser decoder = new NBSParser();
         List<NBSNote> longNoteList = generateLongNoteList(10000);
         NBSSong longSong = new NBSSong("Long Song", "Test Author", 140.0f, longNoteList);
 

@@ -12,7 +12,7 @@ import static com.github.idan.koblik.utils.ProtocolUtils.*;
  * This class can decode NBS files into {@link NBSSong} objects and encode {@link NBSSong} objects into NBS file format.
  * </p>
  */
-public class NBSDecoder {
+public class NBSParser {
 
     /**
      * Reads an NBS file and decodes it into an {@link NBSSong} object.
