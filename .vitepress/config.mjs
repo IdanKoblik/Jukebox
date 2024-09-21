@@ -34,7 +34,7 @@ export default defineConfig({
       { icon: 'discord', link: 'https://discord.gg/pN4acjE5'}    
     ],
     footer: {
-      message: "Released under the GNU gpl 3 License.",
+      message: "Released under the MIT License.",
       copyright: "Copyright © 2024-present Idan Koblik"
     },
     search: {
