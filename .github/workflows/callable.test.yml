@@ -40,4 +40,5 @@ jobs:
         if: success() || failure()
         with:
           paths: |
-            **/data/build/test-results/test/TEST-*.xml
+            **/spigot/build/test-results/test/TEST-*.xml
+            **/standalone/build/test-results/test/TEST-*.xml
