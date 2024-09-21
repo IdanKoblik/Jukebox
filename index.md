@@ -4,7 +4,6 @@ layout: home
 hero:
   name: "Jukebox"
   text: "Minecraft nbs music player api"
-  tagline: Official Documentation
   image:
     src: https://raw.githubusercontent.com/IdanKoblik/Jukebox/refs/heads/pages/img/logo.png
     alt: Logo
@@ -49,8 +48,8 @@ const member = [
 </script>
 <center>
     <VPTeamPageTitle>
-        <template #title>Our Team</template>
-        <template #lead>...</template>
+        <template #title></template>
+        <template #lead></template>
     </VPTeamPageTitle>
     <VPTeamPageSection>
           <VPTeamMembers
