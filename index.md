@@ -3,7 +3,7 @@ layout: home
 
 hero:
   name: "Jukebox"
-  text: "Minecraft Jukebox Library"
+  text: "Minecraft nbs music player api"
   tagline: Official Documentation
   image:
     src: https://raw.githubusercontent.com/IdanKoblik/Jukebox/refs/heads/pages/img/logo.png
@@ -13,8 +13,8 @@ hero:
       text: NBS files
       link: /nbsfiles
     - theme: alt
-      text: Source code
-      link: https://github.com/IdanKoblik/Jukebox
+      text: Install
+      link: /install
 
 features:
   - title: Optimized Performance

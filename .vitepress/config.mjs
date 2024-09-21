@@ -10,10 +10,25 @@ export default defineConfig({
     // https://vitepress.dev/reference/default-theme-config
     nav: [
       { text: 'Home', link: '/' },
-      { text: 'Examples', link: '/markdown-examples' },
-      { text: 'Spigot', link: '/TODO' },
-      { text: 'Standalnoe', link: '/TODO' },
+      { text: 'Spigot', link: '/spigot' },
     ],
+    sidebar: {
+      '/spigot/': [ 
+        {
+          text: 'Guide',
+          collapsed: true,
+          items: [
+            { text: 'Install', link: '/spigot/' },
+            { text: 'Instrument Manager', link: '/spigot/instrumentManager' },
+            { text: 'Playing music', items: [
+              { text: 'Song', link: '/spigot/song/song' },
+              { text: 'Loopable song', link: '/spigot/song/loopableSong' },
+              { text: 'Song queue', link: '/spigot/songQueue' },
+            ]},
+          ]
+        }
+      ]
+    },
     socialLinks: [
       { icon: 'github', link: 'https://github.com/IdanKoblik/Jukebox/' },
       { icon: 'discord', link: 'https://discord.gg/pN4acjE5'}    
@@ -25,5 +40,6 @@ export default defineConfig({
     search: {
       provider: 'local'
     },
+    lastUpdated: true,
   }
 })
