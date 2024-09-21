@@ -17,17 +17,6 @@ allprojects {
 
     publishing {
         repositories {
-            if (isCi) {
-                maven {
-                    name = "GitHubPackages"
-                    url = uri("https://maven.pkg.github.com/IdanKoblik/Jukebox")
-                    credentials {
-                        username = System.getenv("GITHUB_ACTOR")
-                        password = System.getenv("GITHUB_TOKEN")
-                    }
-                }
-            }
-
             if (isCi || project.findProperty("apartium.nexus.username") != null) {
                 if (snapshot) {
                     maven {
