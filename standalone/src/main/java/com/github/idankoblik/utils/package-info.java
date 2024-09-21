@@ -25,4 +25,4 @@
  * The utils package of the standalone API
  * @author Idan Koblik
  */
-package com.github.idan.koblik.utils;
+package com.github.idankoblik.utils;

@@ -1,4 +1,4 @@
-package com.github.idan.koblik;
+package com.github.idankoblik;
 
 /**
  * Represents a single note in an NBS (Noteblock Studio) song.
