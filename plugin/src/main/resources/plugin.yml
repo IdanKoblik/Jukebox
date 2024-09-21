@@ -1,7 +1,0 @@
-name: jukebox
-version: 'SNAPSHOT'
-main: com.github.idankoblik.JukeboxPluginLoader
-authors: [B1trot]
-commands:
-  playnbs:
-    description: play nbs file
