@@ -16,10 +16,9 @@ dependencies {
     compileOnlyApi("net.kyori:adventure-api:${project.findProperty("kyori.version")}")
     compileOnlyApi("org.spigotmc:spigot:${project.findProperty("spigot.version")}")
 
-    testImplementation("org.mockito:mockito-core:5.13.0")
     testImplementation("net.kyori:adventure-platform-bukkit:${findProperty("kyori.bukkit.version")}")
     testImplementation("net.kyori:adventure-api:${project.findProperty("kyori.version")}")
-    testImplementation("com.github.seeseemelk:MockBukkit-v1.20:3.9.0")
+    testImplementation("com.github.seeseemelk:MockBukkit-v1.20:${project.findProperty("mock.bukkit.version")}")
 }
 
 tasks.test {
