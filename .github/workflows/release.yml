@@ -42,7 +42,7 @@ jobs:
       - name: Setup Gradle
         uses: gradle/actions/setup-gradle@v3
 
-      - name: Run integration tests
+      - name: Publish release
         run: ./gradlew publish
         env:
           VERSION: ${{ github.event.inputs.name }}
