@@ -46,7 +46,7 @@ allprojects {
 
         publications {
             create<MavenPublication>("maven") {
-                groupId = "com.github.idankoblik"
+                groupId = "com.github.idankoblik.jukebox"
                 version = figureVersion()
 
                 from(components["java"])
