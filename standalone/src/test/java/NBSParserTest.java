@@ -1,6 +1,6 @@
-import com.github.idan.koblik.NBSNote;
-import com.github.idan.koblik.NBSParser;
-import com.github.idan.koblik.NBSSong;
+import com.github.idankoblik.NBSNote;
+import com.github.idankoblik.NBSParser;
+import com.github.idankoblik.NBSSong;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.io.TempDir;
 

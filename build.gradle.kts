@@ -8,8 +8,8 @@ val releaseWorkflow = "IdanKoblik/Jukebox/.github/workflows/release.yml"
 val snapshot: Boolean = System.getenv("GITHUB_WORKFLOW_REF") == null || !(System.getenv("GITHUB_WORKFLOW_REF").startsWith(releaseWorkflow))
 val isCi = System.getenv("GITHUB_ACTOR") != null
 
-group = "com.github.idan.koblik"
-version = (if (System.getenv("VERSION") == null) "dev" else System.getenv("VERSION")) + (if (snapshot) "-SNAPSHOT" else "")
+group = "com.github.idankoblik"
+version = figureVersion()
 
 allprojects {
     apply<JavaLibraryPlugin>()
@@ -57,13 +57,20 @@ allprojects {
 
         publications {
             create<MavenPublication>("maven") {
+                groupId = "com.github.idankoblik"
+                artifactId = "jukebox"
+                version = figureVersion()
+
                 from(components["java"])
             }
         }
     }
 
     repositories {
-        mavenCentral()
+        maven {
+            name = "ApartiumNexus"
+            url = uri("https://nexus.voigon.dev/repository/apartium/")
+        }
     }
 
     dependencies {
@@ -78,4 +85,14 @@ dependencies {}
 
 tasks.test {
     useJUnitPlatform()
+}
+
+fun figureVersion(): String {
+    return (if (System.getenv("VERSION") == null) "dev" else System.getenv("VERSION")) + (if (snapshot) "-SNAPSHOT" else "")
+}
+
+java {
+    toolchain {
+        languageVersion = JavaLanguageVersion.of(17)
+    }
 }

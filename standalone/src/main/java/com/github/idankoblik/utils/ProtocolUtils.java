@@ -1,4 +1,4 @@
-package com.github.idan.koblik.utils;
+package com.github.idankoblik.utils;
 
 import java.io.DataInputStream;
 import java.io.DataOutputStream;

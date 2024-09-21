@@ -22,7 +22,7 @@
 
 
 /**
- * The utils package of the standalone API
+ * The package containing all managers for spigot API
  * @author Idan Koblik
  */
-package com.github.idan.koblik.utils;
+package com.github.idankoblik.manager;

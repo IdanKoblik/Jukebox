@@ -1,10 +1,10 @@
-package com.github.idan.koblik;
+package com.github.idankoblik;
 
 import java.io.*;
 import java.util.ArrayList;
 import java.util.List;
 
-import static com.github.idan.koblik.utils.ProtocolUtils.*;
+import static com.github.idankoblik.utils.ProtocolUtils.*;
 
 /**
  * Provides functionality to read from and write to NBS (Noteblock Studio) song files.

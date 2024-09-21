@@ -1,4 +1,4 @@
-package com.github.idan.koblik;
+package com.github.idankoblik;
 
 import java.util.List;
 

@@ -22,7 +22,7 @@
 
 
 /**
- * The root package of the standalone API
+ * The root package of the spigot API
  * @author Idan Koblik
  */
-package com.github.idan.koblik;
+package com.github.idankoblik;
