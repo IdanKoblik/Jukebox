@@ -16,11 +16,6 @@ jobs:
         with:
           java-version: '17'
           distribution: 'adopt'
-      - uses: supercharge/mongodb-github-action@1.11.0
-        with:
-          mongodb-version: '8.0.0-rc4'
-          mongodb-db: 'database'
-          mongodb-port: 27017
       - name: Setup Gradle
         uses: gradle/actions/setup-gradle@v3
       - name: Run integration tests
@@ -35,9 +30,11 @@ jobs:
           detailed_summary: true
           follow_symlink: true
           check_name: |
-            data
+            spigot
+            standalnoe
           report_paths: |
-            **/data/build/test-results/test/TEST-*.xml
+            **/spigot/build/test-results/test/TEST-*.xml
+            **/standalnoe/build/test-results/test/TEST-*.xml
       - name: Publish Test Report
         uses: test-summary/action@v2
         if: success() || failure()
