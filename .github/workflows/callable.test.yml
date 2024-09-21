@@ -31,10 +31,10 @@ jobs:
           follow_symlink: true
           check_name: |
             spigot
-            standalnoe
+            standalone
           report_paths: |
             **/spigot/build/test-results/test/TEST-*.xml
-            **/standalnoe/build/test-results/test/TEST-*.xml
+            **/standalone/build/test-results/test/TEST-*.xml
       - name: Publish Test Report
         uses: test-summary/action@v2
         if: success() || failure()
