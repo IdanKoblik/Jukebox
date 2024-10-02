@@ -13,6 +13,9 @@ import java.util.concurrent.TimeUnit;
  */
 public class Song extends AbstractSong {
 
+    /**
+     * Allow looping a song.
+     */
     private boolean loop;
 
     /**
@@ -38,6 +41,11 @@ public class Song extends AbstractSong {
         super(song, defaultSound, position, audience);
     }
 
+    /**
+     * Play's the nbs song.
+     * @param volume The volume at which to play the song.
+     * @return Future when the song ends.
+     */
     public CompletableFuture<Void> playSong(float volume) {
         CompletableFuture<Void> future = new CompletableFuture<>();
 
@@ -75,6 +83,9 @@ public class Song extends AbstractSong {
         return future;
     }
 
+    /**
+     * Stop's the nbs song.
+     */
     public void stopSong() {
         if (playing)
             scheduler.shutdown();
@@ -83,10 +94,18 @@ public class Song extends AbstractSong {
         playing = false;
     }
 
+    /**
+     * Checking if song loop enabled
+     * @return if song loop enabled.
+     */
     public boolean isLoop() {
         return loop;
     }
 
+    /**
+     * Enable/Disable song looping
+     * @param loop Enable/Disable
+     */
     public void setLoop(boolean loop) {
         this.loop = loop;
     }

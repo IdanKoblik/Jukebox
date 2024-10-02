@@ -2,9 +2,7 @@ package com.github.idankoblik;
 
 /**
  * Represents a single note in an NBS (Noteblock Studio) song.
- * <p>
- * Each note includes information about when it occurs, its layer, the instrument used, and the pitch of the note.
- * </p>
+ * Each note includes information about its timing, layer, instrument, and pitch.
  */
 public class NBSNote {
 
@@ -35,10 +33,12 @@ public class NBSNote {
     private boolean played = false;
 
     /**
-     * @param tick The tick at which the note occurs in the song's timeline.
-     * @param layer The layer in which the note is played. Different layers can be used to manage different tracks or channels.
-     * @param instrument The instrument identifier used for this note. It determines the sound produced by the note.
-     * @param key The pitch of the note, usually represented as a MIDI key number.
+     * Constructs an NBSNote with specified tick, layer, instrument, and key.
+     *
+     * @param tick      The tick at which the note occurs in the song's timeline.
+     * @param layer     The layer in which the note is played.
+     * @param instrument The instrument identifier for the note.
+     * @param key       The pitch of the note, represented as a MIDI key number.
      */
     public NBSNote(short tick, short layer, byte instrument, byte key) {
         this.tick = tick;
@@ -47,26 +47,56 @@ public class NBSNote {
         this.key = key;
     }
 
+    /**
+     * Gets the tick of the note.
+     *
+     * @return The tick at which the note occurs.
+     */
     public short getTick() {
         return tick;
     }
 
+    /**
+     * Gets the layer of the note.
+     *
+     * @return The layer in which the note is played.
+     */
     public short getLayer() {
         return layer;
     }
 
+    /**
+     * Gets the instrument of the note.
+     *
+     * @return The instrument identifier used for this note.
+     */
     public byte getInstrument() {
         return instrument;
     }
 
+    /**
+     * Gets the pitch of the note.
+     *
+     * @return The pitch of the note, represented as a MIDI key number.
+     */
     public byte getKey() {
         return key;
     }
 
+    /**
+     * Checks if the note has been played.
+     *
+     * @return True if the note has been played, false otherwise.
+     */
     public boolean isPlayed() {
         return played;
     }
 
+    /**
+     * Sets the played status of the note.
+     *
+     * @param played True if the note has been played, false otherwise.
+     */
     public void setPlayed(boolean played) {
         this.played = played;
     }

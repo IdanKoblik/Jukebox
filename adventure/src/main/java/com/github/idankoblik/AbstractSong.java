@@ -55,7 +55,7 @@ public abstract class AbstractSong {
      * Plays the song with the specified volume.
      *
      * @param volume The volume at which to play the song.
-     * @return
+     * @return Future when the song ends.
      */
     public abstract CompletableFuture<Void> playSong(float volume);
 

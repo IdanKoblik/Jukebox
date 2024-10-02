@@ -2,7 +2,6 @@ package com.github.idankoblik;
 
 import net.apartium.cocoabeans.space.Position;
 import net.kyori.adventure.audience.Audience;
-import org.bukkit.scheduler.BukkitRunnable;
 
 import java.util.LinkedList;
 import java.util.Queue;
