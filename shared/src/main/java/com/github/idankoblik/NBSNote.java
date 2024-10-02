@@ -30,8 +30,6 @@ public class NBSNote {
      */
     private final byte key;
 
-    private boolean played = false;
-
     /**
      * Constructs an NBSNote with specified tick, layer, instrument, and key.
      *
@@ -81,23 +79,5 @@ public class NBSNote {
      */
     public byte getKey() {
         return key;
-    }
-
-    /**
-     * Checks if the note has been played.
-     *
-     * @return True if the note has been played, false otherwise.
-     */
-    public boolean isPlayed() {
-        return played;
-    }
-
-    /**
-     * Sets the played status of the note.
-     *
-     * @param played True if the note has been played, false otherwise.
-     */
-    public void setPlayed(boolean played) {
-        this.played = played;
     }
 }

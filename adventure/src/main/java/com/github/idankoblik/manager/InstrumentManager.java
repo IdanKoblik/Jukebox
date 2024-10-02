@@ -2,6 +2,7 @@ package com.github.idankoblik.manager;
 
 import com.github.idankoblik.NoteInstrument;
 import net.kyori.adventure.key.Key;
+import org.jetbrains.annotations.ApiStatus;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.HashMap;
@@ -34,6 +35,7 @@ public class InstrumentManager {
     /**
      * @hidden
      */
+    @ApiStatus.AvailableSince("0.0.2")
     public InstrumentManager() {
         sounds.put((byte) 0, Key.key(NoteInstrument.HARP.getName()));
         sounds.put((byte) 1, Key.key(NoteInstrument.BASS.getName()));

@@ -1,5 +1,7 @@
 package com.github.idankoblik;
 
+import org.jetbrains.annotations.ApiStatus;
+
 import java.util.List;
 
 /**
@@ -27,21 +29,25 @@ public record NBSSong(
         /**
          * The length of the song.
          */
+        @ApiStatus.AvailableSince("0.0.2")
         short length,
 
         /**
          * The height of the song.
          */
+        @ApiStatus.AvailableSince("0.0.2")
         short height,
 
         /**
          * The original author of the song.
          */
+        @ApiStatus.AvailableSince("0.0.2")
         String originalAuthor,
 
         /**
          * The description of the song.
          */
+        @ApiStatus.AvailableSince("0.0.2")
         String description,
 
         /**

@@ -2,6 +2,7 @@ package com.github.idankoblik;
 
 import net.apartium.cocoabeans.space.Position;
 import net.kyori.adventure.audience.Audience;
+import org.jetbrains.annotations.ApiStatus;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.List;
@@ -16,6 +17,7 @@ public class Song extends AbstractSong {
     /**
      * Allow looping a song.
      */
+    @ApiStatus.AvailableSince("0.0.2")
     private boolean loop;
 
     /**
@@ -98,6 +100,7 @@ public class Song extends AbstractSong {
      * Checking if song loop enabled
      * @return if song loop enabled.
      */
+    @ApiStatus.AvailableSince("0.0.2")
     public boolean isLoop() {
         return loop;
     }
@@ -106,6 +109,7 @@ public class Song extends AbstractSong {
      * Enable/Disable song looping
      * @param loop Enable/Disable
      */
+    @ApiStatus.AvailableSince("0.0.2")
     public void setLoop(boolean loop) {
         this.loop = loop;
     }
