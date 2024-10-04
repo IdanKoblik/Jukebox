@@ -1,7 +1,6 @@
 plugins {
     `java-library`
     `maven-publish`
-    id("com.github.johnrengelman.shadow") version "8.1.1"
 }
 
 val releaseWorkflow = "IdanKoblik/Jukebox/.github/workflows/release.yml"
@@ -68,8 +67,8 @@ allprojects {
 
     dependencies {
         api("net.apartium.cocoa-beans:common:${findProperty("cocoabeans.version")}")
-        api("org.jetbrains:annotations:${findProperty("jetbrains.version")}")
-        api("com.fasterxml.jackson.core:jackson-annotations:${findProperty("jackson.annotations.version")}")
+        compileOnly("org.jetbrains:annotations:${findProperty("jetbrains.version")}")
+        compileOnly("com.fasterxml.jackson.core:jackson-annotations:${findProperty("jackson.annotations.version")}")
 
         testImplementation("net.apartium.cocoa-beans:common:${findProperty("cocoabeans.version")}")
         testImplementation(platform("org.junit:junit-bom:${findProperty("junit.version")}"))

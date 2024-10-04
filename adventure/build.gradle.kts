@@ -10,10 +10,10 @@ repositories {
 }
 
 dependencies {
-    implementation(project.project(":shared"))
+    compileOnly(project.project(":shared"))
 
-    implementation("net.kyori:adventure-api:${project.findProperty("kyori.version")}")
-    implementation("org.spigotmc:spigot:${project.findProperty("spigot.version")}")
+    compileOnly("net.kyori:adventure-api:${project.findProperty("kyori.version")}")
+    compileOnly("org.spigotmc:spigot:${project.findProperty("spigot.version")}")
 
     testImplementation("net.kyori:adventure-platform-bukkit:${findProperty("kyori.bukkit.version")}")
     testImplementation("net.kyori:adventure-api:${project.findProperty("kyori.version")}")
