@@ -10,7 +10,7 @@ repositories {
 }
 
 dependencies {
-    compileOnly(project.project(":shared"))
+    implementation(project.project(":shared"))
 
     compileOnly("net.kyori:adventure-api:${project.findProperty("kyori.version")}")
     compileOnly("org.spigotmc:spigot:${project.findProperty("spigot.version")}")
