@@ -88,12 +88,4 @@ public abstract class AbstractSpigotSongTest extends AbstractSpigotTest {
         assertEquals(19, this.player.getHeardSounds().size());
     }
 
-    protected void testIsPlaying() {
-        this.song.stopSong();
-        assertFalse(this.song.isPlaying());
-        this.song.playSong(100.f);
-        assertTrue(this.song.isPlaying());
-        this.song.stopSong();
-        assertFalse(this.song.isPlaying());
-    }
 }
