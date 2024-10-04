@@ -10,7 +10,7 @@ repositories {
 }
 
 dependencies {
-    compileOnlyApi("com.fasterxml.jackson.core:jackson-databind:${project.findProperty("jackson.annotations.version")}")
+    api("com.fasterxml.jackson.core:jackson-databind:${project.findProperty("jackson.annotations.version")}")
 
     testImplementation("com.fasterxml.jackson.core:jackson-databind:${project.findProperty("jackson.annotations.version")}")
 }
