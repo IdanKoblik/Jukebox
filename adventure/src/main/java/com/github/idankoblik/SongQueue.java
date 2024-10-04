@@ -46,9 +46,7 @@ public class SongQueue {
      * @param nbsSong The NBS song to be added to the queue.
      */
     public void addSong(NBSSong nbsSong) {
-        Song song = (position == null)
-                ? new Song(nbsSong, defaultSound, audience)
-                : new Song(nbsSong, defaultSound, position, audience);
+        Song song = new Song(nbsSong, defaultSound, audience, position);
         songs.offer(song);
     }
 

@@ -98,6 +98,7 @@ public class InstrumentManager {
      * @throws NullPointerException if the provided map is {@code null}.
      */
     public void loadInstruments(Map<Byte, Key> map) {
+        this.sounds.clear();
         this.sounds.putAll(map);
     }
 }

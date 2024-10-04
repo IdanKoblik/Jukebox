@@ -67,10 +67,11 @@ allprojects {
     }
 
     dependencies {
-        implementation("net.apartium.cocoa-beans:common:${findProperty("cocoabeans.version")}")
-        implementation("org.jetbrains:annotations:${findProperty("jetbrains.version")}")
+        compileOnlyApi("net.apartium.cocoa-beans:common:${findProperty("cocoabeans.version")}")
+        compileOnlyApi("org.jetbrains:annotations:${findProperty("jetbrains.version")}")
         compileOnlyApi("com.fasterxml.jackson.core:jackson-annotations:${findProperty("jackson.annotations.version")}")
 
+        testImplementation("net.apartium.cocoa-beans:common:${findProperty("cocoabeans.version")}")
         testImplementation(platform("org.junit:junit-bom:${findProperty("junit.version")}"))
         testImplementation("org.junit.jupiter:junit-jupiter")
     }

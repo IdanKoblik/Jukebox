@@ -1,68 +1,115 @@
 package com.github.idankoblik;
 
-import com.github.idankoblik.manager.InstrumentManager;
-import net.apartium.cocoabeans.space.Position;
-import net.kyori.adventure.audience.Audience;
-import net.kyori.adventure.key.Key;
-import net.kyori.adventure.sound.Sound;
+import org.jetbrains.annotations.ApiStatus;
 import org.jetbrains.annotations.NotNull;
 
+import java.util.List;
 import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.Executors;
 import java.util.concurrent.ScheduledExecutorService;
+import java.util.concurrent.TimeUnit;
 
 /**
- * Abstract base class representing a musical song.
+ * Represents a song that plays a series of notes.
  */
 public abstract class AbstractSong {
+
     protected final NBSSong song;
     protected final float tickLengthInSeconds;
     protected final String defaultSound;
-    protected final Audience audience;
-    protected Position position;
-    protected boolean playing = false;
     protected final ScheduledExecutorService scheduler;
 
+    protected boolean playing = false;
+
     /**
-     * Constructs an AbstractSong with the given parameters.
+     * Allow looping a song.
+     */
+    @ApiStatus.AvailableSince("0.0.2")
+    private boolean loop;
+
+    /**
+     * Constructs a Song with the given parameters.
      *
      * @param song         The NBS song to be played.
      * @param defaultSound The default sound key.
-     * @param audience     The audience that will hear the sound.
      */
-    public AbstractSong(NBSSong song, @NotNull String defaultSound, Audience audience) {
+    public AbstractSong(@NotNull NBSSong song, @NotNull String defaultSound) {
         this.song = song;
         this.tickLengthInSeconds = 20f / song.tempo();
-        this.audience = audience;
         this.defaultSound = defaultSound;
         this.scheduler = Executors.newSingleThreadScheduledExecutor();
     }
 
     /**
-     * Constructs an AbstractSong with the given parameters, including a location.
-     *
-     * @param song         The NBS song to be played.
-     * @param defaultSound The default sound key.
-     * @param position     The position where the sound will be played.
-     * @param audience     The audience that will hear the sound.
-     */
-    public AbstractSong(NBSSong song, @NotNull String defaultSound, @NotNull Position position, Audience audience) {
-        this(song, defaultSound, audience);
-        this.position = position;
-    }
-
-    /**
-     * Plays the song with the specified volume.
-     *
+     * Play's the nbs song.
      * @param volume The volume at which to play the song.
      * @return Future when the song ends.
      */
-    public abstract CompletableFuture<Void> playSong(float volume);
+    public CompletableFuture<Void> playSong(float volume) {
+        CompletableFuture<Void> future = new CompletableFuture<>();
+
+        if (song.notes().isEmpty()) {
+            future.complete(null);
+            return future;
+        }
+
+        playing = true;
+        List<NBSNote> notes = song.notes();
+        int totalNotes = notes.size();
+
+        for (int i = 0; i < totalNotes; i++) {
+            final int index = i;
+            long delayInMillis = Math.round(notes.get(i).getTick() * tickLengthInSeconds * 50);
+
+            scheduler.schedule(() -> {
+                if (!playing) {
+                    future.complete(null);
+                    return;
+                }
+
+                float pitch = (float) Math.pow(2, (notes.get(index).getKey() - 45) / 12.0);
+                playSound(notes.get(index).getInstrument(), pitch, volume);
+
+                if (index == totalNotes - 1) {
+                    if (loop)
+                        playSong(volume);
+                    else
+                        future.complete(null);
+                }
+            }, delayInMillis, TimeUnit.MILLISECONDS);
+        }
+
+        return future;
+    }
 
     /**
-     * Stops the currently playing song.
+     * Stop's the nbs song.
      */
-    public abstract void stopSong();
+    public void stopSong() {
+        if (playing)
+            scheduler.shutdown();
+
+        loop = false;
+        playing = false;
+    }
+
+    /**
+     * Checking if song loop enabled
+     * @return if song loop enabled.
+     */
+    @ApiStatus.AvailableSince("0.0.2")
+    public boolean isLoop() {
+        return loop;
+    }
+
+    /**
+     * Enable/Disable song looping
+     * @param loop Enable/Disable
+     */
+    @ApiStatus.AvailableSince("0.0.2")
+    public void setLoop(boolean loop) {
+        this.loop = loop;
+    }
 
     /**
      * Plays a sound associated with the given instrument and pitch.
@@ -71,26 +118,5 @@ public abstract class AbstractSong {
      * @param pitch      The pitch of the sound.
      * @param volume     The volume of the sound.
      */
-    protected void playSound(byte instrument, float pitch, float volume) {
-        Sound sound = Sound.sound(
-                InstrumentManager.getInstance().getInstrument(instrument).orElse(Key.key(defaultSound)),
-                Sound.Source.MASTER,
-                volume,
-                pitch
-        );
-
-        if (position == null)
-            audience.playSound(sound);
-        else
-            audience.playSound(sound, position.getX(), position.getY(), position.getZ());
-    }
-
-    /**
-     * Checks if the song is currently playing.
-     *
-     * @return True if the song is playing, otherwise false.
-     */
-    public boolean isPlaying() {
-        return playing;
-    }
+    protected abstract void playSound(byte instrument, float pitch, float volume);
 }

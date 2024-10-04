@@ -1,6 +1,5 @@
 package com.github.idankoblik;
 
-import net.apartium.cocoabeans.space.Position;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -37,15 +36,9 @@ public class SongTest extends AbstractSpigotSongTest {
         super.testPlaySong();
     }
 
-    @Test
-    @Override
-    protected void testIsPlaying() {
-        super.testIsPlaying();
-    }
-
     @Override
     protected void initializeSongs() throws Exception {
-        this.song = new Song(this.nbsSong, DEFAULT_NOTE, audience(player));
-        this.locationSong = new Song(this.nbsSong, DEFAULT_NOTE, musicPosition, audience(world));
+        this.song = new Song(this.nbsSong, DEFAULT_NOTE, audience(player), null);
+        this.locationSong = new Song(this.nbsSong, DEFAULT_NOTE, audience(world), musicPosition);
     }
 }
