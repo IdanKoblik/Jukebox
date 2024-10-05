@@ -30,15 +30,15 @@ jobs:
           detailed_summary: true
           follow_symlink: true
           check_name: |
-            spigot
-            standalone
+            adventure
+            shared
           report_paths: |
-            **/spigot/build/test-results/test/TEST-*.xml
-            **/standalone/build/test-results/test/TEST-*.xml
+            **/adventure/build/test-results/test/TEST-*.xml
+            **/shared/build/test-results/test/TEST-*.xml
       - name: Publish Test Report
         uses: test-summary/action@v2
         if: success() || failure()
         with:
           paths: |
-            **/spigot/build/test-results/test/TEST-*.xml
-            **/standalone/build/test-results/test/TEST-*.xml
+            **/adventure/build/test-results/test/TEST-*.xml
+            **/shared/build/test-results/test/TEST-*.xml
