@@ -1,6 +1,5 @@
-package com.github.idankoblik;
+package com.github.idankoblik.jukebox;
 
-import com.github.idankoblik.jukebox.Song;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;

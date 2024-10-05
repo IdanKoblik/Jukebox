@@ -1,14 +1,12 @@
-package com.github.idankoblik;
+package com.github.idankoblik.jukebox;
 
 import be.seeseemelk.mockbukkit.MockBukkit;
 import be.seeseemelk.mockbukkit.ServerMock;
-import be.seeseemelk.mockbukkit.WorldMock;
 import net.kyori.adventure.audience.Audience;
 import net.kyori.adventure.key.Key;
 import net.kyori.adventure.platform.bukkit.BukkitAudiences;
 import org.bukkit.World;
 import org.bukkit.command.CommandSender;
-import org.bukkit.entity.Donkey;
 import org.bukkit.entity.Player;
 import org.bukkit.plugin.Plugin;
 
