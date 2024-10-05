@@ -1,5 +1,5 @@
 ---
-title: Installing Jukebox on your plugin
+title: Installing Jukebox on your app
 editLink: true
 ---
 

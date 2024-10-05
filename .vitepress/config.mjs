@@ -10,20 +10,26 @@ export default defineConfig({
     // https://vitepress.dev/reference/default-theme-config
     nav: [
       { text: 'Home', link: '/' },
-      { text: 'Spigot', link: '/spigot' },
+      { text: 'Spigot', link: '/adventure' },
+      {
+              text: '2.0.0',
+              items: [
+                { text: 'Changelog', link: 'https://github.com/IdanKoblik/Jukebox/blob/master/CHANGELOG.md' },
+                { text: 'License', link: 'https://github.com/IdanKoblik/Jukebox/blob/master/LICENSE' },
+              ]
+      }
     ],
     sidebar: {
-      '/spigot/': [ 
+      '/adventure/': [
         {
           text: 'Guide',
           collapsed: true,
           items: [
-            { text: 'Install', link: '/spigot/' },
-            { text: 'Instrument Manager', link: '/spigot/instrumentManager' },
+            { text: 'Install', link: '/adventure/' },
+            { text: 'Instrument Manager', link: '/adventure/instrumentManager' },
             { text: 'Playing music', items: [
-              { text: 'Song', link: '/spigot/song/song' },
-              { text: 'Loopable song', link: '/spigot/song/loopableSong' },
-              { text: 'Song queue', link: '/spigot/songQueue' },
+              { text: 'Song', link: '/adventure/song/song' },
+              { text: 'Song queue', link: '/adventure/songQueue' },
             ]},
           ]
         }

@@ -3,7 +3,7 @@ title: InstrumentManager
 editLink: true
 ---
 
-The `InstrumentManager` class is a singleton that manages a collection of musical instrument sounds for use in game contexts, particularly in Minecraft. It provides a mapping system to convert Note Block Studio (NBS) file note bytes to corresponding Minecraft (Spigot) instruments.
+The `InstrumentManager` class is a singleton that manages a collection of musical instrument sounds for use in game contexts, particularly in Minecraft. It provides a mapping system to convert Note Block Studio (NBS) file note bytes to corresponding adventure key instruments.
 
 ## Class Overview
 
@@ -67,7 +67,7 @@ manager.loadInstruments(instruments);
 
 ## NBS File Mapping and Version Changes
 
-The `InstrumentManager` is used to map Note Block Studio (NBS) file note bytes to Minecraft Spigot instruments. It's important to note that the instrument keys have changed across different Minecraft versions:
+The `InstrumentManager` is used to map Note Block Studio (NBS) file note bytes to kyori adventure key instruments. It's important to note that the instrument keys have changed across different Minecraft versions:
 
 ### Minecraft 1.8 Preset Example
 

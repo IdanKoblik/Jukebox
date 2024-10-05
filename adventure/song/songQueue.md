@@ -16,7 +16,6 @@ public class SongQueue {
 ## Fields
 
 - `Queue<Song> songs`: A queue to store Song objects.
-- `Plugin plugin`: The plugin instance.
 - `Audience audience`: The audience that will hear the sounds.
 - `String defaultSound`: The default sound key.
 - `Location location`: Optional location where the sounds will be played.
@@ -28,27 +27,6 @@ public class SongQueue {
 ### SongQueue(Plugin, String, Audience)
 
 Constructs a SongQueue with the given parameters.
-
-```java
-public SongQueue(Plugin plugin, String defaultSound, Audience audience)
-```
-
-- `plugin`: The plugin instance.
-- `defaultSound`: The default sound key.
-- `audience`: The audience that will hear the sound.
-
-### SongQueue(Plugin, String, Location, Audience)
-
-Constructs a SongQueue with the given parameters, including a location.
-
-```java
-public SongQueue(Plugin plugin, String defaultSound, Location location, Audience audience)
-```
-
-- `plugin`: The plugin instance.
-- `defaultSound`: The default sound key.
-- `location`: The location where the sound will be played.
-- `audience`: The audience that will hear the sound.
 
 ## Methods
 
@@ -112,11 +90,9 @@ public int getRemainingSongs()
 ## Usage Example
 
 ```java
-Plugin myPlugin = // ... obtain plugin instance
 Audience audience = // ... define audience
-Location location = // ... define location (optional)
 
-SongQueue queue = new SongQueue(myPlugin, "minecraft:block.note_block.harp", location, audience);
+SongQueue queue = new SongQueue("minecraft:block.note_block.harp", audience, null);
 
 NBSSong song1 = // ... load first NBS song
 NBSSong song2 = // ... load second NBS song

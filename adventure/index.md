@@ -1,5 +1,5 @@
 ---
-title: Installing Jukebox spigot module on your plugin
+title: Installing Jukebox adventure module on your app
 editLink: true
 ---
 
@@ -26,7 +26,7 @@ repositories {
 }
 
 dependencies {
-    implementation("com.github.idankoblik:spigot:[version]")
+    implementation("com.github.idankoblik:adventure:[version]")
 }
 ```
 
@@ -48,7 +48,7 @@ repositories {
 }
 
 dependencies {
-    implementation 'com.github.idankoblik:spigot:[version]'
+    implementation 'com.github.idankoblik:adventure:[version]'
 }
 ```
 
@@ -67,7 +67,7 @@ If you are using Maven, add the following dependency to your `pom.xml`:
 <dependencies>
     <dependency>
         <groupId>com.github.idankoblik</groupId>
-        <artifactId>spigot</artifactId>
+        <artifactId>adventure</artifactId>
         <version>[version]</version>
     </dependency>
 </dependencies>
