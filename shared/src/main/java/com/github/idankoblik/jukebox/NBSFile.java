@@ -1,10 +1,10 @@
-package com.github.idankoblik;
+package com.github.idankoblik.jukebox;
 
 import java.io.*;
 import java.util.ArrayList;
 import java.util.List;
 
-import static com.github.idankoblik.utils.ProtocolUtils.*;
+import static com.github.idankoblik.jukebox.utils.ProtocolUtils.*;
 
 /**
  * Provides functionality to read from and write to NBS (Noteblock Studio) song files.

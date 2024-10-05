@@ -1,4 +1,4 @@
-package com.github.idankoblik;
+package com.github.idankoblik.jukebox;
 
 import net.apartium.cocoabeans.space.Position;
 import net.kyori.adventure.audience.Audience;

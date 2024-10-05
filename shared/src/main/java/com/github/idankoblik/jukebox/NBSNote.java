@@ -1,4 +1,4 @@
-package com.github.idankoblik;
+package com.github.idankoblik.jukebox;
 
 /**
  * Represents a single note in an NBS (Noteblock Studio) song.

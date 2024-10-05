@@ -1,4 +1,4 @@
-package com.github.idankoblik.manager;
+package com.github.idankoblik.jukebox.manager;
 
 import net.kyori.adventure.key.Key;
 import org.junit.jupiter.api.BeforeEach;
@@ -8,7 +8,7 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.Optional;
 
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 
 public class InstrumentManagerTest {
 

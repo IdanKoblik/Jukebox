@@ -1,4 +1,4 @@
-package com.github.idankoblik;
+package com.github.idankoblik.jukebox;
 
 import org.jetbrains.annotations.NotNull;
 

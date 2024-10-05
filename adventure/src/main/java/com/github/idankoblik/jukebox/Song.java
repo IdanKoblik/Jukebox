@@ -1,6 +1,6 @@
-package com.github.idankoblik;
+package com.github.idankoblik.jukebox;
 
-import com.github.idankoblik.manager.InstrumentManager;
+import com.github.idankoblik.jukebox.manager.InstrumentManager;
 import net.apartium.cocoabeans.space.Position;
 import net.kyori.adventure.audience.Audience;
 import net.kyori.adventure.key.Key;

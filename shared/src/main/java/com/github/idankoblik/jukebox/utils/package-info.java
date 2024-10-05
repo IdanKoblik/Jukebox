@@ -22,7 +22,7 @@
 
 
 /**
- * The package containing all managers for adventure API
+ * The utils package of the shared API
  * @author Idan Koblik
  */
-package com.github.idankoblik.manager;
+package com.github.idankoblik.jukebox.utils;

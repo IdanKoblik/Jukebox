@@ -25,4 +25,4 @@
  * The root package of the adventure API
  * @author Idan Koblik
  */
-package com.github.idankoblik;
+package com.github.idankoblik.jukebox;

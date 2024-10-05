@@ -1,4 +1,4 @@
-package com.github.idankoblik.utils;
+package com.github.idankoblik.jukebox.utils;
 
 import java.io.DataInputStream;
 import java.io.DataOutputStream;

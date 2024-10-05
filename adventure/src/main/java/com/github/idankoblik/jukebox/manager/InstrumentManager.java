@@ -1,6 +1,6 @@
-package com.github.idankoblik.manager;
+package com.github.idankoblik.jukebox.manager;
 
-import com.github.idankoblik.NoteInstrument;
+import com.github.idankoblik.jukebox.NoteInstrument;
 import net.kyori.adventure.key.Key;
 import org.jetbrains.annotations.ApiStatus;
 import org.jetbrains.annotations.NotNull;

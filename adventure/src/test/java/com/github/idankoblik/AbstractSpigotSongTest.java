@@ -2,6 +2,10 @@ package com.github.idankoblik;
 
 import be.seeseemelk.mockbukkit.WorldMock;
 import be.seeseemelk.mockbukkit.entity.PlayerMock;
+import com.github.idankoblik.jukebox.AbstractSong;
+import com.github.idankoblik.jukebox.NBSNote;
+import com.github.idankoblik.jukebox.NBSSong;
+import com.github.idankoblik.jukebox.Song;
 import net.apartium.cocoabeans.space.Position;
 import org.bukkit.Location;
 

@@ -1,6 +1,5 @@
-import com.github.idankoblik.NBSFile;
-import com.github.idankoblik.NBSNote;
-import com.github.idankoblik.NBSSong;
+import com.github.idankoblik.jukebox.NBSNote;
+import com.github.idankoblik.jukebox.NBSSong;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.io.TempDir;
 
@@ -12,8 +11,8 @@ import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 
-import static com.github.idankoblik.NBSFile.readNBS;
-import static com.github.idankoblik.NBSFile.writeNBS;
+import static com.github.idankoblik.jukebox.NBSFile.readNBS;
+import static com.github.idankoblik.jukebox.NBSFile.writeNBS;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
