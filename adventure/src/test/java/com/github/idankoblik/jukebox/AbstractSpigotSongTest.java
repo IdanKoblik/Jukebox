@@ -2,6 +2,10 @@ package com.github.idankoblik.jukebox;
 
 import be.seeseemelk.mockbukkit.WorldMock;
 import be.seeseemelk.mockbukkit.entity.PlayerMock;
+import com.github.idankoblik.jukebox.dummies.SongEndListenerDummy;
+import com.github.idankoblik.jukebox.dummies.SongStageChangeListenerDummy;
+import com.github.idankoblik.jukebox.dummies.SongStartListenerDummy;
+import com.github.idankoblik.jukebox.events.EventManager;
 import net.apartium.cocoabeans.space.Position;
 import org.bukkit.Location;
 
@@ -18,10 +22,25 @@ public abstract class AbstractSpigotSongTest extends AbstractSpigotTest {
     protected PlayerMock player;
     protected Position musicPosition;
     protected WorldMock world;
+    protected EventManager eventManager;
+
+    protected SongStageChangeListenerDummy stageChangeListener;
+    protected SongStartListenerDummy startListener;
+    protected SongEndListenerDummy endListener;
 
     @Override
     protected void setUp() throws Exception {
         super.setUp();
+
+        this.eventManager = EventManager.getInstance();
+        this.eventManager.clear();
+
+        this.stageChangeListener = new SongStageChangeListenerDummy();
+        this.startListener = new SongStartListenerDummy();
+        this.endListener = new SongEndListenerDummy();
+        this.eventManager.registerListener(startListener);
+        this.eventManager.registerListener(endListener);
+        this.eventManager.registerListener(stageChangeListener);
 
         this.player = server.addPlayer();
         NBSNote note = new NBSNote((short) 1, (short) 1, (byte) 1, (byte) 1);
@@ -51,6 +70,32 @@ public abstract class AbstractSpigotSongTest extends AbstractSpigotTest {
         // Unknown instrument
         this.song.playSound((byte) 69, 1, 10);
         assertEquals(2, this.player.getHeardSounds().size());
+    }
+
+    protected void testTriggeringEvents() {
+        SongState state = this.nbsSong.getState();
+        assertEquals(state, SongState.IDLE);
+
+        this.song.playSong(100.f);
+        assertEquals(this.nbsSong.getState(), SongState.PLAYING);
+        assertTrue(stageChangeListener.isWorking());
+        assertEquals(stageChangeListener.getCurrent(), SongState.PLAYING);
+        assertEquals(stageChangeListener.getPrevious(), SongState.IDLE);
+
+        assertTrue(startListener.isWorking());
+        try {
+            Thread.sleep(1000);
+        } catch (InterruptedException e) {
+            throw new RuntimeException(e);
+        }
+
+        assertEquals(this.nbsSong.getState(), SongState.ENDED);
+        assertTrue(endListener.isWorking());
+        assertFalse(endListener.isForcing());
+
+        assertTrue(stageChangeListener.isWorking());
+        assertEquals(stageChangeListener.getCurrent(), SongState.ENDED);
+        assertEquals(stageChangeListener.getPrevious(), SongState.PLAYING);
     }
 
     protected void testLocationPlayNote() {
@@ -86,6 +131,9 @@ public abstract class AbstractSpigotSongTest extends AbstractSpigotTest {
         }
         song.stopSong();
         assertEquals(19, this.player.getHeardSounds().size());
+        assertEquals(this.nbsSong.getState(), SongState.ENDED);
+        assertTrue(endListener.isWorking());
+        assertTrue(endListener.isForcing());
     }
 
 }

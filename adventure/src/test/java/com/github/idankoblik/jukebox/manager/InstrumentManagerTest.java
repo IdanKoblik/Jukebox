@@ -18,6 +18,7 @@ public class InstrumentManagerTest {
     public void setUp() {
         manager = InstrumentManager.getInstance();
         manager.clear();
+
     }
 
     @Test

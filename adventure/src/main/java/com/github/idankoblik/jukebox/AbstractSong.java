@@ -1,5 +1,8 @@
 package com.github.idankoblik.jukebox;
 
+import com.github.idankoblik.jukebox.events.EventManager;
+import com.github.idankoblik.jukebox.events.SongEndEvent;
+import com.github.idankoblik.jukebox.events.SongStartEvent;
 import org.jetbrains.annotations.ApiStatus;
 import org.jetbrains.annotations.NotNull;
 
@@ -19,8 +22,6 @@ public abstract class AbstractSong {
     protected final String defaultSound;
     protected final ScheduledExecutorService scheduler;
 
-    protected boolean playing = false;
-
     /**
      * Allow looping a song.
      */
@@ -35,7 +36,7 @@ public abstract class AbstractSong {
      */
     public AbstractSong(@NotNull NBSSong song, @NotNull String defaultSound) {
         this.song = song;
-        this.tickLengthInSeconds = 20f / song.tempo();
+        this.tickLengthInSeconds = 20f / song.getTempo();
         this.defaultSound = defaultSound;
         this.scheduler = Executors.newSingleThreadScheduledExecutor();
     }
@@ -48,21 +49,24 @@ public abstract class AbstractSong {
     public CompletableFuture<Void> playSong(float volume) {
         CompletableFuture<Void> future = new CompletableFuture<>();
 
-        if (song.notes().isEmpty()) {
+        if (song.getNotes().isEmpty()) {
             future.complete(null);
-            return future;
+            return null;
         }
 
-        playing = true;
-        List<NBSNote> notes = song.notes();
+        song.setState(SongState.PLAYING);
+        EventManager.getInstance().fireEvent(new SongStartEvent(song));
+
+        List<NBSNote> notes = song.getNotes();
         int totalNotes = notes.size();
 
         for (int i = 0; i < totalNotes; i++) {
             final int index = i;
             long delayInMillis = Math.round(notes.get(i).getTick() * tickLengthInSeconds * 50);
 
+            // TODO stop work with scheduler in issue #19
             scheduler.schedule(() -> {
-                if (!playing) {
+                if (song.getState() == SongState.ENDED) {
                     future.complete(null);
                     return;
                 }
@@ -73,8 +77,11 @@ public abstract class AbstractSong {
                 if (index == totalNotes - 1) {
                     if (loop)
                         playSong(volume);
-                    else
+                    else {
                         future.complete(null);
+                        song.setState(SongState.ENDED);
+                        EventManager.getInstance().fireEvent(new SongEndEvent(song, false));
+                    }
                 }
             }, delayInMillis, TimeUnit.MILLISECONDS);
         }
@@ -86,11 +93,12 @@ public abstract class AbstractSong {
      * Stop's the nbs song.
      */
     public void stopSong() {
-        if (playing)
+        if (song.getState() == SongState.ENDED)
             scheduler.shutdown();
 
         loop = false;
-        playing = false;
+        song.setState(SongState.ENDED);
+        EventManager.getInstance().fireEvent(new SongEndEvent(song, false));
     }
 
     /**

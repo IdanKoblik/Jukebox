@@ -15,6 +15,7 @@ public class SongQueueTest extends AbstractSpigotSongTest {
     @Override
     protected void setUp() throws Exception {
         super.setUp();
+
     }
 
     @AfterEach

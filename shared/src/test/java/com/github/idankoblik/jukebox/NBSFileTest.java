@@ -1,5 +1,5 @@
-import com.github.idankoblik.jukebox.NBSNote;
-import com.github.idankoblik.jukebox.NBSSong;
+package com.github.idankoblik.jukebox;
+
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.io.TempDir;
 
@@ -38,14 +38,14 @@ class NBSFileTest {
 
         NBSSong readSong = readNBS(tempFile);
 
-        assertEquals(originalSong.name(), readSong.name(), "Song name mismatch");
-        assertEquals(originalSong.author(), readSong.author(), "Author mismatch");
-        assertEquals(originalSong.tempo(), readSong.tempo(), 0.001, "Tempo mismatch");
-        assertEquals(originalSong.notes().size(), readSong.notes().size(), "Number of notes mismatch");
+        assertEquals(originalSong.getName(), readSong.getName(), "Song name mismatch");
+        assertEquals(originalSong.getAuthor(), readSong.getAuthor(), "Author mismatch");
+        assertEquals(originalSong.getTempo(), readSong.getTempo(), 0.001, "Tempo mismatch");
+        assertEquals(originalSong.getNotes().size(), readSong.getNotes().size(), "Number of notes mismatch");
 
-        for (int i = 0; i < originalSong.notes().size(); i++) {
-            NBSNote originalNote = originalSong.notes().get(i);
-            NBSNote readNote = readSong.notes().get(i);
+        for (int i = 0; i < originalSong.getNotes().size(); i++) {
+            NBSNote originalNote = originalSong.getNotes().get(i);
+            NBSNote readNote = readSong.getNotes().get(i);
             assertEquals(originalNote.getTick(), readNote.getTick(), "Tick mismatch at note " + i);
             assertEquals(originalNote.getLayer(), readNote.getLayer(), "Layer mismatch at note " + i);
             assertEquals(originalNote.getInstrument(), readNote.getInstrument(), "Instrument mismatch at note " + i);
@@ -62,10 +62,10 @@ class NBSFileTest {
 
         NBSSong readSong = readNBS(tempFile);
 
-        assertEquals(emptySong.name(), readSong.name(), "Song name mismatch");
-        assertEquals(emptySong.author(), readSong.author(), "Author mismatch");
-        assertEquals(emptySong.tempo(), readSong.tempo(), 0.001, "Tempo mismatch");
-        assertTrue(readSong.notes().isEmpty(), "Notes should be empty");
+        assertEquals(emptySong.getName(), readSong.getName(), "Song name mismatch");
+        assertEquals(emptySong.getAuthor(), readSong.getAuthor(), "Author mismatch");
+        assertEquals(emptySong.getTempo(), readSong.getTempo(), 0.001, "Tempo mismatch");
+        assertTrue(readSong.getNotes().isEmpty(), "Notes should be empty");
     }
 
     @Test
@@ -78,10 +78,10 @@ class NBSFileTest {
 
         NBSSong readSong = readNBS(tempFile);
 
-        assertEquals(longSong.name(), readSong.name(), "Song name mismatch");
-        assertEquals(longSong.author(), readSong.author(), "Author mismatch");
-        assertEquals(longSong.tempo(), readSong.tempo(), 0.001, "Tempo mismatch");
-        assertEquals(longSong.notes().size(), readSong.notes().size(), "Number of notes mismatch");
+        assertEquals(longSong.getName(), readSong.getName(), "Song name mismatch");
+        assertEquals(longSong.getAuthor(), readSong.getAuthor(), "Author mismatch");
+        assertEquals(longSong.getTempo(), readSong.getTempo(), 0.001, "Tempo mismatch");
+        assertEquals(longSong.getNotes().size(), readSong.getNotes().size(), "Number of notes mismatch");
     }
 
     private List<NBSNote> generateLongNoteList(int count) {

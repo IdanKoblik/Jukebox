@@ -15,6 +15,7 @@ dependencies {
     compileOnly("net.kyori:adventure-api:${project.findProperty("kyori.version")}")
     compileOnly("org.spigotmc:spigot:${project.findProperty("spigot.version")}")
 
+    testImplementation("org.mockito:mockito-core:5.14.1")
     testImplementation("net.kyori:adventure-platform-bukkit:${findProperty("kyori.bukkit.version")}")
     testImplementation("net.kyori:adventure-api:${project.findProperty("kyori.version")}")
     testImplementation("com.github.seeseemelk:MockBukkit-v1.20:${project.findProperty("mock.bukkit.version")}")

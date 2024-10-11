@@ -36,6 +36,12 @@ public class SongTest extends AbstractSpigotSongTest {
         super.testPlaySong();
     }
 
+    @Test
+    @Override
+    protected void testTriggeringEvents() {
+        super.testTriggeringEvents();
+    }
+
     @Override
     protected void initializeSongs() throws Exception {
         this.song = new Song(this.nbsSong, DEFAULT_NOTE, audience(player), null);
