@@ -20,8 +20,9 @@ public class Song extends AbstractSong {
      *
      * @param song         The NBS song to be played.
      * @param defaultSound The default sound key.
+     * @param position     The position of the song to be played. (optional)
      */
-    public Song(@NotNull NBSSong song, @NotNull String defaultSound, @NotNull Audience audience, @Nullable Position position) {
+    public Song(@NotNull NBSSong song, @NotNull Key defaultSound, @NotNull Audience audience, @Nullable Position position) {
         super(song, defaultSound);
         this.audience = audience;
         this.position = position;
@@ -37,7 +38,7 @@ public class Song extends AbstractSong {
     @Override
     protected void playSound(byte instrument, float pitch, float volume) {
         Sound sound = Sound.sound(
-                InstrumentManager.getInstance().getInstrument(instrument).orElse(Key.key(defaultSound)),
+                InstrumentManager.getInstance().getInstrument(instrument).orElse(defaultSound),
                 Sound.Source.MASTER,
                 volume,
                 pitch
