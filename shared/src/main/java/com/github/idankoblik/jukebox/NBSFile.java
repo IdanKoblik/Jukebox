@@ -71,26 +71,26 @@ public class NBSFile {
     public static void writeNBS(NBSSong song, File file) throws IOException {
         try (DataOutputStream dos = new DataOutputStream(new FileOutputStream(file))) {
             // Write header
-            writeShort(dos, (short) song.notes().size()); // length
+            writeShort(dos, (short) song.getNotes().size()); // length
             writeShort(dos, (short) 1); // height
-            writeString(dos, song.name());
-            writeString(dos, song.author());
+            writeString(dos, song.getName());
+            writeString(dos, song.getAuthor());
             writeString(dos, ""); // original author
             writeString(dos, ""); // description
-            writeShort(dos, (short) (song.tempo() * 100)); // tempo
+            writeShort(dos, (short) (song.getTempo() * 100)); // tempo
             dos.writeBoolean(false); // Auto-save (default value)
             dos.writeByte(0); // Auto-save duration (default value)
             dos.writeByte(4); // Time signature (default value)
             writeInt(dos, 0); // Minutes spent (default value)
             writeInt(dos, 0); // Left-clicks (default value)
             writeInt(dos, 0); // Right-clicks (default value)
-            writeInt(dos, song.notes().size()); // Note blocks added
+            writeInt(dos, song.getNotes().size()); // Note blocks added
             writeInt(dos, 0); // Note blocks removed (default value)
             writeString(dos, ""); // MIDI/Schematic file name (default value)
 
             // Write notes
             short lastTick = -1;
-            for (NBSNote note : song.notes()) {
+            for (NBSNote note : song.getNotes()) {
                 writeShort(dos, (short) (note.getTick() - lastTick));
                 lastTick = note.getTick();
                 writeShort(dos, (short) (note.getLayer() + 1)); // Add 1 to layer as 0 means end of tick

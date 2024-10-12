@@ -2,6 +2,9 @@ package com.github.idankoblik.jukebox;
 
 import net.apartium.cocoabeans.space.Position;
 import net.kyori.adventure.audience.Audience;
+import net.kyori.adventure.key.Key;
+import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
 import java.util.LinkedList;
 import java.util.Queue;
@@ -12,8 +15,8 @@ import java.util.Queue;
 public class SongQueue {
     private final Queue<Song> songs = new LinkedList<>();
     private final Audience audience;
-    private final String defaultSound;
-    private Position position;
+    private final Key defaultSound;
+    private final Position position;
     private boolean playing = false;
     private float volume;
 
@@ -22,21 +25,11 @@ public class SongQueue {
      *
      * @param defaultSound The default sound key.
      * @param audience     The audience that will hear the sound.
+     * @param position     The position of the song to be played. (optional)
      */
-    public SongQueue(String defaultSound, Audience audience) {
+    public SongQueue(@NotNull Key defaultSound, @NotNull Audience audience, @Nullable Position position) {
         this.audience = audience;
         this.defaultSound = defaultSound;
-    }
-
-    /**
-     * Constructs a SongQueue with the given parameters, including a position.
-     *
-     * @param defaultSound The default sound key.
-     * @param position     The location where the sound will be
-     * @param audience     The audience that will hear the sound.
-     */
-    public SongQueue(String defaultSound, Position position, Audience audience) {
-        this(defaultSound, audience);
         this.position = position;
     }
 
@@ -74,7 +67,13 @@ public class SongQueue {
         }
 
         Song currentSong = songs.poll();
-        currentSong.playSong(volume).thenAccept(v -> playNextSong());
+        if (currentSong == null)
+            return;
+
+        currentSong.playSong(volume).thenAccept(song -> {
+            song.setState(SongState.IDLE);
+            playNextSong();
+        });
     }
 
     /**
@@ -104,5 +103,12 @@ public class SongQueue {
      */
     public int getRemainingSongs() {
         return songs.size();
+    }
+
+    /**
+     * Drops all songs from the queue.
+     */
+    public void drop() {
+        this.songs.clear();
     }
 }

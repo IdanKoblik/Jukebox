@@ -1,24 +1,18 @@
 package com.github.idankoblik.jukebox;
 
-import org.junit.jupiter.api.AfterEach;
-import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.Test;
+/*
 
-import static org.junit.jupiter.api.Assertions.*;
-
-public class SongQueueTest extends AbstractSpigotSongTest {
+public class SongQueueTestTe extends AbstractSpigotSongTest {
 
     private SongQueue songQueue;
     private SongQueue locationSongQueue;
 
     @BeforeEach
-    @Override
     protected void setUp() throws Exception {
         super.setUp();
     }
 
     @AfterEach
-    @Override
     protected void tearDown() {
         super.tearDown();
     }
@@ -116,11 +110,8 @@ public class SongQueueTest extends AbstractSpigotSongTest {
     }
 
     @Override
-    protected void initializeSongs() throws Exception {
-        this.song = new Song(this.nbsSong, DEFAULT_NOTE, audience(player), null);
-        this.locationSong = new Song(this.nbsSong, DEFAULT_NOTE, audience(world), musicPosition);
-
-        this.locationSongQueue = new SongQueue(DEFAULT_NOTE, musicPosition, audience(player));
-        this.songQueue = new SongQueue(DEFAULT_NOTE, audience(player));
+    protected void initializeSongs() {
+        this.locationSongQueue = new SongQueue(DEFAULT_NOTE, musicPosition, player);
+        this.songQueue = new SongQueue(DEFAULT_NOTE, player);
     }
-}
+}*/

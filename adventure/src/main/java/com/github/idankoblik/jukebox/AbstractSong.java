@@ -1,5 +1,9 @@
 package com.github.idankoblik.jukebox;
 
+import com.github.idankoblik.jukebox.events.EventManager;
+import com.github.idankoblik.jukebox.events.SongEndEvent;
+import com.github.idankoblik.jukebox.events.SongStartEvent;
+import net.kyori.adventure.key.Key;
 import org.jetbrains.annotations.ApiStatus;
 import org.jetbrains.annotations.NotNull;
 
@@ -16,10 +20,8 @@ public abstract class AbstractSong {
 
     protected final NBSSong song;
     protected final float tickLengthInSeconds;
-    protected final String defaultSound;
+    protected final Key defaultSound;
     protected final ScheduledExecutorService scheduler;
-
-    protected boolean playing = false;
 
     /**
      * Allow looping a song.
@@ -33,9 +35,9 @@ public abstract class AbstractSong {
      * @param song         The NBS song to be played.
      * @param defaultSound The default sound key.
      */
-    public AbstractSong(@NotNull NBSSong song, @NotNull String defaultSound) {
+    public AbstractSong(@NotNull NBSSong song, @NotNull Key defaultSound) {
         this.song = song;
-        this.tickLengthInSeconds = 20f / song.tempo();
+        this.tickLengthInSeconds = 20f / song.getTempo();
         this.defaultSound = defaultSound;
         this.scheduler = Executors.newSingleThreadScheduledExecutor();
     }
@@ -45,36 +47,37 @@ public abstract class AbstractSong {
      * @param volume The volume at which to play the song.
      * @return Future when the song ends.
      */
-    public CompletableFuture<Void> playSong(float volume) {
-        CompletableFuture<Void> future = new CompletableFuture<>();
+    public CompletableFuture<NBSSong> playSong(float volume) {
+        CompletableFuture<NBSSong> future = new CompletableFuture<>();
 
-        if (song.notes().isEmpty()) {
-            future.complete(null);
+        if (song.getNotes().isEmpty()) {
+            future.complete(song);
             return future;
         }
 
-        playing = true;
-        List<NBSNote> notes = song.notes();
+        song.setState(SongState.PLAYING);
+        EventManager.getInstance().fireEvent(new SongStartEvent(song));
+
+        List<NBSNote> notes = song.getNotes();
         int totalNotes = notes.size();
 
         for (int i = 0; i < totalNotes; i++) {
             final int index = i;
             long delayInMillis = Math.round(notes.get(i).getTick() * tickLengthInSeconds * 50);
 
+            // TODO stop work with scheduler in issue #19
             scheduler.schedule(() -> {
-                if (!playing) {
-                    future.complete(null);
-                    return;
-                }
-
                 float pitch = (float) Math.pow(2, (notes.get(index).getKey() - 45) / 12.0);
                 playSound(notes.get(index).getInstrument(), pitch, volume);
 
                 if (index == totalNotes - 1) {
                     if (loop)
                         playSong(volume);
-                    else
-                        future.complete(null);
+                    else {
+                        future.complete(song);
+                        song.setState(SongState.ENDED);
+                        EventManager.getInstance().fireEvent(new SongEndEvent(song, false));
+                    }
                 }
             }, delayInMillis, TimeUnit.MILLISECONDS);
         }
@@ -86,11 +89,12 @@ public abstract class AbstractSong {
      * Stop's the nbs song.
      */
     public void stopSong() {
-        if (playing)
+        if (song.getState() == SongState.ENDED)
             scheduler.shutdown();
 
         loop = false;
-        playing = false;
+        song.setState(SongState.ENDED);
+        EventManager.getInstance().fireEvent(new SongEndEvent(song, true));
     }
 
     /**

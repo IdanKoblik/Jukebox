@@ -74,6 +74,10 @@ allprojects {
         testImplementation(platform("org.junit:junit-bom:${findProperty("junit.version")}"))
         testImplementation("org.junit.jupiter:junit-jupiter")
     }
+
+    java {
+        modularity.inferModulePath = true
+    }
 }
 
 dependencies {}
