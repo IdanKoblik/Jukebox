@@ -13,7 +13,8 @@ dependencies {
     implementation(project.project(":adventure"))
     implementation(project.project(":shared"))
 
-    compileOnly("org.spigotmc:spigot:${project.findProperty("spigot.version")}")
+    compileOnly("org.imanity.paperspigot:paper1.8.8:${findProperty("paper.version")}")
+    compileOnly("net.kyori:adventure-api:${project.findProperty("kyori.version")}")
 
     testImplementation("org.mockito:mockito-core:5.14.1")
     testImplementation("net.kyori:adventure-platform-bukkit:${findProperty("kyori.bukkit.version")}")

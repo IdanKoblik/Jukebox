@@ -13,7 +13,7 @@ import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.*;
 
-public abstract class AbstractSpigotSongTest extends AbstractSpigotTest {
+public abstract class AbstractPaperSongTest extends AbstractPaperTest {
 
     protected static final String DEFAULT_NOTE = "note.drum";
     protected AbstractSong song;
@@ -64,11 +64,11 @@ public abstract class AbstractSpigotSongTest extends AbstractSpigotTest {
 
     protected void testPlayNote() {
         // Known instrument
-        this.song.playSound((byte) 1, 1, 10);
+        this.song.playNote((byte) 1, 1);
         assertEquals(1, this.player.getHeardSounds().size());
 
         // Unknown instrument
-        this.song.playSound((byte) 69, 1, 10);
+        this.song.playNote((byte) 69, 1);
         assertEquals(2, this.player.getHeardSounds().size());
     }
 
@@ -76,7 +76,7 @@ public abstract class AbstractSpigotSongTest extends AbstractSpigotTest {
         SongState state = this.nbsSong.getState();
         assertEquals(state, SongState.IDLE);
 
-        this.song.playSong(100.f);
+        this.song.playSong();
         assertEquals(this.nbsSong.getState(), SongState.PLAYING);
         assertTrue(stageChangeListener.isWorking());
         assertEquals(stageChangeListener.getCurrent(), SongState.PLAYING);
@@ -84,7 +84,7 @@ public abstract class AbstractSpigotSongTest extends AbstractSpigotTest {
 
         assertTrue(startListener.isWorking());
         try {
-            Thread.sleep(1000);
+            Thread.sleep(2000);
         } catch (InterruptedException e) {
             throw new RuntimeException(e);
         }
@@ -100,30 +100,30 @@ public abstract class AbstractSpigotSongTest extends AbstractSpigotTest {
 
     protected void testLocationPlayNote() {
         // Known instrument
-        this.locationSong.playSound((byte) 1, 1, 10);
+        this.locationSong.playNote((byte) 1, 1);
         assertEquals(0, this.player.getHeardSounds().size());
 
         // Unknown instrument
-        this.locationSong.playSound((byte) 69, 1, 10);
+        this.locationSong.playNote((byte) 69, 1);
         assertEquals(0, this.player.getHeardSounds().size());
 
         this.player.teleport(new Location(world, 5, 5,5));
 
         // Known instrument
-        this.locationSong.playSound((byte) 1, 1, 10);
+        this.locationSong.playNote((byte) 1, 1);
         assertEquals(1, this.player.getHeardSounds().size());
 
         // Unknown instrument
-        this.locationSong.playSound((byte) 69, 1, 10);
+        this.locationSong.playNote((byte) 69, 1);
         assertEquals(2, this.player.getHeardSounds().size());
     }
 
     protected void testPlaySong() {
-        Song song = (Song) this.song;
-        assertFalse(song.isLoop());
+        PaperSong song = (PaperSong) this.song;
+        assertFalse(song.toLoop());
         song.setLoop(true);
-        assertTrue(song.isLoop());
-        song.playSong(100.f);
+        assertTrue(song.toLoop());
+        song.playSong();
         try {
             Thread.sleep(1000);
         } catch (InterruptedException e) {

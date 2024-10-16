@@ -13,7 +13,7 @@ import java.util.Queue;
  * Manages a queue of songs to be played in sequence.
  */
 public class SongQueue {
-    private final Queue<Song> songs = new LinkedList<>();
+    private final Queue<KyoriSong> songs = new LinkedList<>();
     private final Audience audience;
     private final Key defaultSound;
     private final Position position;
@@ -36,10 +36,9 @@ public class SongQueue {
     /**
      * Adds a song to the queue.
      *
-     * @param nbsSong The NBS song to be added to the queue.
+     * @param song The song to be added to the queue.
      */
-    public void addSong(NBSSong nbsSong) {
-        Song song = new Song(nbsSong, defaultSound, audience, position);
+    public void addSong(KyoriSong song) {
         songs.offer(song);
     }
 
@@ -66,11 +65,11 @@ public class SongQueue {
             return;
         }
 
-        Song currentSong = songs.poll();
+        KyoriSong currentSong = songs.poll();
         if (currentSong == null)
             return;
 
-        currentSong.playSong(volume).thenAccept(song -> {
+        currentSong.playSong().thenAccept(song -> {
             song.setState(SongState.IDLE);
             playNextSong();
         });
@@ -81,9 +80,7 @@ public class SongQueue {
      */
     public void stopSongs() {
         playing = false;
-        for (Song song : songs)
-            song.stopSong();
-
+        songs.forEach(KyoriSong::stopSong);
         songs.clear();
     }
 

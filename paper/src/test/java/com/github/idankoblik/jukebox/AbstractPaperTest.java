@@ -5,7 +5,7 @@ import be.seeseemelk.mockbukkit.ServerMock;
 import net.kyori.adventure.platform.bukkit.BukkitAudiences;
 import org.bukkit.plugin.Plugin;
 
-public abstract class AbstractSpigotTest {
+public abstract class AbstractPaperTest {
 
     protected Plugin plugin;
     protected ServerMock server;
@@ -22,4 +22,6 @@ public abstract class AbstractSpigotTest {
         MockBukkit.unmock();
         this.bukkitAudiences.close();
     }
+
+
 }

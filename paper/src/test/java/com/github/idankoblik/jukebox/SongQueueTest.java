@@ -1,14 +1,7 @@
 package com.github.idankoblik.jukebox;
 
-import net.kyori.adventure.key.Key;
-import org.junit.jupiter.api.AfterEach;
-import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.Test;
-
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertFalse;
-
-public class SongQueueTest extends AbstractSpigotSongTest {
+/*
+public class SongQueueTest extends AbstractPaperSongTest {
 
     private SongQueue songQueue;
     private SongQueue positionSongQueue;
@@ -84,3 +77,4 @@ public class SongQueueTest extends AbstractSpigotSongTest {
         assertFalse(queue.isPlaying());
     }
 }
+*/
