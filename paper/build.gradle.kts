@@ -16,8 +16,6 @@ dependencies {
     compileOnly("org.imanity.paperspigot:paper1.8.8:${findProperty("paper.version")}")
     compileOnly("net.kyori:adventure-api:${project.findProperty("kyori.version")}")
 
-    testImplementation("org.mockito:mockito-core:5.14.1")
-    testImplementation("net.kyori:adventure-platform-bukkit:${findProperty("kyori.bukkit.version")}")
     testImplementation("com.github.seeseemelk:MockBukkit-v1.20:${project.findProperty("mock.bukkit.version")}")
 }
 

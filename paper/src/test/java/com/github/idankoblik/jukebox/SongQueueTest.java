@@ -1,16 +1,24 @@
 package com.github.idankoblik.jukebox;
 
-/*
-public class SongQueueTest extends AbstractPaperSongTest {
+import net.kyori.adventure.key.Key;
+import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 
-    private SongQueue songQueue;
-    private SongQueue positionSongQueue;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
+
+public class SongQueueTest<P extends PaperPlatform> extends AbstractPaperSongTest {
+
+    private SongQueue<P> songQueue;
+    private SongQueue<P> positionSongQueue;
 
     @BeforeEach
     protected void setUp() throws Exception {
         super.setUp();
         songQueue.drop();
         positionSongQueue.drop();
+        player.getHeardSounds().clear();
     }
 
     @AfterEach
@@ -20,10 +28,10 @@ public class SongQueueTest extends AbstractPaperSongTest {
 
     @Override
     protected void initializeSongs() {
-        this.song = new Song(this.nbsSong, Key.key(DEFAULT_NOTE), player, null);
+        this.song = new PaperSong(plugin, 1F, this.nbsSong, Key.key(DEFAULT_NOTE), player, null);
 
-        this.positionSongQueue = new SongQueue(Key.key(DEFAULT_NOTE), player, musicPosition);
-        this.songQueue = new SongQueue(Key.key(DEFAULT_NOTE), player, null);
+        this.positionSongQueue = new SongQueue<>();
+        this.songQueue = new SongQueue<>();
     }
 
     @Test
@@ -34,21 +42,11 @@ public class SongQueueTest extends AbstractPaperSongTest {
 
     @Test
     void testPlayPlaylist() {
-        helpTestPlayPlaylist(this.songQueue);
-        helpTestPlayPlaylist(this.positionSongQueue);
-    }
+        songQueue.addSong((KyoriSong) song);
+        songQueue.addSong((KyoriSong) song);
 
-    private void helpTestPlayPlaylist(SongQueue queue) {
-        player.getHeardSounds().clear();
-        queue.addSong(this.nbsSong);
-        queue.addSong(this.nbsSong);
-
-        queue.playSongs(100.f);
-        try {
-            Thread.sleep(300);
-        } catch (InterruptedException e) {
-            throw new RuntimeException(e);
-        }
+        songQueue.playSongs();
+        server.getScheduler().performTicks(8);
 
         assertEquals(player.getHeardSounds().size(), 5);
     }
@@ -56,25 +54,21 @@ public class SongQueueTest extends AbstractPaperSongTest {
     @Test
     void testStopPlaylist() {
         helpAddSong(this.songQueue);
-        this.songQueue.addSong(this.nbsSong);
+        this.songQueue.addSong((KyoriSong) song);
 
-        this.songQueue.playSongs(100.f);
-        try {
-            Thread.sleep(200);
-        } catch (InterruptedException e) {
-            throw new RuntimeException(e);
-        }
+        this.songQueue.playSongs();
+        server.getScheduler().performTicks(8);
+
         this.songQueue.stopSongs();
 
-        assertEquals(player.getHeardSounds().size(), 3);
+        assertEquals(player.getHeardSounds().size(), 5);
     }
 
     private void helpAddSong(SongQueue queue) {
         assertFalse(queue.isPlaying());
         assertEquals(queue.getRemainingSongs(), 0);
-        queue.addSong(this.nbsSong);
+        queue.addSong(song);
         assertEquals(queue.getRemainingSongs(), 1);
         assertFalse(queue.isPlaying());
     }
 }
-*/

@@ -1,6 +1,5 @@
 package com.github.idankoblik.jukebox;
 
-import net.kyori.adventure.audience.Audience;
 import net.kyori.adventure.key.Key;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
@@ -40,7 +39,7 @@ public class SongTest extends AbstractPaperSongTest {
 
     @Override
     protected void initializeSongs() {
-        this.song = new PaperSong(plugin, 1, this.nbsSong, Key.key(DEFAULT_NOTE), (Audience) player, null);
-        this.locationSong = new PaperSong(plugin, 1, this.nbsSong, Key.key(DEFAULT_NOTE), (Audience) world, musicPosition);
+        this.song = new PaperSong(plugin, 1F, this.nbsSong, Key.key(DEFAULT_NOTE), player, null);
+        this.locationSong = new PaperSong(plugin, 1, this.nbsSong, Key.key(DEFAULT_NOTE), world, musicPosition);
     }
 }

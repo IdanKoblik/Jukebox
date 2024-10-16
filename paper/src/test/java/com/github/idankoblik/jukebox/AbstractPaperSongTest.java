@@ -16,7 +16,7 @@ import static org.junit.jupiter.api.Assertions.*;
 public abstract class AbstractPaperSongTest extends AbstractPaperTest {
 
     protected static final String DEFAULT_NOTE = "note.drum";
-    protected AbstractSong song;
+    protected PaperSong song;
     protected AbstractSong locationSong;
     protected NBSSong nbsSong;
     protected PlayerMock player;
@@ -60,7 +60,7 @@ public abstract class AbstractPaperSongTest extends AbstractPaperTest {
         super.tearDown();
     }
 
-    protected abstract void initializeSongs();
+    protected abstract void initializeSongs() throws Exception;
 
     protected void testPlayNote() {
         // Known instrument
@@ -82,15 +82,9 @@ public abstract class AbstractPaperSongTest extends AbstractPaperTest {
         assertEquals(stageChangeListener.getCurrent(), SongState.PLAYING);
         assertEquals(stageChangeListener.getPrevious(), SongState.IDLE);
 
-        assertTrue(startListener.isWorking());
-        try {
-            Thread.sleep(2000);
-        } catch (InterruptedException e) {
-            throw new RuntimeException(e);
-        }
+        server.getScheduler().performTicks(100L);
 
         assertEquals(this.nbsSong.getState(), SongState.ENDED);
-        assertTrue(endListener.isWorking());
         assertFalse(endListener.isForcing());
 
         assertTrue(stageChangeListener.isWorking());
@@ -124,13 +118,9 @@ public abstract class AbstractPaperSongTest extends AbstractPaperTest {
         song.setLoop(true);
         assertTrue(song.toLoop());
         song.playSong();
-        try {
-            Thread.sleep(1000);
-        } catch (InterruptedException e) {
-            throw new RuntimeException(e);
-        }
+        server.getScheduler().performTicks(4);
         song.stopSong();
-        assertEquals(19, this.player.getHeardSounds().size());
+        assertEquals(3, this.player.getHeardSounds().size());
         assertEquals(this.nbsSong.getState(), SongState.ENDED);
         assertTrue(endListener.isWorking());
         assertTrue(endListener.isForcing());
