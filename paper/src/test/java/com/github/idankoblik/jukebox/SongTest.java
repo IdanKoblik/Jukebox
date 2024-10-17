@@ -5,7 +5,7 @@ import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
-public class SongTest extends AbstractSpigotSongTest {
+public class SongTest extends AbstractPaperSongTest {
 
     @BeforeEach
     protected void setUp() throws Exception {
@@ -39,7 +39,7 @@ public class SongTest extends AbstractSpigotSongTest {
 
     @Override
     protected void initializeSongs() {
-        this.song = new Song(this.nbsSong, Key.key(DEFAULT_NOTE), player, null);
-        this.locationSong = new Song(this.nbsSong, Key.key(DEFAULT_NOTE), world, musicPosition);
+        this.song = new PaperSong(plugin, 1F, this.nbsSong, Key.key(DEFAULT_NOTE), player, null);
+        this.locationSong = new PaperSong(plugin, 1, this.nbsSong, Key.key(DEFAULT_NOTE), world, musicPosition);
     }
 }

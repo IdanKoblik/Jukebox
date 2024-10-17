@@ -1,58 +1,32 @@
 package com.github.idankoblik.jukebox;
 
-import net.apartium.cocoabeans.space.Position;
-import net.kyori.adventure.audience.Audience;
-import net.kyori.adventure.key.Key;
-import org.jetbrains.annotations.NotNull;
-import org.jetbrains.annotations.Nullable;
-
 import java.util.LinkedList;
 import java.util.Queue;
 
 /**
  * Manages a queue of songs to be played in sequence.
  */
-public class SongQueue {
-    private final Queue<Song> songs = new LinkedList<>();
-    private final Audience audience;
-    private final Key defaultSound;
-    private final Position position;
-    private boolean playing = false;
-    private float volume;
+public class SongQueue<P extends Platform> {
 
-    /**
-     * Constructs a SongQueue with the given parameters.
-     *
-     * @param defaultSound The default sound key.
-     * @param audience     The audience that will hear the sound.
-     * @param position     The position of the song to be played. (optional)
-     */
-    public SongQueue(@NotNull Key defaultSound, @NotNull Audience audience, @Nullable Position position) {
-        this.audience = audience;
-        this.defaultSound = defaultSound;
-        this.position = position;
-    }
+    private final Queue<KyoriSong<P>> songs = new LinkedList<>();
+    private boolean playing = false;
 
     /**
      * Adds a song to the queue.
      *
-     * @param nbsSong The NBS song to be added to the queue.
+     * @param song The song to be added to the queue.
      */
-    public void addSong(NBSSong nbsSong) {
-        Song song = new Song(nbsSong, defaultSound, audience, position);
+    public void addSong(KyoriSong<P> song) {
         songs.offer(song);
     }
 
     /**
      * Starts playing songs in the queue with the specified volume.
-     *
-     * @param volume The volume at which to play the songs.
      */
-    public void playSongs(float volume) {
+    public void playSongs() {
         if (songs.isEmpty() || playing)
             return;
 
-        this.volume = volume;
         playing = true;
         playNextSong();
     }
@@ -66,11 +40,11 @@ public class SongQueue {
             return;
         }
 
-        Song currentSong = songs.poll();
+        KyoriSong<P> currentSong = songs.poll();
         if (currentSong == null)
             return;
 
-        currentSong.playSong(volume).thenAccept(song -> {
+        currentSong.playSong().thenAccept(song -> {
             song.setState(SongState.IDLE);
             playNextSong();
         });
@@ -81,9 +55,7 @@ public class SongQueue {
      */
     public void stopSongs() {
         playing = false;
-        for (Song song : songs)
-            song.stopSong();
-
+        songs.forEach(KyoriSong::stopSong);
         songs.clear();
     }
 

@@ -1,5 +1,10 @@
 # CHANGELOG
 
+## 0.0.3
+- [paper] New module that impl adventure api
+- [adventure] Now adventure module used as abstract module for all minecraft impl's
+- [shared] `AbstractSong` has been moved to `shared` module
+
 ## 0.0.2
 - [spigot] Don't exist anymore
 - [standalone] Renamed to `shared`
