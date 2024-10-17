@@ -42,29 +42,29 @@ public class SongQueueTest<P extends PaperPlatform> extends AbstractPaperSongTes
 
     @Test
     void testPlayPlaylist() {
-        songQueue.addSong((KyoriSong) song);
-        songQueue.addSong((KyoriSong) song);
+        songQueue.addSong(song);
+        songQueue.addSong(song);
 
         songQueue.playSongs();
         server.getScheduler().performTicks(8);
 
-        assertEquals(player.getHeardSounds().size(), 5);
+        assertEquals(player.getHeardSounds().size(), 6);
     }
 
     @Test
     void testStopPlaylist() {
         helpAddSong(this.songQueue);
-        this.songQueue.addSong((KyoriSong) song);
+        this.songQueue.addSong(song);
 
         this.songQueue.playSongs();
         server.getScheduler().performTicks(8);
 
         this.songQueue.stopSongs();
 
-        assertEquals(player.getHeardSounds().size(), 5);
+        assertEquals(player.getHeardSounds().size(), 6);
     }
 
-    private void helpAddSong(SongQueue queue) {
+    private void helpAddSong(SongQueue<P> queue) {
         assertFalse(queue.isPlaying());
         assertEquals(queue.getRemainingSongs(), 0);
         queue.addSong(song);
