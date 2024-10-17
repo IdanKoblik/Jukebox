@@ -8,7 +8,7 @@ import java.util.Queue;
  */
 public class SongQueue<P extends Platform> {
 
-    private final Queue<KyoriSong> songs = new LinkedList<>();
+    private final Queue<KyoriSong<P>> songs = new LinkedList<>();
     private boolean playing = false;
 
     /**
@@ -16,7 +16,7 @@ public class SongQueue<P extends Platform> {
      *
      * @param song The song to be added to the queue.
      */
-    public void addSong(KyoriSong song) {
+    public void addSong(KyoriSong<P> song) {
         songs.offer(song);
     }
 
@@ -40,7 +40,7 @@ public class SongQueue<P extends Platform> {
             return;
         }
 
-        KyoriSong currentSong = songs.poll();
+        KyoriSong<P> currentSong = songs.poll();
         if (currentSong == null)
             return;
 
