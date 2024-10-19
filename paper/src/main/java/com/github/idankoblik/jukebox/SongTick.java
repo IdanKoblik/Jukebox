@@ -9,27 +9,22 @@ import java.util.List;
 import java.util.concurrent.CompletableFuture;
 
 /**
- * Scheduled task that handles the playback of a song's notes.
- * <p>
- * This class is responsible for playing each note at the appropriate time
- * based on the song's tick count and tempo.
- * </p>
+ * Handling each tick of the song
  */
-class SongTick extends BukkitRunnable {
+/* package-private */ class SongTick extends BukkitRunnable {
     private final List<NBSNote> notes;
-    private final AbstractSong abstractSong;
+    private final PaperSong abstractSong;
     private final CompletableFuture<NBSSong> future;
     private int tick;
     private final float tickLengthInSeconds;
 
     /**
-     * Constructs a SongTick with the given parameters.
      *
-     * @param notes        The list of notes to be played.
-     * @param abstractSong The song that is currently being played.
-     * @param future       A CompletableFuture to complete when the song ends.
+     * @param notes the notes to be handled
+     * @param abstractSong the song to be handled
+     * @param future a future of the song
      */
-    public SongTick(@NotNull List<NBSNote> notes, AbstractSong abstractSong, CompletableFuture<NBSSong> future) {
+    public SongTick(@NotNull List<NBSNote> notes, PaperSong abstractSong, CompletableFuture<NBSSong> future) {
         this.notes = notes;
         this.abstractSong = abstractSong;
         this.future = future;
@@ -38,7 +33,7 @@ class SongTick extends BukkitRunnable {
     }
 
     /**
-     * Executes the scheduled task, playing the appropriate notes for the current time.
+     * Handling each tick of the runnable
      */
     @Override
     public void run() {
@@ -68,9 +63,8 @@ class SongTick extends BukkitRunnable {
     }
 
     /**
-     * Plays a single note.
-     *
-     * @param note The note to be played.
+     * Play a note in the song
+     * @param note the note to play
      */
     private void playNote(NBSNote note) {
         if (note != null) {
@@ -80,7 +74,7 @@ class SongTick extends BukkitRunnable {
     }
 
     /**
-     * Completes the song playback and cancels the task.
+     * Completing the song
      */
     private void completeSong() {
         future.complete(abstractSong.song);

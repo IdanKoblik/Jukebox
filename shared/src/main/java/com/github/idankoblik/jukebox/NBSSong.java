@@ -8,69 +8,61 @@ import org.jetbrains.annotations.NotNull;
 import java.util.Collections;
 import java.util.List;
 
+/**
+ * A class repressing nbs song
+ */
 public class NBSSong {
+
         /**
-         * The name of the song.
+         * The name of the song
          */
         private final String name;
 
         /**
-         * The author of the song.
+         * The author of the song
          */
         private final String author;
 
         /**
-         * The length of the song.
+         * The length of the song
          */
         @ApiStatus.AvailableSince("0.0.2")
         private final short length;
 
         /**
-         * The height of the song.
+         * The height of the song
          */
         @ApiStatus.AvailableSince("0.0.2")
         private final short height;
 
         /**
-         * The original author of the song.
+         * The original author of the song
          */
         @ApiStatus.AvailableSince("0.0.2")
         private final String originalAuthor;
 
         /**
-         * The description of the song.
+         * The description of the song
          */
         @ApiStatus.AvailableSince("0.0.2")
         private final String description;
 
         /**
-         * The tempo of the song, expressed as a float. The tempo determines how fast or slow the song plays.
+         * The tempo of the song
          */
         private final float tempo;
 
         /**
-         * A list of {@link NBSNote} objects representing the notes in the song.
-         * Each {@link NBSNote} contains information about the pitch, instrument, and other note properties.
+         * The notes of the song
          */
         private final List<NBSNote> notes;
 
         /**
-         * The state of the song.
+         * The state of the song `IDLE` by default
          */
         @ApiStatus.AvailableSince("0.0.3")
         private SongState state = SongState.IDLE;
-
-        /**
-         * Represents a song in the NBS format.
-         * <p>
-         * An NBS (Noteblock Studio) song consists of a name, an author, a tempo, and a list of notes.
-         * </p>
-         *
-         * @param name The name of the song.
-         * @param author The author of the song.
-         * @param tempo The tempo of the song, expressed as a float.
-         * @param notes A list of {@link NBSNote} objects representing the notes in the song.
-         */
+        
         public NBSSong(String name, String author, short length, short height, String originalAuthor, String description, float tempo, List<NBSNote> notes) {
                 this.name = name;
                 this.author = author;
@@ -82,43 +74,94 @@ public class NBSSong {
                 this.notes = notes;
         }
 
+        /**
+         * Gets the name of the song.
+         *
+         * @return the name of the song as a String.
+         */
         public String getName() {
                 return name;
         }
 
+        /**
+         * Gets the author of the song.
+         *
+         * @return the author of the song as a String.
+         */
         public String getAuthor() {
                 return author;
         }
 
+        /**
+         * Gets the length of the song.
+         *
+         * @return the length of the song in a short format.
+         */
         public short getLength() {
                 return length;
         }
 
+        /**
+         * Gets the height associated with the song.
+         *
+         * @return the height as a short.
+         */
         public short getHeight() {
                 return height;
         }
 
+        /**
+         * Gets the original author of the song.
+         *
+         * @return the original author as a String.
+         */
         public String getOriginalAuthor() {
                 return originalAuthor;
         }
 
+        /**
+         * Gets a description of the song.
+         *
+         * @return the description of the song as a String.
+         */
         public String getDescription() {
                 return description;
         }
 
+        /**
+         * Gets the tempo of the song.
+         *
+         * @return the tempo as a float.
+         */
         public float getTempo() {
                 return tempo;
         }
 
+        /**
+         * Gets an unmodifiable list of notes in the song.
+         *
+         * @return a list of {@link NBSNote} objects representing the notes in the song.
+         */
         public List<NBSNote> getNotes() {
                 return Collections.unmodifiableList(this.notes);
         }
 
+        /**
+         * Gets the current state of the song.
+         *
+         * @return the current {@link SongState} of the song.
+         */
         @ApiStatus.AvailableSince("0.0.3")
         public SongState getState() {
                 return state;
         }
 
+        /**
+         * Sets the state of the song.
+         *
+         * @param value the new {@link SongState} to set. Must not be null.
+         * @throws IllegalArgumentException if the provided value is null.
+         */
         @ApiStatus.AvailableSince("0.0.3")
         public void setState(@NotNull SongState value) {
                 SongState oldState = this.state;
@@ -128,4 +171,5 @@ public class NBSSong {
                 this.state = value;
                 EventManager.getInstance().fireEvent(new SongStageChangeEvent(this, oldState, this.state));
         }
+
 }

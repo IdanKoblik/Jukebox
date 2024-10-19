@@ -1,4 +1,6 @@
 /**
+ * MIT License
+ *
  * Copyright (c) 2024 Idan Koblik
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
@@ -20,9 +22,7 @@
  * SOFTWARE.
  */
 
-
 /**
- * The root package of the adventure API
- * @author Idan Koblik
+ * The root package of the adventure api
  */
 package com.github.idankoblik.jukebox;

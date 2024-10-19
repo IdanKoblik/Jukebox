@@ -5,12 +5,7 @@ import org.jetbrains.annotations.ApiStatus;
 import java.util.*;
 
 /**
- * Manages the registration and firing of internal.events to registered listeners.
- * <p>
- * The {@code EventManager} follows the singleton design pattern, ensuring
- * that there is only one instance throughout the application.
- * </p>
- *
+ * A class for managing all events
  */
 @ApiStatus.AvailableSince("0.0.3")
 public class EventManager {
@@ -18,9 +13,8 @@ public class EventManager {
     private static EventManager instance;
 
     /**
-     * Retrieves the singleton instance of the {@code EventManager}.
-     *
-     * @return the singleton instance of {@code EventManager}.
+     * Returns the instance of the EventManager class
+     * @return EventManager instance
      */
     public static EventManager getInstance() {
         if (instance == null)
@@ -32,19 +26,17 @@ public class EventManager {
     private final Map<Class<? extends Event>, List<EventListener<? extends Event>>> listeners = new HashMap<>();
 
     /**
-     * Registers a listener to receive internal.events.
-     *
-     * @param listener the {@link EventListener} to register; cannot be null.
-     * @param <E>      the type of the event this listener handles.
+     * Register a specified event
+     * @param listener the listener to be registered
+     * @param <E> type of the event {@link Event}
      */
     public <E extends Event> void registerListener(EventListener<E> listener) {
         this.listeners.computeIfAbsent(listener.getType(), arr -> new ArrayList<>()).add(listener);
     }
 
     /**
-     * Fires an event to all registered listeners.
-     *
-     * @param event the event to be fired; cannot be null.
+     * Fires an even
+     * @param event the event to be fired
      */
     @SuppressWarnings("unchecked")
     public void fireEvent(Event event) {
@@ -59,9 +51,8 @@ public class EventManager {
     }
 
     /**
-     * Retrieves all registered listeners merged into a single list.
-     *
-     * @return a list containing all registered listeners for all event types.
+     * Returns all listener that has been registered
+     * @return all registered events
      */
     public List<EventListener<? extends Event>> getRegisteredListeners() {
         List<EventListener<? extends Event>> allListeners = new ArrayList<>();
@@ -72,7 +63,7 @@ public class EventManager {
     }
 
     /**
-     * @hidden
+     * Remove all registered listeners
      */
     public void clear() {
         this.listeners.clear();

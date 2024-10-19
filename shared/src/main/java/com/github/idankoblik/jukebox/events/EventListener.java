@@ -5,10 +5,8 @@ import org.jetbrains.annotations.ApiStatus;
 import java.lang.reflect.ParameterizedType;
 
 /**
- * A class for handling internal.events of a specific type.
- *
- * @param <E> the type of event this listener can handle, which must extend the {@link Event} class.
- *
+ * An abstract class representing an event listener for a specific type of {@link Event}.
+ * @param <E> the type of event that this listener can handle, which must extend {@link Event}
  */
 @ApiStatus.AvailableSince("0.0.3")
 public abstract class EventListener<E extends Event> {
@@ -25,12 +23,15 @@ public abstract class EventListener<E extends Event> {
     }
 
     /**
-     * Handles the specified event.
-     *
-     * @param event the event to be handled; cannot be null.zz
+     * An abstract method for handling specified event
+     * @param event type of the event
      */
     public abstract void handle(E event);
 
+    /**
+     * Returns event type
+     * @return event type
+     */
     public Class<E> getType() {
         return type;
     }

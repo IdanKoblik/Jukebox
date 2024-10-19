@@ -4,11 +4,7 @@ import com.github.idankoblik.jukebox.NBSSong;
 import org.jetbrains.annotations.ApiStatus;
 
 /**
- * Represents an event that signifies the end of a song.
- * <p>
- * The {@code SongEndEvent} can indicate whether the song was stopped
- * </p>
- *
+ * An event that being fired up when a song end
  */
 @ApiStatus.AvailableSince("0.0.3")
 public class SongEndEvent extends SongEvent {
@@ -16,10 +12,8 @@ public class SongEndEvent extends SongEvent {
     protected final boolean force;
 
     /**
-     * Constructs a {@code SongEndEvent} with the specified song and stop status.
-     *
-     * @param song the {@link NBSSong} that has ended; cannot be null.
-     * @param force true if the song was stopped; false if it ended naturally.
+     * {@inheritDoc}
+     * @param force true if the song ended by external force and not because the time of the song has passed
      */
     public SongEndEvent(NBSSong song, boolean force) {
         super(song);
@@ -27,9 +21,8 @@ public class SongEndEvent extends SongEvent {
     }
 
     /**
-     * Returns whether the song was force stopped before its natural end.
-     *
-     * @return true if the song was stopped; false otherwise.
+     * Returns if a song was ended by force
+     * @return ended by external force
      */
     public boolean isForced() {
         return force;

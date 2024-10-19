@@ -13,11 +13,9 @@ import org.jetbrains.annotations.Nullable;
 import java.util.concurrent.CompletableFuture;
 
 /**
- * Abstract base class representing a musical song.
- * <p>
- * This class provides the foundation for creating songs with audience interaction
- * and sound management.
- * </p>
+ * An abstract class for managing all variations of minecraft song impl
+ * @param <P> the platform of the song
+ * @see AbstractSong
  */
 public abstract class KyoriSong<P extends Platform> extends AbstractSong<P> {
 
@@ -26,13 +24,12 @@ public abstract class KyoriSong<P extends Platform> extends AbstractSong<P> {
     private final Key defaultSound;
 
     /**
-     * Constructs a KyoriSong with the given parameters.
      *
-     * @param song         The underlying NBSSong to be played.
-     * @param volume       The volume at which the song should be played.
-     * @param defaultSound The default sound key used if no specific instrument is found.
-     * @param audience     The audience that will hear the song.
-     * @param position     The position of the song in the world. (optional)
+     * @param song the song to be handled
+     * @param volume the volume of the song
+     * @param defaultSound the default note to be played in case that note not found
+     * @param audience the audience to play the song to
+     * @param position the position of the song to be played (optional)
      */
     public KyoriSong(@NotNull NBSSong song, float volume, @NotNull Key defaultSound, @NotNull Audience audience, @Nullable Position position) {
         super(song, volume);
@@ -42,9 +39,7 @@ public abstract class KyoriSong<P extends Platform> extends AbstractSong<P> {
     }
 
     /**
-     * Plays the song, handling the playback and triggering events.
-     *
-     * @return A CompletableFuture that will be completed when the song has finished playing.
+     * {@inheritDoc}
      */
     @Override
     public CompletableFuture<NBSSong> playSong() {
@@ -61,10 +56,7 @@ public abstract class KyoriSong<P extends Platform> extends AbstractSong<P> {
     }
 
     /**
-     * Plays a single note using the specified instrument and pitch.
-     *
-     * @param instrument The instrument to use for the note.
-     * @param pitch      The pitch of the note.
+     * {@inheritDoc}
      */
     @Override
     public void playNote(byte instrument, float pitch) {
@@ -82,10 +74,9 @@ public abstract class KyoriSong<P extends Platform> extends AbstractSong<P> {
     }
 
     /**
-     * Handles the playback of the song, implementing the actual logic for playing notes.
-     *
-     * @param volume The volume at which to play the song.
-     * @return A CompletableFuture that will be completed when the playback is finished.
+     * Abstract method for handling song playing in different platforms
+     * @param volume the volume of the song
+     * @return future of the song
      */
     public abstract CompletableFuture<NBSSong> handle(float volume);
 }

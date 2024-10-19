@@ -5,13 +5,7 @@ import com.github.idankoblik.jukebox.SongState;
 import org.jetbrains.annotations.ApiStatus;
 
 /**
- * Represents an event that signifies a change in the state of a song.
- * <p>
- * The {@code SongStageChangeEvent} captures both the previous and current
- * states of the song, allowing listeners to react to transitions between
- * states.
- * </p>
- *
+ * An event that being fired when a song stage changes
  */
 @ApiStatus.AvailableSince("0.0.3")
 public class SongStageChangeEvent extends SongEvent {
@@ -19,11 +13,9 @@ public class SongStageChangeEvent extends SongEvent {
     protected final SongState previous, current;
 
     /**
-     * Constructs a {@code SongStageChangeEvent} with the specified song and state changes.
-     *
-     * @param song the {@link NBSSong} associated with this event; cannot be null.
-     * @param previous the previous {@link SongState} before the change; cannot be null.
-     * @param current the current {@link SongState} after the change; cannot be null.
+     * {@inheritDoc}
+     * @param previous the previous stage of the song
+     * @param current the current stage of the song
      */
     public SongStageChangeEvent(NBSSong song, SongState previous, SongState current) {
         super(song);
@@ -32,18 +24,16 @@ public class SongStageChangeEvent extends SongEvent {
     }
 
     /**
-     * Returns the previous state of the song.
-     *
-     * @return the previous {@link SongState} before the change.
+     * Returns the previous stage of the song
+     * @return the previous stage of the song
      */
     public SongState getPrevious() {
         return previous;
     }
 
     /**
-     * Returns the current state of the song.
-     *
-     * @return the current {@link SongState} after the change.
+     * Returns current the current stage of the song
+     * @return current the current stage of the song
      */
     public SongState getCurrent() {
         return current;

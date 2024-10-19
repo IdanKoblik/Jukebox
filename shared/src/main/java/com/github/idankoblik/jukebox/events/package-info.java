@@ -1,4 +1,6 @@
 /**
+ * MIT License
+ *
  * Copyright (c) 2024 Idan Koblik
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
@@ -20,9 +22,7 @@
  * SOFTWARE.
  */
 
-
 /**
- * The package containing all internal.events for shared API
- * @author Idan Koblik
+ * The events package of the shared api
  */
 package com.github.idankoblik.jukebox.events;
