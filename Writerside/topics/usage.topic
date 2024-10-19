@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE topic
+        SYSTEM "https://resources.jetbrains.com/writerside/1.0/xhtml-entities.dtd">
+<topic
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:noNamespaceSchemaLocation="https://resources.jetbrains.com/writerside/1.0/topic.v2.xsd"
+        title="📌 Usage" id="usage">
+
+        <tip>
+            You can find some examples of using the commands system in this page
+        </tip>
+
+    <list type="bullet">
+        <li><a href="song.topic">Song usage example</a></li>
+        <li><a href="playlist.topic">Playlist usage example</a></li>
+    </list>
+</topic>

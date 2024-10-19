@@ -1,0 +1,108 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE topic
+        SYSTEM "https://resources.jetbrains.com/writerside/1.0/xhtml-entities.dtd">
+<topic
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:noNamespaceSchemaLocation="https://resources.jetbrains.com/writerside/1.0/topic.v2.xsd"
+        title="🛡️ NBS" id="nbs">
+
+    <chapter title="Understanding NBS File Handling with NBSFile" id="understanding">
+        The <b>NBSFile</b> class provides an essential bridge for working with Noteblock Studio (NBS) files, enabling developers and music creators to read and write musical compositions in this format. In this post, we’ll explore how the reading and writing functionalities work, breaking down the code for clarity.
+    </chapter>
+
+    <chapter title="What are NBS Files? " id="work">
+        NBS files store musical data created using Noteblock Studio, a popular tool for composing music in Minecraft. These files contain information about song length, author details, tempo, and the individual notes that make up the composition.
+    </chapter>
+
+    <chapter title="Reading NBS Files" id="reading">
+        The <code>readNBS(File file)</code> method is responsible for reading an NBS file and converting its content into an <code>NBSSong</code> object. Here’s a step-by-step breakdown of the process:
+
+        <b>Step-by-Step Breakdown</b>
+        <list type="decimal" start="1">
+            <li>
+                <b>Initialize Data Stream:</b> The method begins by initializing a <code>DataInputStream</code> to read the file. This allows for efficient reading of binary data.
+            </li>
+
+            <li>
+                <b>Read Metadata:</b> It extracts key information:
+                <list type="bullet">
+                    <li>
+                        <b>Length and Height:</b> These short values represent the dimensions of the song.
+                    </li>
+                    <li>
+                        <b>Song Details:</b> Strings for the song's name, author, and original author.
+                    </li>
+                    <li>
+                        <b>Description:</b> Provides context for the song.
+                    </li>
+                    <li>
+                        <b>Tempo:</b> The tempo is read as a short and converted into ticks per second.
+                    </li>
+                </list>
+            </li>
+
+            <li>
+                <b>Skip Unused Data:</b> The method reads several integers and booleans that are not used in this implementation, such as auto-save data and click counts.
+            </li>
+
+            <li>
+                <b>Read Notes:</b> The core functionality involves reading notes:
+                The loop continues until a jumpTicks of <code>0</code> is encountered, indicating the end of notes.
+                For each note, the tick position, layer, instrument, and key are read, creating <code>NBSNote</code> objects that are added to a list.
+            </li>
+
+            <li>
+                <b>Return NBSSong:</b> Finally, an <code>NBSSong</code> object is created with the gathered metadata and note list, representing the song in memory.
+            </li>
+        </list>
+    </chapter>
+
+    <chapter title="Writing NBS Files" id="writing">
+        The <code>writeNBS(NBSSong song, File file)</code> method handles the encoding of an <code>NBSSong</code> object back into the NBS file format. Here’s how it works:
+
+        <b>Step-by-Step Breakdown</b>
+        <list type="decimal" start="1">
+            <li>
+                <b>Initialize Data Stream:</b> A DataOutputStream is used to write binary data to the specified file.
+            </li>
+
+            <li>
+                <b>Write Header:</b> The method begins by writing the header information:
+                <list type="bullet">
+                    <li>
+                        Length of notes, fixed height, song name, and other metadata similar to the read process.
+                    </li>
+
+                    <li>
+                        Tempo is scaled back from ticks per second to short.
+                    </li>
+                </list>
+            </li>
+
+            <li>
+                <b>Write Notes:</b> The notes are written in a similar format:
+                <list type="bullet">
+                    <li>
+                        For each NBSNote, it calculates the difference in ticks from the last note to write the jumpTicks.
+                    </li>
+                    <li>
+                        The layer is adjusted (adding 1) since layers are expected to start from 1 in the file.
+                    </li>
+                    <li>
+                        Each note's instrument and key are written, followed by an end-of-tick marker.
+                    </li>
+                </list>
+            </li>
+
+            <li>
+                <b>End Markers:</b> The method writes 0 to signify the end of notes and layers.
+            </li>
+        </list>
+    </chapter>
+
+    <chapter title="Conclusion" id="conclusion">
+        The <b>NBSFile</b> class efficiently manages the conversion between NBS files and <code>NBSSong</code> objects, making it easier for developers to manipulate musical compositions programmatically. Understanding this process can help you create, modify, and save your music projects in Noteblock Studio seamlessly.
+
+        Whether you’re a developer looking to integrate NBS file support into your applications or a musician wanting to automate your compositions, the <code>NBSFile</code> class serves as a robust starting point for working with music in the Minecraft universe.
+    </chapter>
+</topic>

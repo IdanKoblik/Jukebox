@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE instance-profile
+        SYSTEM "https://resources.jetbrains.com/writerside/1.0/product-profile.dtd">
+
+<instance-profile id="w"
+                 name="Jukebox"
+                 start-page="home.topic">
+
+    <toc-element topic="home.topic"/>
+    <toc-element topic="installation.topic"/>
+    <toc-element topic="nbs.topic"/>
+    <toc-element topic="listeners.topic"/>
+    <toc-element topic="usage.topic">
+        <toc-element topic="playlist.topic"/>
+        <toc-element topic="song.topic"/>
+    </toc-element>
+</instance-profile>

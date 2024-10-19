@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE topic
+        SYSTEM "https://resources.jetbrains.com/writerside/1.0/xhtml-entities.dtd">
+<topic xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xsi:noNamespaceSchemaLocation="https://resources.jetbrains.com/writerside/1.0/topic.v2.xsd"
+       title="💿 Song" id="song">
+
+    <code-block lang="java">
+        import com.github.idankoblik.jukebox.NBSFile;
+        import com.github.idankoblik.jukebox.NBSSong;
+        import com.github.idankoblik.jukebox.PaperSong;
+        import net.kyori.adventure.audience.Audience;
+        import net.kyori.adventure.key.Key;
+
+        import java.io.File;
+
+        Plugin plugin = /*paper plugin*/;
+        float volume = 1.0;
+        NBSSong nbsSong = NBSFile.readNBS(new File("game.nbs"));
+        Key defaultKey = Key.key("note.harp");
+        Audience audience = /*audience*/;
+        Position position = null; // (optional)
+
+        PaperSong song = new PaperSong(
+                plugin,
+                volume,
+                nbsSong,
+                defaultKey,
+                audience,
+                position
+        );
+
+        song.setLoop(true);
+        song.playSong();
+    </code-block>
+</topic>
