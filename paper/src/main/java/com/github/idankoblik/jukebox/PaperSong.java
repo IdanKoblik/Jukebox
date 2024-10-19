@@ -17,7 +17,7 @@ import java.util.concurrent.CompletableFuture;
  * handling the scheduling of note playback.
  * </p>
  */
-public class PaperSong extends KyoriSong {
+public class PaperSong extends KyoriSong<PaperPlatform> {
 
     private final Plugin plugin;
 

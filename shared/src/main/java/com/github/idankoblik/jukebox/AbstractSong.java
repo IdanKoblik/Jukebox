@@ -10,7 +10,7 @@ import java.util.concurrent.CompletableFuture;
 /**
  * Represents a song that plays a series of notes.
  */
-public abstract class AbstractSong {
+public abstract class AbstractSong<P extends Platform> {
 
     protected final NBSSong song;
     protected final float volume;

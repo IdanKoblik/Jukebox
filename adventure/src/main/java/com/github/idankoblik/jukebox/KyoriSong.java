@@ -19,7 +19,7 @@ import java.util.concurrent.CompletableFuture;
  * and sound management.
  * </p>
  */
-public abstract class KyoriSong<P extends Platform> extends AbstractSong {
+public abstract class KyoriSong<P extends Platform> extends AbstractSong<P> {
 
     private final Audience audience;
     private final Position position;
