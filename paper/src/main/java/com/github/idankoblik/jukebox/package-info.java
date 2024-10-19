@@ -23,6 +23,6 @@
  */
 
 /**
- * The manager package of the adventure api
+ * The root package of the paper api
  */
-package com.github.idankoblik.jukebox.manager;
+package com.github.idankoblik.jukebox;

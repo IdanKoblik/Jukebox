@@ -5,42 +5,47 @@ import java.io.DataOutputStream;
 import java.io.IOException;
 
 /**
- * Utility class for reading and writing various data types to and from streams in a specific protocol format.
+ * A utility class for managing Minecraft protocols.
  * <p>
- * This class provides methods for reading and writing short integers, integers, and strings using {@link DataInputStream}
- * and {@link DataOutputStream}.
+ * This class provides methods to read and write various data types
+ * in a protocol-compliant manner. It handles short and integer values,
+ * as well as strings, ensuring correct byte order and encoding.
  * </p>
  */
 public class ProtocolUtils {
 
     /**
-     * Reads a short integer (16 bits) from a {@link DataInputStream}.
+     * Reads a short value from the given DataInputStream.
      *
-     * @param dis The {@link DataInputStream} to read from.
-     * @return The short integer read from the stream.
-     * @throws IOException If an I/O error occurs while reading from the stream.
+     * @param dis the DataInputStream to read from
+     * @return the read short value
+     * @throws IOException if an I/O error occurs
      */
     public static short readShort(DataInputStream dis) throws IOException {
         return (short) (dis.readUnsignedByte() | (dis.readUnsignedByte() << 8));
     }
 
     /**
-     * Reads an integer (32 bits) from a {@link DataInputStream}.
+     * Reads an integer value from the given DataInputStream.
      *
-     * @param dis The {@link DataInputStream} to read from.
-     * @return The integer read from the stream.
-     * @throws IOException If an I/O error occurs while reading from the stream.
+     * @param dis the DataInputStream to read from
+     * @return the read integer value
+     * @throws IOException if an I/O error occurs
      */
     public static int readInt(DataInputStream dis) throws IOException {
         return dis.readUnsignedByte() | (dis.readUnsignedByte() << 8) | (dis.readUnsignedByte() << 16) | (dis.readUnsignedByte() << 24);
     }
 
     /**
-     * Reads a string from a {@link DataInputStream}. The string is preceded by an integer indicating its length.
+     * Reads a string from the given DataInputStream.
+     * <p>
+     * The string is prefixed by its length (as an integer).
+     * Carriage return characters (0x0D) are converted to spaces.
+     * </p>
      *
-     * @param dis The {@link DataInputStream} to read from.
-     * @return The string read from the stream.
-     * @throws IOException If an I/O error occurs while reading from the stream.
+     * @param dis the DataInputStream to read from
+     * @return the read string
+     * @throws IOException if an I/O error occurs
      */
     public static String readString(DataInputStream dis) throws IOException {
         int length = readInt(dis);
@@ -55,11 +60,11 @@ public class ProtocolUtils {
     }
 
     /**
-     * Writes a short integer (16 bits) to a {@link DataOutputStream}.
+     * Writes a short value to the given DataOutputStream.
      *
-     * @param dos The {@link DataOutputStream} to write to.
-     * @param value The short integer to write.
-     * @throws IOException If an I/O error occurs while writing to the stream.
+     * @param dos the DataOutputStream to write to
+     * @param value the short value to write
+     * @throws IOException if an I/O error occurs
      */
     public static void writeShort(DataOutputStream dos, short value) throws IOException {
         dos.writeByte(value & 0xFF);
@@ -67,11 +72,11 @@ public class ProtocolUtils {
     }
 
     /**
-     * Writes an integer (32 bits) to a {@link DataOutputStream}.
+     * Writes an integer value to the given DataOutputStream.
      *
-     * @param dos The {@link DataOutputStream} to write to.
-     * @param value The integer to write.
-     * @throws IOException If an I/O error occurs while writing to the stream.
+     * @param dos the DataOutputStream to write to
+     * @param value the integer value to write
+     * @throws IOException if an I/O error occurs
      */
     public static void writeInt(DataOutputStream dos, int value) throws IOException {
         dos.writeByte(value & 0xFF);
@@ -81,11 +86,14 @@ public class ProtocolUtils {
     }
 
     /**
-     * Writes a string to a {@link DataOutputStream}. The string is preceded by an integer indicating its length.
+     * Writes a string to the given DataOutputStream.
+     * <p>
+     * The string is prefixed by its length (as an integer).
+     * </p>
      *
-     * @param dos The {@link DataOutputStream} to write to.
-     * @param str The string to write.
-     * @throws IOException If an I/O error occurs while writing to the stream.
+     * @param dos the DataOutputStream to write to
+     * @param str the string to write
+     * @throws IOException if an I/O error occurs
      */
     public static void writeString(DataOutputStream dos, String str) throws IOException {
         writeInt(dos, str.length());

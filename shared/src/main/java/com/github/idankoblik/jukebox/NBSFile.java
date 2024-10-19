@@ -7,19 +7,15 @@ import java.util.List;
 import static com.github.idankoblik.jukebox.utils.ProtocolUtils.*;
 
 /**
- * Provides functionality to read from and write to NBS (Noteblock Studio) song files.
- * <p>
- * This class can decode NBS files into {@link NBSSong} objects and encode {@link NBSSong} objects into NBS file format.
- * </p>
+ * A util class for encoding and decoding nbs file
  */
 public class NBSFile {
 
     /**
-     * Reads an NBS file and decodes it into an {@link NBSSong} object.
-     *
-     * @param file The NBS file to read from.
-     * @return An {@link NBSSong} object representing the content of the NBS file.
-     * @throws IOException If an I/O error occurs while reading the file.
+     * Decodes a nbs file
+     * @param file the nbs file to be decoded
+     * @return decoded version of the nbs song
+     * @throws IOException
      */
     public static NBSSong readNBS(File file) throws IOException {
         try (DataInputStream dis = new DataInputStream(new FileInputStream(file))) {
@@ -62,11 +58,10 @@ public class NBSFile {
     }
 
     /**
-     * Encodes an {@link NBSSong} object and writes it to an NBS file.
-     *
-     * @param song The {@link NBSSong} object to write to the file.
-     * @param file The file to write the NBS data to.
-     * @throws IOException If an I/O error occurs while writing to the file.
+     * Encode a file to nbs file
+     * @param song the nbs song to be encoded into a file
+     * @param file a file to encode the nbs song into
+     * @throws IOException
      */
     public static void writeNBS(NBSSong song, File file) throws IOException {
         try (DataOutputStream dos = new DataOutputStream(new FileOutputStream(file))) {

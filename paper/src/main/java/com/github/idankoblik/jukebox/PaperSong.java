@@ -11,25 +11,15 @@ import java.util.List;
 import java.util.concurrent.CompletableFuture;
 
 /**
- * Implementation of KyoriSong for the Paper Minecraft server.
- * <p>
- * This class manages song playback within the Paper server environment,
- * handling the scheduling of note playback.
- * </p>
+ * An implementation of the kyori song
+ * @see KyoriSong
  */
 public class PaperSong extends KyoriSong<PaperPlatform> {
 
     private final Plugin plugin;
 
     /**
-     * Constructs a PaperSong with the given parameters.
-     *
-     * @param plugin      The plugin instance that manages the song.
-     * @param volume      The volume at which the song should be played.
-     * @param song        The underlying NBSSong to be played.
-     * @param defaultSound The default sound key used if no specific instrument is found.
-     * @param audience    The audience that will hear the song.
-     * @param position    The position of the song in the world. (optional)
+     * {@inheritDoc}
      */
     public PaperSong(@NotNull Plugin plugin, float volume, @NotNull NBSSong song, @NotNull Key defaultSound, @NotNull Audience audience, @Nullable Position position) {
         super(song, volume, defaultSound, audience, position);
@@ -40,10 +30,7 @@ public class PaperSong extends KyoriSong<PaperPlatform> {
     }
 
     /**
-     * Handles the playback of the song by scheduling note playback tasks.
-     *
-     * @param volume The volume at which to play the song.
-     * @return A CompletableFuture that will be completed when the playback is finished.
+     * {@inheritDoc}
      */
     @Override
     public CompletableFuture<NBSSong> handle(float volume) {

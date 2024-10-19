@@ -3,7 +3,7 @@ package com.github.idankoblik.jukebox;
 import org.jetbrains.annotations.NotNull;
 
 /**
- * Enumeration of note instruments with their corresponding sound names. (1.8)
+ * Enum representing types of note block notes (1.8)
  */
 public enum NoteInstrument {
     HARP("note.harp"),
@@ -20,18 +20,16 @@ public enum NoteInstrument {
     private @NotNull final String name;
 
     /**
-     * Constructs a NoteInstrument with the given sound name.
      *
-     * @param name The sound name of the instrument.
+     * @param name The name of the note key
      */
     NoteInstrument(@NotNull String name) {
         this.name = name;
     }
 
     /**
-     * Gets the name of the instrument.
-     *
-     * @return The sound name of the instrument.
+     * Returns the name of the note key
+     * @return the name of the note key
      */
     public @NotNull String getName() {
         return name;

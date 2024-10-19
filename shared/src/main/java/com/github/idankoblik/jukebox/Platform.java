@@ -1,7 +1,7 @@
 package com.github.idankoblik.jukebox;
 
 /**
- * Marker interface that marking the song platform (paper, spigot, etc...).
+ * A marker interface for marking a platform (Discord, Paper, etc...)
  */
 public interface Platform {
 }
