@@ -17,7 +17,7 @@ public abstract class AbstractPaperSongTest extends AbstractPaperTest {
 
     protected static final String DEFAULT_NOTE = "note.drum";
     protected PaperSong song;
-    protected AbstractSong locationSong;
+    protected PaperSong locationSong;
     protected NBSSong nbsSong;
     protected PlayerMock player;
     protected Position musicPosition;

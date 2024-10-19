@@ -8,16 +8,16 @@ import org.junit.jupiter.api.Test;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 
-public class SongQueueTest<P extends PaperPlatform> extends AbstractPaperSongTest {
+public class PlaylistTest extends AbstractPaperSongTest {
 
-    private SongQueue<P> songQueue;
-    private SongQueue<P> positionSongQueue;
+    private Playlist<PaperPlatform> playlist;
+    private Playlist<PaperPlatform> positionPlaylist;
 
     @BeforeEach
     protected void setUp() throws Exception {
         super.setUp();
-        songQueue.drop();
-        positionSongQueue.drop();
+        playlist.drop();
+        positionPlaylist.drop();
         player.getHeardSounds().clear();
     }
 
@@ -30,22 +30,22 @@ public class SongQueueTest<P extends PaperPlatform> extends AbstractPaperSongTes
     protected void initializeSongs() {
         this.song = new PaperSong(plugin, 1F, this.nbsSong, Key.key(DEFAULT_NOTE), player, null);
 
-        this.positionSongQueue = new SongQueue<>();
-        this.songQueue = new SongQueue<>();
+        this.positionPlaylist = new Playlist<>();
+        this.playlist = new Playlist<>();
     }
 
     @Test
     void testAddSong() {
-        helpAddSong(this.songQueue);
-        helpAddSong(this.positionSongQueue);
+        helpAddSong(this.playlist);
+        helpAddSong(this.positionPlaylist);
     }
 
     @Test
     void testPlayPlaylist() {
-        songQueue.addSong(song);
-        songQueue.addSong(song);
+        playlist.addSong(song);
+        playlist.addSong(song);
 
-        songQueue.playSongs();
+        playlist.playSongs();
         server.getScheduler().performTicks(8);
 
         assertEquals(player.getHeardSounds().size(), 6);
@@ -53,18 +53,18 @@ public class SongQueueTest<P extends PaperPlatform> extends AbstractPaperSongTes
 
     @Test
     void testStopPlaylist() {
-        helpAddSong(this.songQueue);
-        this.songQueue.addSong(song);
+        helpAddSong(this.playlist);
+        this.playlist.addSong(song);
 
-        this.songQueue.playSongs();
+        this.playlist.playSongs();
         server.getScheduler().performTicks(8);
 
-        this.songQueue.stopSongs();
+        this.playlist.stopSongs();
 
         assertEquals(player.getHeardSounds().size(), 6);
     }
 
-    private void helpAddSong(SongQueue<P> queue) {
+    private void helpAddSong(Playlist<PaperPlatform> queue) {
         assertFalse(queue.isPlaying());
         assertEquals(queue.getRemainingSongs(), 0);
         queue.addSong(song);

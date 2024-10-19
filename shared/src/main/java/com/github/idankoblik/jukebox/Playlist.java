@@ -6,9 +6,9 @@ import java.util.Queue;
 /**
  * Manages a queue of songs to be played in sequence.
  */
-public class SongQueue<P extends Platform> {
+public class Playlist<P extends Platform> {
 
-    private final Queue<KyoriSong<P>> songs = new LinkedList<>();
+    private final Queue<AbstractSong<P>> songs = new LinkedList<>();
     private boolean playing = false;
 
     /**
@@ -16,7 +16,7 @@ public class SongQueue<P extends Platform> {
      *
      * @param song The song to be added to the queue.
      */
-    public void addSong(KyoriSong<P> song) {
+    public void addSong(AbstractSong<P> song) {
         songs.offer(song);
     }
 
@@ -40,7 +40,7 @@ public class SongQueue<P extends Platform> {
             return;
         }
 
-        KyoriSong<P> currentSong = songs.poll();
+        AbstractSong<P> currentSong = songs.poll();
         if (currentSong == null)
             return;
 
@@ -55,7 +55,7 @@ public class SongQueue<P extends Platform> {
      */
     public void stopSongs() {
         playing = false;
-        songs.forEach(KyoriSong::stopSong);
+        songs.forEach(AbstractSong::stopSong);
         songs.clear();
     }
 
