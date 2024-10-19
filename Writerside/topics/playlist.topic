@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE topic
+        SYSTEM "https://resources.jetbrains.com/writerside/1.0/xhtml-entities.dtd">
+<topic xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xsi:noNamespaceSchemaLocation="https://resources.jetbrains.com/writerside/1.0/topic.v2.xsd"
+       title="📼 Playlist" id="playlist">
+
+    <code-block lang="java">
+        interface PaperPlatform extends Platform {
+
+        }
+    </code-block>
+
+    <code-block lang="java">
+        import com.github.idankoblik.jukebox.PaperSong;
+        import com.github.idankoblik.jukebox.Playlist;
+
+        PaperSong song = /*song*/;
+        Playlist&lt;PaperPlatform&gt; playlist = new Playlist&lt;&gt;();
+
+        playlist.addSong(song);
+        playlist.playSongs();
+    </code-block>
+</topic>

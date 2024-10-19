@@ -1,0 +1,87 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE topic
+        SYSTEM "https://resources.jetbrains.com/writerside/1.0/xhtml-entities.dtd">
+<topic
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:noNamespaceSchemaLocation="https://resources.jetbrains.com/writerside/1.0/topic.v2.xsd"
+        title="🛠️ Installation" id="installation">
+
+    <chapter title="About" id="about">
+        <p>
+            Jukebox is a powerful Java library specifically designed for handling NBS (Note Block Studio) files, primarily for use in Minecraft. It offers seamless functionality for playing, encoding, and decoding music compositions, making it an essential tool for developers looking to enhance their Minecraft projects. With its intuitive API, Jukebox allows for easy integration, enabling rich audio experiences derived from NBS files. Whether you're creating custom maps, plugins, or interactive experiences, Jukebox provides the tools to manipulate and enjoy complex musical data efficiently.
+        </p>
+
+    </chapter>
+
+    <chapter title="Installation" id="installation">
+        <p>
+            We support Gradle and Maven build scripts. The recommended approach to using Cocoa Beans is to include the library in your project's classpath, and build using shadowJar plugin.
+        </p>
+
+        <tabs>
+            <tab id="gradle-kotlin" title="Gradle (Kotlin)">
+                <code-block lang="kotlin">
+                    plugins {
+                        id("java")
+                        id("com.github.johnrengelman.shadow") version "version"
+                    }
+
+                    repositories {
+                        maven {
+                            name = "ApartiumNexus"
+                            url = uri("https://nexus.voigon.dev/repository/beta-releases/")
+                        }
+                    }
+
+                    dependencies {
+                        implementation("com.github.idankoblik.jukebox:[module]:[version]")
+                    }
+                </code-block>
+            </tab>
+            <tab id="gradle-groovy" title="Gradle (Groovy)">
+                <code-block lang="groovy">
+                    plugins {
+                        id 'java'
+                        id 'com.github.johnrengelman.shadow' version 'version'
+                    }
+
+                    repositories {
+                        maven {
+                            name = 'ApartiumNexus'
+                            url = uri('https://nexus.voigon.dev/repository/beta-releases/')
+                        }
+                    }
+
+                    dependencies {
+                        implementation 'com.github.idankoblik.jukebox:[module]:[version]'
+                    }
+                </code-block>
+            </tab>
+            <tab id="maven" title="Maven">
+                <code-block lang="xml">
+                    &lt;dependency&gt;
+                        &lt;groupId&gt;com.gradleup.shadow&lt;/groupId&gt;
+                        &lt;artifactId&gt;shadow-gradle-plugin&lt;/artifactId&gt;
+                        &lt;version&gt;version&lt;/version&gt;
+                    &lt;/dependency&gt;
+
+                    &lt;repositories&gt;
+                        &lt;repository&gt;
+                            &lt;id&gt;ApartiumNexus&lt;/id&gt;
+                            &lt;url&gt;https://nexus.voigon.dev/repository/beta-releases/&lt;/url&gt;
+                        &lt;/repository&gt;
+                    &lt;/repositories&gt;
+
+                    &lt;dependencies&gt;
+                        &lt;dependency&gt;
+                            &lt;groupId&gt;com.github.idankoblik.jukebox&lt;/groupId&gt;
+                            &lt;artifactId&gt;[module]&lt;/artifactId&gt;
+                            &lt;version&gt;[version]&lt;/version&gt;
+                        &lt;/dependency&gt;
+                    &lt;/dependencies&gt;
+                </code-block>
+            </tab>
+        </tabs>
+    </chapter>
+
+</topic>
