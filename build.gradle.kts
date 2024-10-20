@@ -1,18 +1,23 @@
+import nmcp.NmcpPlugin
+
 plugins {
     `java-library`
     `maven-publish`
+    id("com.gradleup.nmcp").version("0.0.8")
+    signing
 }
 
-val releaseWorkflow = "IdanKoblik/Jukebox/.github/workflows/release.yml"
-val snapshot: Boolean = System.getenv("GITHUB_WORKFLOW_REF") == null || !(System.getenv("GITHUB_WORKFLOW_REF").startsWith(releaseWorkflow))
+val snapshot: Boolean = false
 val isCi = System.getenv("GITHUB_ACTOR") != null
 
-group = "com.github.idankoblik"
+group = "io.github.idankoblik.jukebox"
 version = figureVersion()
 
-allprojects {
+subprojects {
     apply<JavaLibraryPlugin>()
     apply<MavenPublishPlugin>()
+    apply<NmcpPlugin>()
+    apply<SigningPlugin>()
 
     publishing {
         repositories {
@@ -28,27 +33,43 @@ allprojects {
                                 ?: project.findProperty("apartium.nexus.password")).toString()
                         }
                     }
-                } else {
-                    maven {
-                        name = "ApartiumMaven"
-                        url = uri("https://nexus.voigon.dev/repository/beta-releases")
-                        credentials {
-                            username = (System.getenv("APARTIUM_NEXUS_USERNAME")
-                                ?: project.findProperty("apartium.nexus.username")).toString()
-                            password = (System.getenv("APARTIUM_NEXUS_PASSWORD")
-                                ?: project.findProperty("apartium.nexus.password")).toString()
-                        }
-                    }
                 }
             }
         }
 
         publications {
             create<MavenPublication>("maven") {
-                groupId = "com.github.idankoblik.jukebox"
+                groupId = rootProject.group.toString()
                 version = figureVersion()
 
                 from(components["java"])
+
+                pom {
+                    name = "Jukebox"
+                    description = "NBS file format music player and handler library"
+                    url = "https://idankoblik.github.io/Jukebox/"
+
+                    licenses {
+                        license {
+                            name = "MIT License"
+                            url = "https://github.com/IdanKoblik/Jukebox/blob/master/LICENSE"
+                        }
+                    }
+
+                    developers {
+                        developer {
+                            id = "IdanKoblik"
+                            name = "Idan Koblik"
+                            email = "idankob@gmail.com"
+                        }
+                    }
+
+                    scm {
+                        connection = "scm:git:git://github.com/IdanKoblik/Jukebox.git"
+                        developerConnection = "scm:git:ssh://github.com:IdanKoblik/Jukebox.git"
+                        url = "http://github.com/IdanKoblik/Jukebox"
+                    }
+                }
             }
         }
     }
@@ -76,7 +97,28 @@ allprojects {
     }
 
     java {
+        withSourcesJar()
+        withJavadocJar()
+
         modularity.inferModulePath = true
+    }
+
+
+    signing {
+        val signingKey: String? by project
+        val signingPassword: String? by project
+        useInMemoryPgpKeys(signingKey, signingPassword)
+        sign(publishing.publications["maven"])
+    }
+}
+
+if (!snapshot) {
+    nmcp {
+        publishAllProjectsProbablyBreakingProjectIsolation {
+            username = System.getenv("OSSRH_USERNAME") ?: findProperty("ossrh.username").toString()
+            password = System.getenv("OSSRH_PASSWORD") ?: findProperty("ossrh.password").toString()
+            publicationType = "AUTOMATIC"
+        }
     }
 }
 
@@ -90,7 +132,17 @@ fun figureVersion(): String {
     return (if (System.getenv("VERSION") == null) "dev" else System.getenv("VERSION")) + (if (snapshot) "-SNAPSHOT" else "")
 }
 
+fun isSnapshot(): Boolean {
+    return (if (System.getenv("GITHUB_EVENT_NAME") == null) true else System.getenv("GITHUB_EVENT_NAME") == "workflow_dispatch")
+}
+
+tasks.javadoc {
+    (options as StandardJavadocDocletOptions).addBooleanOption("Werror", true)
+}
+
 java {
+    withSourcesJar()
+    withJavadocJar()
     toolchain {
         languageVersion = JavaLanguageVersion.of(17)
     }

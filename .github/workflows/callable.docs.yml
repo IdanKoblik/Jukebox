@@ -1,0 +1,154 @@
+name: Update docs
+
+on:
+  workflow_call:
+
+permissions:
+  pull-requests: write
+  contents: write
+  repository-projects: write
+  packages: write
+  pages: write
+  id-token: write
+
+env:
+  INSTANCE: 'Writerside/w'
+  ARTIFACT: 'webHelpHI2-all.zip'
+  DOCKER_VERSION: '233.14938'
+  GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+jobs:
+  ssh:
+    runs-on: ubuntu-latest
+    steps:
+      - name: setup ssh client
+        uses: webfactory/ssh-agent@v0.7.0
+        with:
+          ssh-private-key: ${{ secrets.GH_PAGES_TOKEN }}
+
+  git:
+    needs: ssh
+    runs-on: ubuntu-latest
+    steps:
+      - name: fetch git
+        run: |
+          git remote rm origin
+          git remote add origin git@github.com:${{ github.repository }}
+          git config --local user.email "actions@github.com"
+          git config --local user.name "GitHub Actions"
+      
+  fetch_version:
+    needs: git
+    runs-on: ubuntu-latest
+    steps:
+      - name: Fetch previus version
+        id: perv_version
+        run: |
+            git fetch origin
+            echo "::set-output name=version::$(git tag -l | sort -V | tail -n 1)"
+
+      - name: Determine version changes
+        id: determine_version
+        run: |
+            git fetch origin
+            CURRENT_VERSION=${{ steps.perv_version.outputs.version }}
+            INPUT_VERSION=${{ github.event.inputs.name }}
+            
+            CURRENT_VERSION=${CURRENT_VERSION#v}
+            INPUT_VERSION=${INPUT_VERSION#v}
+            
+            IFS='.' read -ra CURRENT <<< "$CURRENT_VERSION"
+            IFS='.' read -ra INPUT <<< "$INPUT_VERSION"
+            
+            echo "Current version array: ${CURRENT[@]}"
+            echo "Input version array: ${INPUT[@]}"
+            
+            echo "::set-output name=is_minor::$([ "${INPUT[0]}" == "${CURRENT[0]}" ] && [ "${INPUT[1]}" == "${CURRENT[1]}" ] && [ "${INPUT[2]}" != "${CURRENT[2]}" ] && echo true || echo false)"
+
+  pre_writerside:
+    needs: fetch_version
+    runs-on: ubuntu-latest
+    env:
+      new_version: ${{ github.event.inputs.name }}
+    steps:
+      - name: prepare writerside
+        run: sh build-scripts/pre-writerside.sh
+
+  upload_docs:
+    needs: pre_writerside
+    runs-on: ubuntu-latest
+    steps:
+      - name: Override docs
+        if: steps.determine_version.outputs.is_minor == 'true'
+        env:
+          version: ${{ github.event.inputs.name }}
+          perv_version: ${{ steps.perv_version.outputs.version }}
+        run: |
+            git fetch origin || true
+            git checkout gh-pages origin/gh-pages || git checkout gh-pages
+            git pull origin gh-pages || true
+            
+            if [ -d "$perv_version" ]; then
+            echo "Creating old version directory for version $perv_version"
+            git rm -rf $perv_version/
+            git commit -m "Removed old version"
+            
+            git add $version/
+            json_file="help-versions.json"
+            
+            new_element=$(cat <<EOF
+            {
+            "version": "$version",
+            "url": "/\($version)\/",
+            "isCurrent": true
+            } 
+            EOF
+            )
+            
+            updated_json=$(jq --arg version "$version" '
+                 .[-1].version = $version |
+                 .[-1].url = "/\($version)\/" |
+                 .[-1].isCurrent = true |
+                 .[0:-1] |= map(.isCurrent = false)
+             ' "$json_file")
+            
+            echo "$updated_json" > "$json_file"
+            
+            git add help-versions.json
+            git commit -m "Overide docs in github pages branch" || echo "No changes to commit"
+            git push origin gh-pages
+            else
+             echo "NOT GOOD"
+             exit 1
+            fi
+
+      - name: Update docs
+        if: steps.determine_version.outputs.is_minor == 'false'
+        env:
+          version: ${{ github.event.inputs.name }}
+        run: |
+                git fetch origin
+                git checkout gh-pages origin/gh-pages || git checkout gh-pages
+                git pull origin gh-pages || true
+                
+                json_file="help-versions.json"
+                
+                  new_element=$(cat <<EOF
+                {
+                "version": "$version",
+                "url": "/$version/",
+                "isCurrent": true
+                } 
+                EOF
+                )
+                
+                 updated_json=$(jq --argjson new "$new_element" '
+                     map(.isCurrent = false) + [$new]
+                 ' "$json_file")
+                
+                 echo "$updated_json" > "$json_file"
+                
+                 git add $version/
+                 git add help-versions.json
+                 git commit -m "Update docs in github pages branch" || echo "No changes to commit"
+                 git push origin gh-pages

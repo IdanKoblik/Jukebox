@@ -2,8 +2,8 @@ plugins {
     id("java")
 }
 
-group = parent!!.group
-version = parent!!.version
+group = parent!!.project.group
+version = parent!!.project.version
 
 repositories {
 

@@ -1,0 +1,55 @@
+name: Main pipeline workflow
+
+on:
+  pull_request:
+  push:
+    branches:
+      - master
+      - '25-rewrite-cicd'
+  workflow_dispatch:
+    inputs:
+      name:
+        description: 'Version name'
+        required: true
+        type: string
+
+jobs:
+  checkout:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v3
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}
+
+  run_tests:
+    needs: checkout
+    uses: ./.github/workflows/callable.test.yml
+
+  publish:
+    needs: run_tests
+    uses: ./.github/workflows/callable.publish.yml
+    with:
+      ORG_GRADLE_PROJECT_ossrhUsername: ${{ secrets.OSSRH_USERNAME }}
+      ORG_GRADLE_PROJECT_ossrhPassword: ${{ secrets.OSSRH_PASSWORD }}
+      ORG_GRADLE_PROJECT_signingKey: ${{ secrets.SIGNING_KEY }}
+      ORG_GRADLE_PROJECT_signingPassword: ${{ secrets.SIGNING_PASSWORD }}
+      VERSION: ${{ github.event.inputs.name }}
+      APARTIUM_NEXUS_USERNAME: ${{ secrets.APARTIUM_NEXUS_USERNAME }}
+      APARTIUM_NEXUS_PASSWORD: ${{ secrets.APARTIUM_NEXUS_PASSWORD }}
+      GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+  changelog:
+    needs: publish
+    if: github.event_name == 'workflow_dispatch'
+    uses: ./.github/workflows/callable.changelog.yml
+
+  docs:
+    needs: publish
+    if: github.event_name == 'workflow_dispatch'
+    uses: ./.github/workflows/callable.docs.yml
+
+  html:
+    needs: docs
+    if: github.event_name == 'workflow_dispatch'
+    uses: ./.github/workflows/callable.update_html.yml

@@ -12,8 +12,8 @@
     </code-block>
 
     <code-block lang="java">
-        import com.github.idankoblik.jukebox.PaperSong;
-        import com.github.idankoblik.jukebox.Playlist;
+        import io.github.idankoblik.jukebox.PaperSong;
+        import io.github.idankoblik.jukebox.Playlist;
 
         PaperSong song = /*song*/;
         Playlist&lt;PaperPlatform&gt; playlist = new Playlist&lt;&gt;();
