@@ -1,0 +1,34 @@
+name: Main pipeline workflow
+
+on:
+  - pull_request
+  - push:
+      branches:
+        - 'master'
+        - '25-rewrite-cicd'
+  - workflow_dispatch:
+      inputs:
+        name:
+          description: 'Version name'
+          required: true
+          type: string
+
+jobs:
+  run_tests:
+    uses: ./.github/workflows/callable.test.yml
+
+  publish:
+    needs: run_tests
+    uses: ./.github/workflows/callable.publish.yml
+
+  changelog:
+    needs: publish
+    uses: ./.github/workflows/callable.changelog.yml
+
+  docs:
+    needs: publish
+    uses: ./.github/workflows/callable.docs.yml
+
+  html:
+    needs: docs
+    uses: ./.github/workflows/callable.update_html.yml
