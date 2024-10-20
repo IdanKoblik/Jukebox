@@ -19,9 +19,12 @@ env:
 
 jobs:
   ssh:
-    uses: webfactory/ssh-agent@v0.7.0
-    with:
-      ssh-private-key: ${{ secrets.GH_PAGES_TOKEN }}
+    runs-on: ubuntu-latest
+    steps:
+      - name: setup ssh client
+        uses: webfactory/ssh-agent@v0.7.0
+        with:
+          ssh-private-key: ${{ secrets.GH_PAGES_TOKEN }}
 
   git:
     needs: ssh

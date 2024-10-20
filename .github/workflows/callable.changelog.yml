@@ -86,7 +86,10 @@ jobs:
 
   generate_release:
       needs: export_changelog
-      uses: softprops/action-gh-release@v2
-      with:
-        tag_name: ${{ github.event.inputs.name }}
-        body_path: CHANGELOG_temp.md
+      runs-on: ubuntu-latest
+      steps:
+        - name: release
+          uses: softprops/action-gh-release@v2
+          with:
+            tag_name: ${{ github.event.inputs.name }}
+            body_path: CHANGELOG_temp.md
