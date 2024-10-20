@@ -1,6 +1,6 @@
-<h1 style="display: flex; align-items: center; justify-content: center;">
-    <img src="Writerside/images/logo.png" alt="jukebox" width="50" style="margin-right: 10px; vertical-align: middle;">
-    <span style="vertical-align: middle;">Jukebox</span>
+<h1 align="center" style="display: flex; align-items: center; justify-content: center;">
+    <img src="Writerside/images/logo.png" alt="jukebox" width="50" style="margin-right: 10px;">
+    Jukebox
 </h1>
 
 <div align="center">
