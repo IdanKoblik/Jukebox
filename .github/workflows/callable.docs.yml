@@ -39,6 +39,7 @@ jobs:
       
   fetch_version:
     needs: git
+    runs-on: ubuntu-latest
     steps:
       - name: Fetch previus version
         id: perv_version
