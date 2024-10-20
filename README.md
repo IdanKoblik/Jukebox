@@ -1,15 +1,58 @@
-# Installation
+<h1 align="center" style="display: flex; align-items: center; justify-content: center;">
+    <img src="Writerside/images/logo.png" alt="jukebox" width="50" style="margin-right: 10px;">
+    Jukebox
+</h1>
+<hr>
 
-To get started with the api, you can integrate it into your project using one of the following build tools. Choose the one that fits your setup.
+<div align="center">
+    <img alt="GitHub License" src="https://img.shields.io/github/license/IdanKoblik/Jukebox">
+</div>
 
-## Gradle (Kotlin DSL)
+### About
+Jukebox is a powerful Java library specifically designed for handling NBS (Note Block Studio) files, primarily for use in Minecraft. It offers seamless functionality for playing, encoding, and decoding music compositions, making it an essential tool for developers looking to enhance their Minecraft projects. With its intuitive API, Jukebox allows for easy integration, enabling rich audio experiences derived from NBS files. Whether you're creating custom maps, plugins, or interactive experiences, Jukebox provides the tools to manipulate and enjoy complex musical data efficiently.
 
-If you're using Gradle with Kotlin DSL, add the following to your `build.gradle.kts` file:
+<br>
 
+>[!IMPORTANT]
+> ### Requirements
+> * Java 17
+> * Minecraft 1.8 and above (For the minecraft modules)
+
+<br>
+
+### Installation
+>[!NOTE]
+> Follow the next steps to include Jukebox in your project
+
+**Maven:**
+```xml
+<dependency>
+    <groupId>com.gradleup.shadow</groupId>
+    <artifactId>shadow-gradle-plugin</artifactId>
+    <version>version</version>
+</dependency>
+
+<repositories>
+    <repository>
+        <id>ApartiumNexus</id>
+        <url>https://nexus.voigon.dev/repository/beta-releases/</url>
+    </repository>
+</repositories>
+
+<dependencies>
+    <dependency>
+        <groupId>com.github.idankoblik.jukebox</groupId>
+        <artifactId>[module]</artifactId>
+        <version>[version]</version>
+    </dependency>
+</dependencies>
+```
+
+**Gradle (Kotlin)**
 ```kotlin
 plugins {
     id("java")
-    id("com.github.johnrengelman.shadow") version "8.1.1"
+    id("com.github.johnrengelman.shadow") version "version"
 }
 
 repositories {
@@ -20,18 +63,15 @@ repositories {
 }
 
 dependencies {
-    implementation("com.github.idankoblik:[module]:[version]")
+    implementation("com.github.idankoblik.jukebox:[module]:[version]")
 }
 ```
 
-## Gradle (Groovy)
-
-For projects using the Groovy DSL, include the following in your `build.gradle` file:
-
+**Gradle (Groovy)**
 ```groovy
 plugins {
     id 'java'
-    id 'com.github.johnrengelman.shadow' version '8.1.1'
+    id 'com.github.johnrengelman.shadow' version 'version'
 }
 
 repositories {
@@ -42,31 +82,9 @@ repositories {
 }
 
 dependencies {
-    implementation 'com.github.idankoblik:[module]:[version]'
+    implementation 'com.github.idankoblik.jukebox:[module]:[version]'
 }
 ```
-
-## Maven
-
-If you are using Maven, add the following dependency to your `pom.xml`:
-
-```xml
-<repositories>
-    <repository>
-        <id>ApartiumNexus</id>
-        <url>https://nexus.voigon.dev/repository/beta-releases/</url>
-    </repository>
-</repositories>
-
-<dependencies>
-    <dependency>
-        <groupId>com.github.idankoblik</groupId>
-        <artifactId>[module]</artifactId>
-        <version>[version]</version>
-    </dependency>
-</dependencies>
-```
-
-Replace `[module]` and `[version]` with the actual module name and version of the api.
+<hr>
 
 If you have any questions or need further assistance, feel free to reach out!
