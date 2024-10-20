@@ -75,8 +75,9 @@ jobs:
 
   upload_docs:
     needs: pre_writerside
+    runs-on: ubuntu-latest
     steps:
-      - name: Overide docs
+      - name: Override docs
         if: steps.determine_version.outputs.is_minor == 'true'
         env:
           version: ${{ github.event.inputs.name }}
