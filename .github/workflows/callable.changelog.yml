@@ -14,7 +14,6 @@ permissions:
 jobs:
   create_tag:
     runs-on: ubuntu-latest
-    if: ${{ github.event.inputs.name != '' }}
     run: |
       TAG_VERSION=${{ github.event.inputs.name }}
       git tag $TAG_VERSION
@@ -23,7 +22,6 @@ jobs:
   export_changelog:
     needs: create_tag
     shell: bash
-    if: ${{ github.event.inputs.name != '' }}
     env:
       TARGET_VERSION: ${{ github.event.inputs.name }}
     run: |

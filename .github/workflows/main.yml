@@ -13,7 +13,6 @@ on:
         required: true
         type: string
 
-
 jobs:
   run_tests:
     uses: ./.github/workflows/callable.test.yml
@@ -22,14 +21,17 @@ jobs:
     needs: run_tests
     uses: ./.github/workflows/callable.publish.yml
 
-  #changelog:
-  #  needs: publish
-  #  uses: ./.github/workflows/callable.changelog.yml
+  changelog:
+    needs: publish
+    if: github.event_name == 'workflow_dispatch'
+    uses: ./.github/workflows/callable.changelog.yml
 
   docs:
     needs: publish
+    if: github.event_name == 'workflow_dispatch'
     uses: ./.github/workflows/callable.docs.yml
 
   html:
     needs: docs
+    if: github.event_name == 'workflow_dispatch'
     uses: ./.github/workflows/callable.update_html.yml
