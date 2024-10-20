@@ -22,9 +22,9 @@ jobs:
     needs: run_tests
     uses: ./.github/workflows/callable.publish.yml
 
-  changelog:
-    needs: publish
-    uses: ./.github/workflows/callable.changelog.yml
+  #changelog:
+  #  needs: publish
+  #  uses: ./.github/workflows/callable.changelog.yml
 
   docs:
     needs: publish
