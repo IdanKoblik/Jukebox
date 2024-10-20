@@ -1,17 +1,18 @@
 name: Main pipeline workflow
 
 on:
-  - pull_request
-  - push:
-      branches:
-        - 'master'
-        - '25-rewrite-cicd'
-  - workflow_dispatch:
-      inputs:
-        name:
-          description: 'Version name'
-          required: true
-          type: string
+  pull_request:
+  push:
+    branches:
+      - master
+      - '25-rewrite-cicd'
+  workflow_dispatch:
+    inputs:
+      name:
+        description: 'Version name'
+        required: true
+        type: string
+
 
 jobs:
   run_tests:
