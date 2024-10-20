@@ -1,5 +1,4 @@
-<h1 style="display: flex; align-items: center; justify-content: center; gap: 10px;">
-    <img src="Writerside/images/logo.png" alt="jukebox" width="50" style="vertical-align: middle;">
+<h1 align="center" style="display: flex; align-items: center; justify-content: center;">
     Jukebox
 </h1>
 
