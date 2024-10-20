@@ -23,6 +23,7 @@ jobs:
 
   export_changelog:
     needs: create_tag
+    runs-on: ubuntu-latest
     env:
       TARGET_VERSION: ${{ github.event.inputs.name }}
     steps:
