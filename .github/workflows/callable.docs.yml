@@ -66,6 +66,7 @@ jobs:
 
   pre_writerside:
     needs: fetch_version
+    runs-on: ubuntu-latest
     env:
       new_version: ${{ github.event.inputs.name }}
     steps:

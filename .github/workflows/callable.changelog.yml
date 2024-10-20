@@ -4,12 +4,7 @@ on:
   workflow_call:
 
 permissions:
-  contents: write
-  pull-requests: write
-  repository-projects: write
-  packages: write
-  pages: write
-  id-token: write
+  contents: read
 
 jobs:
   create_tag:
