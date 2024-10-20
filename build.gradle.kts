@@ -7,7 +7,7 @@ plugins {
     signing
 }
 
-val snapshot: Boolean = false
+val snapshot: Boolean = isSnapshot()
 val isCi = System.getenv("GITHUB_ACTOR") != null
 
 group = "io.github.idankoblik.jukebox"
