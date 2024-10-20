@@ -86,7 +86,7 @@ tasks.test {
 }
 
 fun figureVersion(): String {
-    return (if (System.getenv("VERSION") == null) "dev" else System.getenv("VERSION")) + (if (snapshot) "-SNAPSHOT" else "")
+    return (if (System.getenv("VERSION") == null || System.getenv("VERSION") == "") "dev" else System.getenv("VERSION")) + (if (snapshot) "-SNAPSHOT" else "")
 }
 
 java {
