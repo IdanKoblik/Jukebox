@@ -19,10 +19,9 @@ env:
 
 jobs:
   ssh:
-    - name: Install SSH Client 🔑
-      uses: webfactory/ssh-agent@v0.7.0
-      with:
-        ssh-private-key: ${{ secrets.GH_PAGES_TOKEN }}
+    uses: webfactory/ssh-agent@v0.7.0
+    with:
+      ssh-private-key: ${{ secrets.GH_PAGES_TOKEN }}
 
   git:
     needs: ssh
