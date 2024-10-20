@@ -3,8 +3,7 @@ plugins {
     `maven-publish`
 }
 
-val releaseWorkflow = "IdanKoblik/Jukebox/.github/workflows/release.yml"
-val snapshot: Boolean = System.getenv("GITHUB_WORKFLOW_REF") == null || !(System.getenv("GITHUB_WORKFLOW_REF").startsWith(releaseWorkflow))
+val snapshot: Boolean = System.getenv("GITHUB_EVENT_NAME") != "workflow_dispatch"
 val isCi = System.getenv("GITHUB_ACTOR") != null
 
 group = "com.github.idankoblik"
