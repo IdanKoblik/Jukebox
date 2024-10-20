@@ -23,6 +23,7 @@ jobs:
           token: ${{ secrets.GITHUB_TOKEN }}
 
   run_tests:
+    needs: checkout
     uses: ./.github/workflows/callable.test.yml
 
   publish:

@@ -23,7 +23,6 @@ jobs:
 
   export_changelog:
     needs: create_tag
-    shell: bash
     env:
       TARGET_VERSION: ${{ github.event.inputs.name }}
     steps:
