@@ -2,7 +2,6 @@
     <img src="Writerside/images/logo.png" alt="jukebox" width="50" style="margin-right: 10px;">
     Jukebox
 </h1>
-<hr>
 
 <div align="center">
     <img alt="GitHub License" src="https://img.shields.io/github/license/IdanKoblik/Jukebox">
