@@ -1,7 +1,7 @@
-<h1 align="center" style="display: flex; align-items: center; justify-content: center;">
+<div align="center" style="display: flex; align-items: center; justify-content: center;">
     <img src="Writerside/images/logo.png" alt="jukebox" width="50" style="margin-right: 10px;">
-    Jukebox
-</h1>
+    <h1>Jukebox</h1>
+</div>
 
 <div align="center">
     <img alt="GitHub License" src="https://img.shields.io/github/license/IdanKoblik/Jukebox">
