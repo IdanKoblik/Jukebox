@@ -104,12 +104,12 @@ subprojects {
     }
 
     signing {
-        useGpgCmd()
-        sign(publishing.publications["maven"])
-
-        if (System.getenv("GPG_PASSPHRASE") != null) {
+        if (isCi)
             useInMemoryPgpKeys(System.getenv("GPG_PRIVATE_KEY"), System.getenv("GPG_PASSPHRASE"))
-        }
+        else
+            useGpgCmd()
+
+        sign(publishing.publications["maven"])
     }
 }
 
