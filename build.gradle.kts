@@ -104,19 +104,26 @@ subprojects {
     }
 
     signing {
-        val signingKey = System.getenv("SIGNING_KEY") ?: findProperty("signing.keyId")?.toString()
-        val signingPassword = System.getenv("SIGNING_PASSWORD") ?: findProperty("signing.password")?.toString()
+        val signingKey = findProperty("signing.keyId")?.toString() ?: System.getenv("SIGNING_KEY")
+        val signingPassword = findProperty("signing.password")?.toString() ?: System.getenv("SIGNING_PASSWORD")
 
-        if (signingKey != null && signingPassword != null) {
-            useInMemoryPgpKeys(signingKey, signingPassword)
-            sign(publishing.publications["maven"])
+        if (signingKey == null) {
+            throw IllegalArgumentException("Signing key is required but was not provided.")
         }
+
+        if (signingPassword == null) {
+            throw IllegalArgumentException("Signing password is required but was not provided.")
+        }
+
+        useInMemoryPgpKeys(signingKey, signingPassword)
+        sign(publishing.publications["maven"])
     }
 }
 
 if (!snapshot) {
     nmcp {
         publishAllProjectsProbablyBreakingProjectIsolation {
+            // TODO throw if null
             username = System.getenv("OSSRH_USERNAME") ?: findProperty("ossrh.username").toString()
             password = System.getenv("OSSRH_PASSWORD") ?: findProperty("ossrh.password").toString()
             publicationType = "AUTOMATIC"
