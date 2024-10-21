@@ -103,12 +103,14 @@ subprojects {
         modularity.inferModulePath = true
     }
 
-
     signing {
-        val signingKey: String? by project
-        val signingPassword: String? by project
-        useInMemoryPgpKeys(signingKey, signingPassword)
-        sign(publishing.publications["maven"])
+        val signingKey = System.getenv("SIGNING_KEY") ?: findProperty("signing.keyId")?.toString()
+        val signingPassword = System.getenv("SIGNING_PASSWORD") ?: findProperty("signing.password")?.toString()
+
+        if (signingKey != null && signingPassword != null) {
+            useInMemoryPgpKeys(signingKey, signingPassword)
+            sign(publishing.publications["maven"])
+        }
     }
 }
 

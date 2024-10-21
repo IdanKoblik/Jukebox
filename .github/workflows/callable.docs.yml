@@ -20,6 +20,8 @@ env:
 jobs:
   setup:
     runs-on: ubuntu-latest
+    env:
+      new_version: ${{ github.event.inputs.name }}
     steps:
       - name: setup ssh client
         uses: webfactory/ssh-agent@v0.7.0
@@ -57,18 +59,11 @@ jobs:
           
           echo "::set-output name=is_minor::$([ "${INPUT[0]}" == "${CURRENT[0]}" ] && [ "${INPUT[1]}" == "${CURRENT[1]}" ] && [ "${INPUT[2]}" != "${CURRENT[2]}" ] && echo true || echo false)"
 
-
-  pre_writerside:
-    needs: setup
-    runs-on: ubuntu-latest
-    env:
-      new_version: ${{ github.event.inputs.name }}
-    steps:
       - name: prepare writerside
         run: sh build-scripts/pre-writerside.sh
 
   upload_docs:
-    needs: pre_writerside
+    needs: setup
     runs-on: ubuntu-latest
     steps:
       - name: Override docs
