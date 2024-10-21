@@ -1,4 +1,5 @@
 import nmcp.NmcpPlugin
+import okhttp3.internal.userAgent
 
 plugins {
     `java-library`
@@ -104,13 +105,16 @@ subprojects {
     }
 
     signing {
-        if (isCi)
-            useInMemoryPgpKeys(System.getenv("GPG_PRIVATE_KEY"), System.getenv("GPG_PASSPHRASE"))
-        else
+        if (isCi) {
+            val signingSecret: String = System.getenv("SIGNING_SECRET")
+            val signingPassword: String = System.getenv("SIGNING_PASSWORD")
+            useInMemoryPgpKeys(signingSecret, signingPassword)
+        } else
             useGpgCmd()
 
         sign(publishing.publications["maven"])
     }
+
 }
 
 if (!snapshot) {
