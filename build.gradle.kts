@@ -104,26 +104,18 @@ subprojects {
     }
 
     signing {
-        val signingKey = findProperty("signing.keyId")?.toString() ?: System.getenv("SIGNING_KEY")
-        val signingPassword = findProperty("signing.password")?.toString() ?: System.getenv("SIGNING_PASSWORD")
-
-        if (signingKey == null) {
-            throw IllegalArgumentException("Signing key is required but was not provided.")
-        }
-
-        if (signingPassword == null) {
-            throw IllegalArgumentException("Signing password is required but was not provided.")
-        }
-
-        useInMemoryPgpKeys(signingKey, signingPassword)
+        useGpgCmd()
         sign(publishing.publications["maven"])
+
+        if (System.getenv("GPG_PASSPHRASE") != null) {
+            useInMemoryPgpKeys(System.getenv("GPG_PRIVATE_KEY"), System.getenv("GPG_PASSPHRASE"))
+        }
     }
 }
 
 if (!snapshot) {
     nmcp {
         publishAllProjectsProbablyBreakingProjectIsolation {
-            // TODO throw if null
             username = System.getenv("OSSRH_USERNAME") ?: findProperty("ossrh.username").toString()
             password = System.getenv("OSSRH_PASSWORD") ?: findProperty("ossrh.password").toString()
             publicationType = "AUTOMATIC"
