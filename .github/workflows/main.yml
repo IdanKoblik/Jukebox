@@ -42,13 +42,6 @@ jobs:
       - name: Setup Gradle
         uses: gradle/actions/setup-gradle@v3
 
-      - name: Import GPG key
-        env:
-          GPG_PRIVATE_KEY: ${{ secrets.GPG_PRIVATE_KEY }}
-          GPG_PASSPHRASE: ${{ secrets.GPG_PASSPHRASE }}
-        run: |
-          echo -n "$GPG_PRIVATE_KEY" | base64 --decode | gpg --import
-
       - name: Publish release
         run: ./gradlew publish
         env:
