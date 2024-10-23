@@ -117,8 +117,8 @@ subprojects {
 
 }
 
-nmcp {
-    if (!snapshot && isCi) {
+if (!snapshot && isCi) {
+    nmcp {
         publishAllProjectsProbablyBreakingProjectIsolation {
             username = System.getenv("OSSRH_USERNAME") ?: findProperty("ossrh.username").toString()
             password = System.getenv("OSSRH_PASSWORD") ?: findProperty("ossrh.password").toString()
