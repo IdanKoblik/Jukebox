@@ -42,21 +42,7 @@ jobs:
       - name: Setup Gradle
         uses: gradle/actions/setup-gradle@v3
 
-      - name: Publish snapshot
-        if: github.event_name != 'workflow_dispatch'
-        run: ./gradlew publishAllPublicationsToApartiumMavenRepository
-        env:
-          OSSRH_USERNAME: ${{ secrets.OSSRH_USERNAME }}
-          OSSRH_PASSWORD: ${{ secrets.OSSRH_PASSWORD }}
-          SIGNING_SECRET: ${{ secrets.SIGNING_SECRET }}
-          SIGNING_PASSWORD: ${{ secrets.SIGNING_PASSWORD }}
-          VERSION: ${{ github.event.inputs.name }}
-          APARTIUM_NEXUS_USERNAME: ${{ secrets.APARTIUM_NEXUS_USERNAME }}
-          APARTIUM_NEXUS_PASSWORD: ${{ secrets.APARTIUM_NEXUS_PASSWORD }}
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-
       - name: Publish release
-        if: github.event_name == 'workflow_dispatch'
         run: ./gradlew publish
         env:
           OSSRH_USERNAME: ${{ secrets.OSSRH_USERNAME }}
