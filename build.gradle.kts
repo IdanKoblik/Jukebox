@@ -117,28 +117,17 @@ subprojects {
 
 }
 
-tasks.register("nmcpPublish") {
-    group = "publishing"
-    description = "Publish to NMCP repository"
+if (!snapshot && isCi) {
+    val username = System.getenv("OSSRH_USERNAME") ?: findProperty("ossrh.username").toString()
+    val password = System.getenv("OSSRH_PASSWORD") ?: findProperty("ossrh.password").toString()
 
-    doFirst {
-        if (!snapshot && isCi) {
-            val username = System.getenv("OSSRH_USERNAME") ?: findProperty("ossrh.username").toString()
-            val password = System.getenv("OSSRH_PASSWORD") ?: findProperty("ossrh.password").toString()
-
-            nmcp {
-                publishAllProjectsProbablyBreakingProjectIsolation {
-                    this.username = username
-                    this.password = password
-                    this.publicationType = "AUTOMATIC"
-                }
-            }
+    nmcp {
+        publishAllProjectsProbablyBreakingProjectIsolation {
+            this.username = username
+            this.password = password
+            this.publicationType = "AUTOMATIC"
         }
     }
-}
-
-tasks.named("publish") {
-    dependsOn("nmcpPublish")
 }
 
 dependencies {}
