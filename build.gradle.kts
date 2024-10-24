@@ -141,7 +141,7 @@ fun figureVersion(): String {
 }
 
 fun isSnapshot(): Boolean {
-    return (if (System.getenv("GITHUB_EVENT_NAME") == null) true else System.getenv("GITHUB_EVENT_NAME") == "workflow_dispatch")
+    return (if (System.getenv("GITHUB_EVENT_NAME") == null) true else System.getenv("GITHUB_EVENT_NAME") != "workflow_dispatch")
 }
 
 tasks.javadoc {
