@@ -105,12 +105,7 @@ subprojects {
     }
 
     signing {
-        if (isCi) {
-            val signingSecret: String = System.getenv("SIGNING_SECRET")
-            val signingPassword: String = System.getenv("SIGNING_PASSWORD")
-            useInMemoryPgpKeys(signingSecret, signingPassword)
-        } else
-            useGpgCmd()
+        useGpgCmd()
 
         sign(publishing.publications["maven"])
     }
