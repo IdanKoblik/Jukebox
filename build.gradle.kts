@@ -117,14 +117,25 @@ subprojects {
 
 }
 
-if (!snapshot) {
-    nmcp {
-        publishAllProjectsProbablyBreakingProjectIsolation {
-            username = System.getenv("OSSRH_USERNAME") ?: findProperty("ossrh.username").toString()
-            password = System.getenv("OSSRH_PASSWORD") ?: findProperty("ossrh.password").toString()
-            publicationType = "AUTOMATIC"
+tasks.register("nmcpPublish") {
+    group = "publishing"
+    description = "Publish to NMCP repository"
+
+    doLast {
+        if (!snapshot && isCi) {
+            nmcp {
+                publishAllProjectsProbablyBreakingProjectIsolation {
+                    username = System.getenv("OSSRH_USERNAME") ?: findProperty("ossrh.username").toString()
+                    password = System.getenv("OSSRH_PASSWORD") ?: findProperty("ossrh.password").toString()
+                    publicationType = "AUTOMATIC"
+                }
+            }
         }
     }
+}
+
+tasks.named("publish") {
+    dependsOn("nmcpPublish")
 }
 
 dependencies {}
