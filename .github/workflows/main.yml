@@ -28,33 +28,15 @@ jobs:
 
   publish:
     needs: run_tests
-    runs-on: ubuntu-latest
-    steps:
-      - name: Checkout
-        uses: actions/checkout@v3
-        with:
-          token: ${{ secrets.GITHUB_TOKEN }}
-
-      - name: Set Version
-        id: set-version
-        run: |
-          if [ "${{ github.event_name }}" == "push" ] && \
-             [[ "${{ github.ref }}" == "refs/heads/master" || "${{ github.ref }}" == "refs/heads/25-rewrite-cicd" ]]; then
-            echo "VERSION=${{ github.event.inputs.name }}" >> $GITHUB_ENV
-          else
-            echo "VERSION=dev" >> $GITHUB_ENV
-          fi
-
-      - name: Call Publish Library
-        uses: ./.github/workflows/callable.publish.yml
-        with:
-          VERSION: ${{ env.VERSION }}
-          OSSRH_USERNAME: ${{ secrets.OSSRH_USERNAME }}
-          OSSRH_PASSWORD: ${{ secrets.OSSRH_PASSWORD }}
-          SIGNING_SECRET: ${{ secrets.SIGNING_SECRET }}
-          SIGNING_PASSWORD: ${{ secrets.SIGNING_PASSWORD }}
-          APARTIUM_NEXUS_USERNAME: ${{ secrets.APARTIUM_NEXUS_USERNAME }}
-          APARTIUM_NEXUS_PASSWORD: ${{ secrets.APARTIUM_NEXUS_PASSWORD }}
+    uses: ./.github/workflows/callable.publish.yml
+    with:
+      VERSION: ${{ github.event.inputs.name || 'dev' }}
+      OSSRH_USERNAME: ${{ secrets.OSSRH_USERNAME }}
+      OSSRH_PASSWORD: ${{ secrets.OSSRH_PASSWORD }}
+      SIGNING_SECRET: ${{ secrets.SIGNING_SECRET }}
+      SIGNING_PASSWORD: ${{ secrets.SIGNING_PASSWORD }}
+      APARTIUM_NEXUS_USERNAME: ${{ secrets.APARTIUM_NEXUS_USERNAME }}
+      APARTIUM_NEXUS_PASSWORD: ${{ secrets.APARTIUM_NEXUS_PASSWORD }}
 
 
   changelog:
