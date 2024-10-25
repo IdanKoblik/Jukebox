@@ -15,8 +15,6 @@ on:
         required: true
       APARTIUM_NEXUS_PASSWORD:
         required: true
-      GITHUB_TOKEN:
-        required: true
 
 jobs:
   publish:
@@ -41,7 +39,7 @@ jobs:
           OSSRH_PASSWORD: ${{ secrets.OSSRH_PASSWORD }}
           SIGNING_SECRET: ${{ secrets.SIGNING_SECRET }}
           SIGNING_PASSWORD: ${{ secrets.SIGNING_PASSWORD }}
-          VERSION: ${{ github.event.inputs.name }}
+          VERSION: ${{ github.event.inputs.name || 'dev' }}
           APARTIUM_NEXUS_USERNAME: ${{ secrets.APARTIUM_NEXUS_USERNAME }}
           APARTIUM_NEXUS_PASSWORD: ${{ secrets.APARTIUM_NEXUS_PASSWORD }}
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
