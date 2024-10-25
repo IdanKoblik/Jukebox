@@ -2,6 +2,21 @@ name: Publish library
 
 on:
   workflow_call:
+    secrets:
+      OSSRH_USERNAME:
+        required: true
+      OSSRH_PASSWORD:
+        required: true
+      SIGNING_SECRET:
+        required: true
+      SIGNING_PASSWORD:
+        required: true
+      APARTIUM_NEXUS_USERNAME:
+        required: true
+      APARTIUM_NEXUS_PASSWORD:
+        required: true
+      GITHUB_TOKEN:
+        required: true
 
 jobs:
   publish:
