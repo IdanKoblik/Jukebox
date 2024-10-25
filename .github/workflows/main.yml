@@ -28,16 +28,30 @@ jobs:
 
   publish:
     needs: run_tests
-    uses: ./.github/workflows/callable.publish.yml
-    with:
-      VERSION: ${{ github.event.inputs.name || 'dev' }}
-    secrets:
-      OSSRH_USERNAME: ${{ secrets.OSSRH_USERNAME }}
-      OSSRH_PASSWORD: ${{ secrets.OSSRH_PASSWORD }}
-      SIGNING_SECRET: ${{ secrets.SIGNING_SECRET }}
-      SIGNING_PASSWORD: ${{ secrets.SIGNING_PASSWORD }}
-      APARTIUM_NEXUS_USERNAME: ${{ secrets.APARTIUM_NEXUS_USERNAME }}
-      APARTIUM_NEXUS_PASSWORD: ${{ secrets.APARTIUM_NEXUS_PASSWORD }}
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}
+
+      - uses: actions/setup-java@v3
+        with:
+          java-version: '17'
+          distribution: 'adopt'
+
+      - name: Setup Gradle
+        uses: gradle/actions/setup-gradle@v3
+
+      - name: Publish
+        env:
+          OSSRH_USERNAME: ${{ secrets.OSSRH_USERNAME }}
+          OSSRH_PASSWORD: ${{ secrets.OSSRH_PASSWORD }}
+          SIGNING_SECRET: ${{ secrets.SIGNING_SECRET }}
+          SIGNING_PASSWORD: ${{ secrets.SIGNING_PASSWORD }}
+          APARTIUM_NEXUS_USERNAME: ${{ secrets.APARTIUM_NEXUS_USERNAME }}
+          APARTIUM_NEXUS_PASSWORD: ${{ secrets.APARTIUM_NEXUS_PASSWORD }}
+          VERSION: ${{ inputs.VERSION }}
+        run: ./gradlew publish
 
   changelog:
     needs: publish
