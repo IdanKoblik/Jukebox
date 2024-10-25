@@ -105,7 +105,14 @@ subprojects {
     }
 
     signing {
-        useGpgCmd()
+        if (isCi) {
+            val signingSecret: String = System.getenv("SIGNING_SECRET") ?: findProperty("signing.secret").toString()
+            val signingPassword: String = System.getenv("SIGNING_PASSWORD") ?: findProperty("signing.password").toString()
+
+            useInMemoryPgpKeys(signingSecret, signingPassword)
+        } else
+            useGpgCmd()
+
 
         sign(publishing.publications["maven"])
     }
@@ -133,7 +140,7 @@ fun figureVersion(): String {
 }
 
 fun isSnapshot(): Boolean {
-    return (if (System.getenv("GITHUB_EVENT_NAME") == null) true else System.getenv("GITHUB_EVENT_NAME") == "workflow_dispatch")
+    return (if (System.getenv("GITHUB_EVENT_NAME") == null) true else System.getenv("GITHUB_EVENT_NAME") != "workflow_dispatch")
 }
 
 tasks.javadoc {
