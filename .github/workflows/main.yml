@@ -25,6 +25,8 @@ jobs:
   run_tests:
     needs: checkout
     uses: ./.github/workflows/callable.test.yml
+    secrets:
+      TEST: ${{ secrets.TEST }}
 
   publish:
     needs: run_tests
