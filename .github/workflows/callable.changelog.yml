@@ -2,6 +2,11 @@ name: Export changelog
 
 on:
   workflow_call:
+    inputs:
+      VERSION:
+        description: 'Version name'
+        required: true
+        type: string
 
 permissions:
   contents: read
@@ -10,11 +15,11 @@ jobs:
   export_changelog:
     runs-on: ubuntu-latest
     env:
-      TARGET_VERSION: ${{ github.event.inputs.name }}
+      TARGET_VERSION: ${{ inputs.VERSION }}
     steps:
       - name: create tag
         run: |
-          TAG_VERSION=${{ github.event.inputs.name }}
+          TAG_VERSION=${{ inputs.VERSION }}
           git tag $TAG_VERSION
           git push origin $TAG_VERSION
 
@@ -82,5 +87,5 @@ jobs:
       - name: release
         uses: softprops/action-gh-release@v2
         with:
-            tag_name: ${{ github.event.inputs.name }}
+            tag_name: ${{ inputs.VERSION }}
             body_path: CHANGELOG_temp.md

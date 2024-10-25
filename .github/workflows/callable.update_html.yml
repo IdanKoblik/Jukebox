@@ -2,6 +2,11 @@ name: Update html redirection page
 
 on:
   workflow_call:
+    inputs:
+      VERSION:
+        description: 'Version name'
+        required: true
+        type: string
 
 permissions:
   pull-requests: write
@@ -15,7 +20,7 @@ jobs:
   update_html:
     runs-on: ubuntu-latest
     env:
-      version: ${{ github.event.inputs.name }}
+      version: ${{ inputs.VERSION }}
     steps:
       - name: Checkout Repository
         run: |

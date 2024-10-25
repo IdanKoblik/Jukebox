@@ -2,6 +2,14 @@ name: Update docs
 
 on:
   workflow_call:
+    inputs:
+      VERSION:
+        description: 'Version name'
+        required: true
+        type: string
+    secrets:
+      GH_PAGES_TOKEN:
+        required: true
 
 permissions:
   pull-requests: write
@@ -21,7 +29,7 @@ jobs:
   setup:
     runs-on: ubuntu-latest
     env:
-      new_version: ${{ github.event.inputs.name }}
+      new_version: ${{ inputs.VERSION }}
     steps:
       - name: setup ssh client
         uses: webfactory/ssh-agent@v0.7.0

@@ -43,13 +43,23 @@ jobs:
     needs: publish
     if: github.event_name == 'workflow_dispatch'
     uses: ./.github/workflows/callable.changelog.yml
+    with:
+      VERSION: ${{ github.event.inputs.name }}
+    secrets:
+      GH_PAGES_TOKEN: ${{ secrets.GH_PAGES_TOKEN }}
 
   docs:
     needs: publish
     if: github.event_name == 'workflow_dispatch'
     uses: ./.github/workflows/callable.docs.yml
+    with:
+      VERSION: ${{ github.event.inputs.name }}
+    secrets:
+      GH_PAGES_TOKEN: ${{ secrets.GH_PAGES_TOKEN }}
 
   html:
     needs: docs
     if: github.event_name == 'workflow_dispatch'
     uses: ./.github/workflows/callable.update_html.yml
+    with:
+      VERSION: ${{ github.event.inputs.name }}
