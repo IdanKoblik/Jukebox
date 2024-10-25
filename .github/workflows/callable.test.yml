@@ -2,6 +2,9 @@ name: Run tests
 
 on:
   workflow_call:
+    secrets:
+      TEST:
+        required: true
 
 permissions:
   contents: read
@@ -21,6 +24,7 @@ jobs:
       - name: Run integration tests
         run: ./gradlew test
         env:
+          TEST: ${{ secrets.TEST }}
           OSSRH_USERNAME: ${{ secrets.OSSRH_USERNAME }}
           OSSRH_PASSWORD: ${{ secrets.OSSRH_PASSWORD }}
           SIGNING_SECRET: ${{ secrets.SIGNING_SECRET }}

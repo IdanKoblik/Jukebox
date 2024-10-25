@@ -32,6 +32,7 @@ jobs:
     with:
       VERSION: ${{ github.event.inputs.name || 'dev' }}
     secrets:
+      TEST: ${{ secrets.TEST }}
       OSSRH_USERNAME: ${{ secrets.OSSRH_USERNAME }}
       OSSRH_PASSWORD: ${{ secrets.OSSRH_PASSWORD }}
       SIGNING_SECRET: ${{ secrets.SIGNING_SECRET }}
