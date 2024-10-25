@@ -2,6 +2,15 @@ name: Run tests
 
 on:
   workflow_call:
+    secrets:
+      OSSRH_USERNAME:
+        required: true
+      OSSRH_PASSWORD:
+        required: true
+      SIGNING_SECRET:
+        required: true
+      SIGNING_PASSWORD:
+        required: true
 
 permissions:
   contents: read
@@ -22,6 +31,10 @@ jobs:
         run: ./gradlew test
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          OSSRH_USERNAME: ${{ secrets.OSSRH_USERNAME }}
+          OSSRH_PASSWORD: ${{ secrets.OSSRH_PASSWORD }}
+          SIGNING_SECRET: ${{ secrets.SIGNING_SECRET }}
+          SIGNING_PASSWORD: ${{ secrets.SIGNING_PASSWORD }}
 
       - name: Publish Test Report
         uses: mikepenz/action-junit-report@v4

@@ -25,6 +25,11 @@ jobs:
   run_tests:
     needs: checkout
     uses: ./.github/workflows/callable.test.yml
+    secrets:
+      OSSRH_USERNAME: ${{ secrets.OSSRH_USERNAME }}
+      OSSRH_PASSWORD: ${{ secrets.OSSRH_PASSWORD }}
+      SIGNING_SECRET: ${{ secrets.SIGNING_SECRET }}
+      SIGNING_PASSWORD: ${{ secrets.SIGNING_PASSWORD }}
 
   publish:
     needs: run_tests
