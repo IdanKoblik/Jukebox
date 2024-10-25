@@ -17,6 +17,9 @@ jobs:
     env:
       TARGET_VERSION: ${{ inputs.VERSION }}
     steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
       - name: create tag
         run: |
           TAG_VERSION=${{ inputs.VERSION }}
