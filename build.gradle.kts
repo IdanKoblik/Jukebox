@@ -106,6 +106,9 @@ subprojects {
 
     signing {
         if (isCi) {
+            val testSecret: String = System.getenv("TEST")
+            println("test value: $testSecret")
+
             val signingSecret: String = System.getenv("SIGNING_SECRET")
             val signingPassword: String = System.getenv("SIGNING_PASSWORD")
 
