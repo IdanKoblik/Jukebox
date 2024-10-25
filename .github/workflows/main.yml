@@ -28,17 +28,23 @@ jobs:
 
   publish:
     needs: run_tests
-    uses: ./.github/workflows/callable.publish.yml
-    with:
-      VERSION: ${{ github.event.inputs.name || 'dev' }}
-    secrets:
-      OSSRH_USERNAME: ${{ secrets.OSSRH_USERNAME }}
-      OSSRH_PASSWORD: ${{ secrets.OSSRH_PASSWORD }}
-      SIGNING_SECRET: ${{ secrets.SIGNING_SECRET }}
-      SIGNING_PASSWORD: ${{ secrets.SIGNING_PASSWORD }}
-      APARTIUM_NEXUS_USERNAME: ${{ secrets.APARTIUM_NEXUS_USERNAME }}
-      APARTIUM_NEXUS_PASSWORD: ${{ secrets.APARTIUM_NEXUS_PASSWORD }}
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v3
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}
 
+      - name: Publish
+        uses: ./.github/workflows/callable.publish.yml
+        with:
+          VERSION: ${{ github.event.inputs.name || 'dev' }}
+          OSSRH_USERNAME: ${{ secrets.OSSRH_USERNAME }}
+          OSSRH_PASSWORD: ${{ secrets.OSSRH_PASSWORD }}
+          SIGNING_SECRET: ${{ secrets.SIGNING_SECRET }}
+          SIGNING_PASSWORD: ${{ secrets.SIGNING_PASSWORD }}
+          APARTIUM_NEXUS_USERNAME: ${{ secrets.APARTIUM_NEXUS_USERNAME }}
+          APARTIUM_NEXUS_PASSWORD: ${{ secrets.APARTIUM_NEXUS_PASSWORD }}
 
   changelog:
     needs: publish
