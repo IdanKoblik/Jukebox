@@ -30,7 +30,7 @@ jobs:
     needs: run_tests
     uses: ./.github/workflows/callable.publish.yml
     with:
-      VERSION: ${{ github.event.inputs.name | "dev" }}
+      VERSION: ${{ github.event.inputs.name || 'dev' }}
     secrets:
       OSSRH_USERNAME: ${{ secrets.OSSRH_USERNAME }}
       OSSRH_PASSWORD: ${{ secrets.OSSRH_PASSWORD }}
