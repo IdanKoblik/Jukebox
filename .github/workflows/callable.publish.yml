@@ -7,24 +7,19 @@ on:
         description: 'Version name'
         required: true
         type: string
+    secrets:
       OSSRH_USERNAME:
         required: true
-        type: string
       OSSRH_PASSWORD:
         required: true
-        type: string
       SIGNING_SECRET:
         required: true
-        type: string
       SIGNING_PASSWORD:
         required: true
-        type: string
       APARTIUM_NEXUS_USERNAME:
         required: true
-        type: string
       APARTIUM_NEXUS_PASSWORD:
         required: true
-        type: string
 
 jobs:
   publish:
