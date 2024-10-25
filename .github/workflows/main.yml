@@ -29,6 +29,16 @@ jobs:
   publish:
     needs: run_tests
     uses: ./.github/workflows/callable.publish.yml
+    with:
+      VERSION: ${{ github.event.inputs.name }}
+    secrets:
+      OSSRH_USERNAME: ${{ secrets.OSSRH_USERNAME }}
+      OSSRH_PASSWORD: ${{ secrets.OSSRH_PASSWORD }}
+      SIGNING_SECRET: ${{ secrets.SIGNING_SECRET }}
+      SIGNING_PASSWORD: ${{ secrets.SIGNING_PASSWORD }}
+      APARTIUM_NEXUS_USERNAME: ${{ secrets.APARTIUM_NEXUS_USERNAME }}
+      APARTIUM_NEXUS_PASSWORD: ${{ secrets.APARTIUM_NEXUS_PASSWORD }}
+      GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
   changelog:
     needs: publish
