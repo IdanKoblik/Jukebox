@@ -2,9 +2,6 @@ name: Run tests
 
 on:
   workflow_call:
-    secrets:
-      TEST:
-        required: true
 
 permissions:
   contents: read

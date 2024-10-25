@@ -20,8 +20,6 @@ on:
         required: true
       APARTIUM_NEXUS_PASSWORD:
         required: true
-      TEST:
-        required: true
 
 jobs:
   publish:
@@ -41,7 +39,6 @@ jobs:
 
       - name: Publish
         env:
-          TEST: ${{ secrets.TEST }}
           OSSRH_USERNAME: ${{ secrets.OSSRH_USERNAME }}
           OSSRH_PASSWORD: ${{ secrets.OSSRH_PASSWORD }}
           SIGNING_SECRET: ${{ secrets.SIGNING_SECRET }}

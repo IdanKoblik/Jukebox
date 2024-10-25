@@ -25,8 +25,6 @@ jobs:
   run_tests:
     needs: checkout
     uses: ./.github/workflows/callable.test.yml
-    secrets:
-      TEST: ${{ secrets.TEST }}
 
   publish:
     needs: run_tests
@@ -34,7 +32,6 @@ jobs:
     with:
       VERSION: ${{ github.event.inputs.name || 'dev' }}
     secrets:
-      TEST: ${{ secrets.TEST }}
       OSSRH_USERNAME: ${{ secrets.OSSRH_USERNAME }}
       OSSRH_PASSWORD: ${{ secrets.OSSRH_PASSWORD }}
       SIGNING_SECRET: ${{ secrets.SIGNING_SECRET }}
