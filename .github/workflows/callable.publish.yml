@@ -39,11 +39,11 @@ jobs:
 
       - name: Publish
         env:
-          OSSRH_USERNAME: ${{ inputs.OSSRH_USERNAME }}
-          OSSRH_PASSWORD: ${{ inputs.OSSRH_PASSWORD }}
-          SIGNING_SECRET: ${{ inputs.SIGNING_SECRET }}
-          SIGNING_PASSWORD: ${{ inputs.SIGNING_PASSWORD }}
-          APARTIUM_NEXUS_USERNAME: ${{ inputs.APARTIUM_NEXUS_USERNAME }}
-          APARTIUM_NEXUS_PASSWORD: ${{ inputs.APARTIUM_NEXUS_PASSWORD }}
+          OSSRH_USERNAME: ${{ secrets.OSSRH_USERNAME }}
+          OSSRH_PASSWORD: ${{ secrets.OSSRH_PASSWORD }}
+          SIGNING_SECRET: ${{ secrets.SIGNING_SECRET }}
+          SIGNING_PASSWORD: ${{ secrets.SIGNING_PASSWORD }}
+          APARTIUM_NEXUS_USERNAME: ${{ secrets.APARTIUM_NEXUS_USERNAME }}
+          APARTIUM_NEXUS_PASSWORD: ${{ secrets.APARTIUM_NEXUS_PASSWORD }}
           VERSION: ${{ inputs.VERSION }}
         run: ./gradlew publish
