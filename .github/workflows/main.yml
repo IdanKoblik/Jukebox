@@ -33,6 +33,7 @@ jobs:
 
   publish:
     needs: run_tests
+    if: github.event_name != 'pull_request'
     uses: ./.github/workflows/callable.publish.yml
     with:
       VERSION: ${{ github.event.inputs.name || 'dev' }}

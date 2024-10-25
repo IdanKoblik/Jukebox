@@ -31,20 +31,23 @@ jobs:
     env:
       new_version: ${{ inputs.VERSION }}
     steps:
-      - name: Checkout
-        uses: actions/checkout@v4
+      - name: Checkout repository
+        uses: actions/checkout@v3
+        with:
+          fetch-depth: true
+          token: ${{ secrets.GITHUB_TOKEN }}
 
-      - name: setup ssh client
+      - name: Install SSH Client 🔑
         uses: webfactory/ssh-agent@v0.7.0
         with:
           ssh-private-key: ${{ secrets.GH_PAGES_TOKEN }}
 
-      - name: fetch git
+      - name: Setup git
         run: |
-          git remote rm origin
-          git remote add origin git@github.com:${{ github.repository }}
-          git config --local user.email "actions@github.com"
-          git config --local user.name "GitHub Actions"
+                git remote rm origin
+                git remote add origin git@github.com:${{ github.repository }}
+                git config --local user.email "actions@github.com"
+                git config --local user.name "GitHub Actions"
 
       - name: Fetch previus version
         id: perv_version

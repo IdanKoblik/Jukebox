@@ -22,9 +22,8 @@ jobs:
 
       - name: create tag
         run: |
-          TAG_VERSION=${{ inputs.VERSION }}
-          git tag $TAG_VERSION
-          git push origin $TAG_VERSION
+          git tag $TARGET_VERSION
+          git push origin $TARGET_VERSION
 
       - name: export change and create temp file
         run: |
