@@ -93,10 +93,6 @@ jobs:
           version: ${{ inputs.VERSION }}
           perv_version: ${{ steps.perv_version.outputs.version }}
         run: |
-          git fetch origin || true
-          git checkout pages origin/pages || git checkout pages
-          git pull origin pages || true
-          
           if [ -d "$perv_version" ]; then
           echo "Creating old version directory for version $perv_version"
           git rm -rf $perv_version/
@@ -136,10 +132,6 @@ jobs:
         env:
           version: ${{ inputs.VERSION }}
         run: |
-          git fetch origin
-          git checkout pages origin/pages || git checkout pages
-          git pull origin pages || true
-          
           json_file="help-versions.json"
           
             new_element=$(cat <<EOF
