@@ -202,4 +202,12 @@ jobs:
 
       - name: Push
         run: |
+          git rm -r --cached .idea/
+          git rm -r --cached .gradle/
+          git rm -r --cached adventure/
+          git rm -r --cached artifacts/
+          git rm -r --cached build/
+          git rm -r --cached paper/
+          git rm -r --cached shared/
+          
           git push origin pages
