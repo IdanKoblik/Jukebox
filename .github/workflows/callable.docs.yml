@@ -76,6 +76,23 @@ jobs:
       - name: prepare writerside
         run: sh build-scripts/pre-writerside.sh
 
+      - name: Stash current changes
+        run: git stash
+
+      - name: Update HTML
+        run: |
+          git reset --hard
+          git fetch origin
+          git checkout -b pages origin/pages || git checkout -b pages
+          
+          git stash pop || echo "No changes to apply"
+          
+          sed -i 's|url=https://idankoblik.github.io/Jukebox/[^/]*/">|url=https://idankoblik.github.io/Jukebox/'"$version"'/">|' "index.html"
+          git add index.html
+          git commit -m "Update index.html"
+          
+          ls -la
+
       - name: Override docs
         if: steps.determine_version.outputs.is_minor == 'true'
         env:
@@ -141,18 +158,6 @@ jobs:
            git add help-versions.json
            git commit -m "Update docs in github pages branch" || echo "No changes to commit"
 
-      - name: Update HTML
-        run: |
-          git reset --hard
-          git fetch origin
-
-          sed -i 's|url=https://idankoblik.github.io/Jukebox/[^/]*/">|url=https://idankoblik.github.io/Jukebox/'"$version"'/">|' "index.html"
-          git add index.html
-          git commit -m "Update index.html"
-          
-          ls -la
-
       - name: Push
         run: |
-          git checkout -b pages origin/pages || git checkout -b pages
           git push origin pages
