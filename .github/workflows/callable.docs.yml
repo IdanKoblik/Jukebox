@@ -26,7 +26,7 @@ env:
   GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
 jobs:
-  setup:
+  upload:
     runs-on: ubuntu-latest
     env:
       new_version: ${{ inputs.VERSION }}
@@ -76,10 +76,6 @@ jobs:
       - name: prepare writerside
         run: sh build-scripts/pre-writerside.sh
 
-  upload_docs:
-    needs: setup
-    runs-on: ubuntu-latest
-    steps:
       - name: Update HTML
         run: |
           git reset --hard
@@ -97,71 +93,71 @@ jobs:
           version: ${{ inputs.VERSION }}
           perv_version: ${{ steps.perv_version.outputs.version }}
         run: |
-            git fetch origin || true
-            git checkout pages origin/pages || git checkout pages
-            git pull origin pages || true
-            
-            if [ -d "$perv_version" ]; then
-            echo "Creating old version directory for version $perv_version"
-            git rm -rf $perv_version/
-            git commit -m "Removed old version"
-            
-            git add $version/
-            json_file="help-versions.json"
-            
-            new_element=$(cat <<EOF
-            {
-            "version": "$version",
-            "url": "/\($version)\/",
-            "isCurrent": true
-            } 
-            EOF
-            )
-            
-            updated_json=$(jq --arg version "$version" '
-                 .[-1].version = $version |
-                 .[-1].url = "/\($version)\/" |
-                 .[-1].isCurrent = true |
-                 .[0:-1] |= map(.isCurrent = false)
-             ' "$json_file")
-            
-            echo "$updated_json" > "$json_file"
-            
-            git add help-versions.json
-            git commit -m "Overide docs in github pages branch" || echo "No changes to commit"
-            git push origin pages
-            else
-             echo "NOT GOOD"
-             exit 1
-            fi
+          git fetch origin || true
+          git checkout pages origin/pages || git checkout pages
+          git pull origin pages || true
+          
+          if [ -d "$perv_version" ]; then
+          echo "Creating old version directory for version $perv_version"
+          git rm -rf $perv_version/
+          git commit -m "Removed old version"
+          
+          git add $version/
+          json_file="help-versions.json"
+          
+          new_element=$(cat <<EOF
+          {
+          "version": "$version",
+          "url": "/\($version)\/",
+          "isCurrent": true
+          } 
+          EOF
+          )
+          
+          updated_json=$(jq --arg version "$version" '
+               .[-1].version = $version |
+               .[-1].url = "/\($version)\/" |
+               .[-1].isCurrent = true |
+               .[0:-1] |= map(.isCurrent = false)
+           ' "$json_file")
+          
+          echo "$updated_json" > "$json_file"
+          
+          git add help-versions.json
+          git commit -m "Overide docs in github pages branch" || echo "No changes to commit"
+          git push origin pages
+          else
+           echo "NOT GOOD"
+           exit 1
+          fi
 
       - name: Update docs
         if: steps.determine_version.outputs.is_minor == 'false'
         env:
           version: ${{ inputs.VERSION }}
         run: |
-                git fetch origin
-                git checkout pages origin/pages || git checkout pages
-                git pull origin pages || true
-                
-                json_file="help-versions.json"
-                
-                  new_element=$(cat <<EOF
-                {
-                "version": "$version",
-                "url": "/$version/",
-                "isCurrent": true
-                } 
-                EOF
-                )
-                
-                 updated_json=$(jq --argjson new "$new_element" '
-                     map(.isCurrent = false) + [$new]
-                 ' "$json_file")
-                
-                 echo "$updated_json" > "$json_file"
-                
-                 git add $version/
-                 git add help-versions.json
-                 git commit -m "Update docs in github pages branch" || echo "No changes to commit"
-                 git push origin pages
+          git fetch origin
+          git checkout pages origin/pages || git checkout pages
+          git pull origin pages || true
+          
+          json_file="help-versions.json"
+          
+            new_element=$(cat <<EOF
+          {
+          "version": "$version",
+          "url": "/$version/",
+          "isCurrent": true
+          } 
+          EOF
+          )
+          
+           updated_json=$(jq --argjson new "$new_element" '
+               map(.isCurrent = false) + [$new]
+           ' "$json_file")
+          
+           echo "$updated_json" > "$json_file"
+          
+           git add $version/
+           git add help-versions.json
+           git commit -m "Update docs in github pages branch" || echo "No changes to commit"
+           git push origin pages
