@@ -86,6 +86,8 @@ jobs:
           sed -i 's|url=https://idankoblik.github.io/Jukebox/[^/]*/">|url=https://idankoblik.github.io/Jukebox/'"$version"'/">|' "index.html"
           git add index.html
           git commit -m "Update index.html"
+          
+          ls -la
 
       - name: Override docs
         if: steps.determine_version.outputs.is_minor == 'true'
