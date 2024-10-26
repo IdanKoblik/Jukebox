@@ -80,8 +80,6 @@ jobs:
         run: |
           git reset --hard
           git fetch origin
-          git checkout -b pages origin/pages || git checkout -b pages
-          git pull origin pages || true
 
           sed -i 's|url=https://idankoblik.github.io/Jukebox/[^/]*/">|url=https://idankoblik.github.io/Jukebox/'"$version"'/">|' "index.html"
           git add index.html
@@ -123,7 +121,6 @@ jobs:
           
           git add help-versions.json
           git commit -m "Overide docs in github pages branch" || echo "No changes to commit"
-          git push origin pages
           else
            echo "NOT GOOD"
            exit 1
@@ -154,4 +151,8 @@ jobs:
            git add $version/
            git add help-versions.json
            git commit -m "Update docs in github pages branch" || echo "No changes to commit"
-           git push origin pages
+
+      - name: Push
+        run: |
+          git checkout -b pages origin/pages || git checkout -b pages
+          git push origin pages
