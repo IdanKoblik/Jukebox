@@ -197,7 +197,6 @@ jobs:
           
            echo "$updated_json" > "$json_file"
           
-           git add $version/
            git add help-versions.json
            git commit -m "Update docs in github pages branch" || echo "No changes to commit"
 
