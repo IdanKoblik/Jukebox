@@ -1,5 +1,8 @@
 # CHANGELOG
 
+# 1.0.1-t
+- [cicd] testing version for cicd
+
 ## 0.0.3
 - [paper] New module that impl adventure api
 - [adventure] Now adventure module used as abstract module for all minecraft impl's
