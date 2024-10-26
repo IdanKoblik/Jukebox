@@ -31,14 +31,12 @@ jobs:
           fetch-depth: true
           token: ${{ secrets.GITHUB_TOKEN }}
 
-      - name: Setup Deploy Key
+      - name: Setup git
         run: |
-          mkdir -p ~/.ssh
-          echo "${{ secrets.GH_PAGES_TOKEN }}" > ~/.ssh/deploy_key
-          chmod 600 ~/.ssh/deploy_key
-          eval "$(ssh-agent -s)"
-          ssh-add ~/.ssh/deploy_key
-          ssh-keyscan github.com >> ~/.ssh/known_hosts
+          git remote rm origin
+          git remote add origin git@github.com:${{ github.repository }}
+          git config --local user.email "actions@github.com"
+          git config --local user.name "GitHub Actions"
 
       - name: create tag
         run: |
