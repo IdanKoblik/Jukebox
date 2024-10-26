@@ -12,7 +12,12 @@ on:
         required: true
 
 permissions:
+  pull-requests: write
   contents: write
+  repository-projects: write
+  packages: write
+  pages: write
+  id-token: write
 
 jobs:
   export_changelog:
