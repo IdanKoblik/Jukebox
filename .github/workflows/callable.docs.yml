@@ -80,6 +80,17 @@ jobs:
     needs: setup
     runs-on: ubuntu-latest
     steps:
+      - name: Update HTML
+        run: |
+          git reset --hard
+          git fetch origin
+          git checkout -b pages origin/pages || git checkout -b pages
+          git pull origin pages || true
+
+          sed -i 's|url=https://idankoblik.github.io/Jukebox/[^/]*/">|url=https://idankoblik.github.io/Jukebox/'"$version"'/">|' "index.html"
+          git add index.html
+          git commit -m "Update index.html"
+
       - name: Override docs
         if: steps.determine_version.outputs.is_minor == 'true'
         env:
@@ -87,8 +98,8 @@ jobs:
           perv_version: ${{ steps.perv_version.outputs.version }}
         run: |
             git fetch origin || true
-            git checkout gh-pages origin/gh-pages || git checkout gh-pages
-            git pull origin gh-pages || true
+            git checkout pages origin/pages || git checkout pages
+            git pull origin pages || true
             
             if [ -d "$perv_version" ]; then
             echo "Creating old version directory for version $perv_version"
@@ -118,7 +129,7 @@ jobs:
             
             git add help-versions.json
             git commit -m "Overide docs in github pages branch" || echo "No changes to commit"
-            git push origin gh-pages
+            git push origin pages
             else
              echo "NOT GOOD"
              exit 1
@@ -130,8 +141,8 @@ jobs:
           version: ${{ inputs.VERSION }}
         run: |
                 git fetch origin
-                git checkout gh-pages origin/gh-pages || git checkout gh-pages
-                git pull origin gh-pages || true
+                git checkout pages origin/pages || git checkout pages
+                git pull origin pages || true
                 
                 json_file="help-versions.json"
                 
@@ -153,4 +164,4 @@ jobs:
                  git add $version/
                  git add help-versions.json
                  git commit -m "Update docs in github pages branch" || echo "No changes to commit"
-                 git push origin gh-pages
+                 git push origin pages
