@@ -3,5 +3,10 @@
     "version": "snapshot",
     "url": "/snapshot/",
     "isCurrent": false
+  },
+  {
+    "version": "2.0.12-t",
+    "url": "/2.0.12-t/",
+    "isCurrent": true
   }
 ]
