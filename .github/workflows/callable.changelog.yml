@@ -17,8 +17,16 @@ jobs:
     env:
       TARGET_VERSION: ${{ inputs.VERSION }}
     steps:
-      - name: Checkout
-        uses: actions/checkout@v4
+      - name: Checkout repository
+        uses: actions/checkout@v3
+        with:
+          fetch-depth: true
+          token: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Install SSH Client 🔑
+        uses: webfactory/ssh-agent@v0.7.0
+        with:
+          ssh-private-key: ${{ secrets.GH_PAGES_TOKEN }}
 
       - name: create tag
         run: |
