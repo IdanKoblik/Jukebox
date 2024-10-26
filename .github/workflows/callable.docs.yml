@@ -60,7 +60,7 @@ jobs:
         run: |
           git fetch origin
           CURRENT_VERSION=${{ steps.perv_version.outputs.version }}
-          INPUT_VERSION=${{ github.event.inputs.name }}
+          INPUT_VERSION=${{ inputs.VERSION }}
           
           CURRENT_VERSION=${CURRENT_VERSION#v}
           INPUT_VERSION=${INPUT_VERSION#v}
@@ -83,7 +83,7 @@ jobs:
       - name: Override docs
         if: steps.determine_version.outputs.is_minor == 'true'
         env:
-          version: ${{ github.event.inputs.name }}
+          version: ${{ inputs.VERSION }}
           perv_version: ${{ steps.perv_version.outputs.version }}
         run: |
             git fetch origin || true
@@ -127,7 +127,7 @@ jobs:
       - name: Update docs
         if: steps.determine_version.outputs.is_minor == 'false'
         env:
-          version: ${{ github.event.inputs.name }}
+          version: ${{ inputs.VERSION }}
         run: |
                 git fetch origin
                 git checkout gh-pages origin/gh-pages || git checkout gh-pages

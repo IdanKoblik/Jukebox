@@ -22,7 +22,11 @@ jobs:
     env:
       version: ${{ inputs.VERSION }}
     steps:
-      - name: Checkout Repository
+      - uses: actions/checkout@v3
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Handle git
         run: |
           git reset --hard
           git fetch origin
@@ -31,6 +35,6 @@ jobs:
 
       - name: Update HTML
         run: |
-          sed -i 's|url=https://cocoa-beans.apartium.net/[^/]*/">|url=https://cocoa-beans.apartium.net/'"$version"'/">|' "index.html"
+          sed -i 's|url=https://idankoblik.github.io/Jukebox/[^/]*/">|url=https://idankoblik.github.io/Jukebox/'"$version"'/">|' "index.html"
           git add index.html
           git commit -m "Update index.html"
