@@ -1,6 +1,6 @@
 # CHANGELOG
 
-## 2.0.12-t
+## 3.0.0-t
 - [cicd] testing version for cicd
 
 ## 0.0.3

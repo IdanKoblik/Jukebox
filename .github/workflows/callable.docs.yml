@@ -123,9 +123,9 @@ jobs:
           sh build-scripts/prepare-web-output.sh
 
       - name: Update HTML
+        env:
+          $version: ${{ inputs.VERSION }}
         run: |
-          git reset --hard
-          git fetch origin
           git checkout -b pages origin/pages || git checkout -b pages
           
           git stash pop || echo "No changes to apply"
@@ -169,7 +169,7 @@ jobs:
           echo "$updated_json" > "$json_file"
           
           git add help-versions.json
-          git commit -m "Overide docs in github pages branch" || echo "No changes to commit"
+          git commit -m "Override docs in github pages branch" || echo "No changes to commit"
           else
            echo "NOT GOOD"
            exit 1
