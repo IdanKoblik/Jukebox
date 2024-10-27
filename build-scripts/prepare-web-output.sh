@@ -15,14 +15,13 @@ if [ ! -d "docs" ]; then
   cp -a paper/build/docs/javadoc/* $docs/paper
   cp -a adventure/build/docs/javadoc/* $docs/adventure
 
-  git add $docs/
-  git rm -r --cached .idea/
-  git rm -r --cached .gradle/
-  git rm -r --cached adventure/
-  git rm -r --cached artifacts/
-  git rm -r --cached build/
-  git rm -r --cached paper/
-  git rm -r --cached shared/
+  git update-index --assume-unchanged .gradle/
+  git update-index --assume-unchanged .idea/
+  git update-index --assume-unchanged adventure/
+  git update-index --assume-unchanged artifacts/
+  git update-index --assume-unchanged build/
+  git update-index --assume-unchanged paper/
+  git update-index --assume-unchanged shared/
 
   git commit -m "Create docs dir"
 fi
