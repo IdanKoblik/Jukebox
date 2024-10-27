@@ -16,7 +16,6 @@ if [ ! -d $docs ]; then
   cp -a adventure/build/docs/javadoc/* $docs/adventure
 
   git add $docs/
-  git stash push -u
 
   git commit -m "Create docs dir"
 fi

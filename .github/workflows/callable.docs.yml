@@ -126,6 +126,7 @@ jobs:
         env:
           $version: ${{ inputs.VERSION }}
         run: |
+          git stash push --include-untracked
           git checkout -b pages origin/pages || git checkout -b pages
                   
           sed -i 's|url=https://idankoblik.github.io/Jukebox/[^/]*/">|url=https://idankoblik.github.io/Jukebox/'"$version"'/">|' "index.html"
