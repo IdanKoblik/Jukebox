@@ -132,6 +132,7 @@ jobs:
           git fetch origin
           
           git checkout pages origin/pages || git checkout pages
+          git reset --hard
           
           ls -la
           
