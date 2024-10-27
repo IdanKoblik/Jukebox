@@ -16,7 +16,4 @@ if [ ! -d $docs ]; then
   git add $docs/
 
   git commit -m "Output ready"
-
-  git fetch origin
-  git push origin pages
 fi
