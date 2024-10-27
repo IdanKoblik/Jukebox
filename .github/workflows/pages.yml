@@ -58,10 +58,12 @@ jobs:
             echo "::set-output name=is_minor::$([ "${INPUT[0]}" == "${CURRENT[0]}" ] && [ "${INPUT[1]}" == "${CURRENT[1]}" ] && [ "${INPUT[2]}" != "${CURRENT[2]}" ] && echo true || echo false)"
           
       - name: Update html
+        env:
+          version: ${{ steps.current_version.outputs.version }}
         run: |
           sed -i 's|url=https://idankoblik.github.io/Jukebox/[^/]*/">|url=https://idankoblik.github.io/Jukebox/'"$version"'/">|' "index.html"
-              git add index.html
-              git commit -m "Update index.html"
+          git add index.html
+          git commit -m "Update index.html"
 
       - name: Override docs
         if: steps.determine_version.outputs.is_minor == 'true'
