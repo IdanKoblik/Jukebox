@@ -121,19 +121,12 @@ jobs:
           docs: ${{ inputs.VERSION }}
         run: |
           sh build-scripts/prepare-web-output.sh
+          git clean -f
 
       - name: Update HTML
         env:
           $version: ${{ inputs.VERSION }}
         run: |
-          git rm -rf .gradle/
-          git rm -rf .idea/
-          git rm -rf adventure/
-          git rm -rf artifacts/
-          git rm -rf build/
-          git rm -rf paper/
-          git rm -rf shared/
-          
           git checkout -b pages origin/pages || git checkout -b pages
                   
           sed -i 's|url=https://idankoblik.github.io/Jukebox/[^/]*/">|url=https://idankoblik.github.io/Jukebox/'"$version"'/">|' "index.html"
