@@ -131,8 +131,8 @@ jobs:
         run: |
           git fetch origin
           
-          git checkout pages origin/pages || git checkout pages
-          git reset --hard
+          git checkout -b pages origin/pages || git checkout -b pages
+          git clean -fd
           
           ls -la
           
