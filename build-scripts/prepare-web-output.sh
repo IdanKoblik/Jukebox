@@ -18,10 +18,13 @@ if [ ! -d "docs" ]; then
   git update-index --assume-unchanged .gradle/
   git update-index --assume-unchanged .idea/
   git update-index --assume-unchanged adventure/
-  git update-index --assume-unchanged artifacts/
   git update-index --assume-unchanged build/
   git update-index --assume-unchanged paper/
   git update-index --assume-unchanged shared/
+
+
+  git update-index --assume-unchanged artifacts/
+  git add $docs/
 
   git commit -m "Create docs dir"
 fi
