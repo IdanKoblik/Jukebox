@@ -1,5 +1,7 @@
 #!/bin/bash
 
+git fetch origin
+
 if [ ! -d $docs ]; then
   mkdir $docs
   unzip artifacts/webHelpHI2-all.zip -d $docs
@@ -15,12 +17,9 @@ if [ ! -d $docs ]; then
   cp -a paper/build/docs/javadoc/* $docs/paper
   cp -a adventure/build/docs/javadoc/* $docs/adventure
 
-  git rm -rf shared
-  git rm -rf paper
-  git rm -rf adventure
-  git rm -rf Writerside
-
   git add $docs/
 
   git commit -m "Output ready"
+
+  git push origin pages
 fi
