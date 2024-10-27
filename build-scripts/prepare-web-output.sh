@@ -1,7 +1,5 @@
 #!/bin/bash
 
-git fetch origin
-
 if [ ! -d $docs ]; then
   mkdir $docs
   unzip artifacts/webHelpW2-all.zip -d $docs
@@ -19,5 +17,6 @@ if [ ! -d $docs ]; then
 
   git commit -m "Output ready"
 
+  git fetch origin
   git push origin pages
 fi
