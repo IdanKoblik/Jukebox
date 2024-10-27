@@ -6,8 +6,6 @@ if [ ! -d $docs ]; then
   mkdir $docs
   unzip artifacts/webHelpHI2-all.zip -d $docs
 
-  git rm -rf artifacts
-
   mkdir -p $docs/shared
   mkdir -p $docs/paper
   mkdir -p $docs/adventure
