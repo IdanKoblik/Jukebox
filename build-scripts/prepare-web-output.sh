@@ -18,6 +18,7 @@ if [ ! -d $docs ]; then
   git rm -rf shared
   git rm -rf paper
   git rm -rf adventure
+  git rm -rf Writerside
 
   git add $docs/
 
