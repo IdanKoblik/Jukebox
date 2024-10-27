@@ -38,7 +38,7 @@ env:
   GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
 jobs:
-  setup:
+  upload:
     runs-on: ubuntu-latest
     env:
       new_version: ${{ inputs.VERSION }}
@@ -122,88 +122,82 @@ jobs:
         run: |
           sh build-scripts/prepare-web-output.sh
 
-  publish:
-      needs: setup
-      runs-on: ubuntu-latest
-      steps:
-        - name: Update HTML
-          env:
-            $version: ${{ inputs.VERSION }}
-          run: |
-            git checkout -b pages origin/pages || git checkout -b pages
-            
-            git stash pop || echo "No changes to apply"
-            
-            sed -i 's|url=https://idankoblik.github.io/Jukebox/[^/]*/">|url=https://idankoblik.github.io/Jukebox/'"$version"'/">|' "index.html"
-            git add index.html
-            git commit -m "Update index.html"
-            
-            ls -la
+      - name: Update HTML
+        env:
+          $version: ${{ inputs.VERSION }}
+        run: |
+          git checkout -b pages origin/pages || git checkout -b pages
+                  
+          sed -i 's|url=https://idankoblik.github.io/Jukebox/[^/]*/">|url=https://idankoblik.github.io/Jukebox/'"$version"'/">|' "index.html"
+          git add index.html
+          git commit -m "Update index.html"
+          
+          ls -la
 
-        - name: Override docs
-          if: steps.determine_version.outputs.is_minor == 'true'
-          env:
-            version: ${{ inputs.VERSION }}
-            perv_version: ${{ steps.perv_version.outputs.version }}
-          run: |
-            if [ -d "$perv_version" ]; then
-            echo "Creating old version directory for version $perv_version"
-            git rm -rf $perv_version/
-            git commit -m "Removed old version"
-            
-            git add $version/
-            json_file="help-versions.json"
-            
+      - name: Override docs
+        if: steps.determine_version.outputs.is_minor == 'true'
+        env:
+          version: ${{ inputs.VERSION }}
+          perv_version: ${{ steps.perv_version.outputs.version }}
+        run: |
+          if [ -d "$perv_version" ]; then
+          echo "Creating old version directory for version $perv_version"
+          git rm -rf $perv_version/
+          git commit -m "Removed old version"
+          
+          git add $version/
+          json_file="help-versions.json"
+          
+          new_element=$(cat <<EOF
+          {
+          "version": "$version",
+          "url": "/\($version)\/",
+          "isCurrent": true
+          } 
+          EOF
+          )
+          
+          updated_json=$(jq --arg version "$version" '
+               .[-1].version = $version |
+               .[-1].url = "/\($version)\/" |
+               .[-1].isCurrent = true |
+               .[0:-1] |= map(.isCurrent = false)
+           ' "$json_file")
+          
+          echo "$updated_json" > "$json_file"
+          
+          git add help-versions.json
+          git commit -m "Override docs in github pages branch" || echo "No changes to commit"
+          else
+           echo "NOT GOOD"
+           exit 1
+          fi
+
+      - name: Update docs
+        if: steps.determine_version.outputs.is_minor == 'false'
+        env:
+          version: ${{ inputs.VERSION }}
+        run: |
+          json_file="help-versions.json"
+          
             new_element=$(cat <<EOF
-            {
-            "version": "$version",
-            "url": "/\($version)\/",
-            "isCurrent": true
-            } 
-            EOF
-            )
-            
-            updated_json=$(jq --arg version "$version" '
-                 .[-1].version = $version |
-                 .[-1].url = "/\($version)\/" |
-                 .[-1].isCurrent = true |
-                 .[0:-1] |= map(.isCurrent = false)
-             ' "$json_file")
-            
-            echo "$updated_json" > "$json_file"
-            
-            git add help-versions.json
-            git commit -m "Override docs in github pages branch" || echo "No changes to commit"
-            else
-             echo "NOT GOOD"
-             exit 1
-            fi
+          {
+          "version": "$version",
+          "url": "/$version/",
+          "isCurrent": true
+          } 
+          EOF
+          )
+          
+           updated_json=$(jq --argjson new "$new_element" '
+               map(.isCurrent = false) + [$new]
+           ' "$json_file")
+          
+           echo "$updated_json" > "$json_file"
+          
+           git add help-versions.json
+           git commit -m "Update docs in github pages branch" || echo "No changes to commit"
 
-        - name: Update docs
-          if: steps.determine_version.outputs.is_minor == 'false'
-          env:
-            version: ${{ inputs.VERSION }}
-          run: |
-            json_file="help-versions.json"
-            
-              new_element=$(cat <<EOF
-            {
-            "version": "$version",
-            "url": "/$version/",
-            "isCurrent": true
-            } 
-            EOF
-            )
-            
-             updated_json=$(jq --argjson new "$new_element" '
-                 map(.isCurrent = false) + [$new]
-             ' "$json_file")
-            
-             echo "$updated_json" > "$json_file"
-            
-             git add help-versions.json
-             git commit -m "Update docs in github pages branch" || echo "No changes to commit"
-
-        - name: Push
-          run: |
-            git push origin pages
+      - name: Push
+        run: |
+          git push origin pages

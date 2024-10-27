@@ -3,7 +3,7 @@
 git reset --hard
 git fetch origin
 
-if [ ! -d "docs" ]; then
+if [ ! -d $docs ]; then
   mkdir $docs
   unzip artifacts/webHelpHI2-all.zip -d $docs
   mkdir -p $docs/shared
