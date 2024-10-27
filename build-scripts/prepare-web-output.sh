@@ -17,5 +17,8 @@ if [ ! -d $docs ]; then
 
   git add $docs/
 
+  git clean -f
+  git clean -fd
+
   git commit -m "Create docs dir"
 fi
