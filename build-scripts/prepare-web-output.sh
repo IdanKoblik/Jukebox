@@ -4,7 +4,7 @@ git fetch origin
 
 if [ ! -d $docs ]; then
   mkdir $docs
-  unzip artifacts/webHelpHI2-all.zip -d $docs
+  unzip artifacts/webHelpW2-all.zip -d $docs
 
   mkdir -p $docs/shared
   mkdir -p $docs/paper
