@@ -93,6 +93,11 @@ jobs:
       - name: Setup Gradle
         uses: gradle/actions/setup-gradle@v3
 
+      - name: Pre writerside
+        env:
+          new_version: ${{ inputs.VERSION }}
+        run: sh build-scripts/pre-writerside.sh
+
       - name: javadoc
         env:
           OSSRH_USERNAME: ${{ secrets.OSSRH_USERNAME }}
@@ -103,11 +108,6 @@ jobs:
           APARTIUM_NEXUS_PASSWORD: ${{ secrets.APARTIUM_NEXUS_PASSWORD }}
           VERSION: ${{ inputs.VERSION }}
         run: ./gradlew build
-
-      - name: Pre writerside
-        env:
-          new_version: ${{ inputs.VERSION }}
-        run: sh build-scripts/pre-writerside.sh
 
       - name: Build Writerside docs using Docker
         uses: JetBrains/writerside-github-action@v4
@@ -122,24 +122,17 @@ jobs:
         run: |
           sh build-scripts/prepare-web-output.sh
 
-  pages:
-    needs: upload
-    runs-on: ubuntu-latest
-    steps:
-      - name: Checkout repository
-        uses: actions/checkout@v3
-        with:
-          fetch-depth: true
-          token: ${{ secrets.GITHUB_TOKEN }}
+      - name: Remove javadoc jars
+        run: find . -type f -path "*/build/libs/*.jar" | grep "javadoc" | xargs rm -f
 
       - name: Update HTML
         env:
           $version: ${{ inputs.VERSION }}
         run: |
-          git fetch origin
           git reset -hard
+          git fetch origin
+          
           git checkout -b pages origin/pages || git checkout -b pages
-          git pull origin gh-pages || true
                   
           sed -i 's|url=https://idankoblik.github.io/Jukebox/[^/]*/">|url=https://idankoblik.github.io/Jukebox/'"$version"'/">|' "index.html"
           git add index.html
