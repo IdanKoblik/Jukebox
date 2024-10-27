@@ -60,6 +60,8 @@ jobs:
                 git remote add origin git@github.com:${{ github.repository }}
                 git config --local user.email "actions@github.com"
                 git config --local user.name "GitHub Actions"
+          
+                git rm -r --cached .idea
 
       - name: Fetch previus version
         id: perv_version
@@ -131,9 +133,9 @@ jobs:
         run: |
           git fetch origin
           
-          git clean -fd
           git checkout -b pages origin/pages || git checkout -b pages
-          
+          git clean -fd
+
           ls -la
           
           sed -i 's|url=https://idankoblik.github.io/Jukebox/[^/]*/">|url=https://idankoblik.github.io/Jukebox/'"$version"'/">|' "index.html"
