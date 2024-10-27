@@ -17,8 +17,12 @@ if [ ! -d $docs ]; then
 
   git add $docs/
 
-  git clean -f
-  git clean -fd
+  git rm .gradle/
+  git rm .idea/
+  git rm adventure/
+  git rm build/
+  git rm paper/
+  git rm shared/
 
   git commit -m "Create docs dir"
 fi
