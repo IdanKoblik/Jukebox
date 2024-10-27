@@ -129,16 +129,7 @@ jobs:
         env:
           $version: ${{ inputs.VERSION }}
         run: |
-          git reset --hard
           git fetch origin
-          
-          git update-index --assume-unchanged .idea/
-          git update-index --assume-unchanged .gradle/
-          git update-index --assume-unchanged adventure/
-          git update-index --assume-unchanged artifacts/
-          git update-index --assume-unchanged build/
-          git update-index --assume-unchanged paper/
-          git update-index --assume-unchanged shared/
           
           git checkout -b pages origin/pages || git checkout -b pages
                   
