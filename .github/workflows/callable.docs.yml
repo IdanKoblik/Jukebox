@@ -134,9 +134,8 @@ jobs:
             cp -a adventure/build/docs/javadoc/* $docs/adventure
           
             git add $docs/
-          
             git commit -m "Output ready"
           
             git fetch origin            
-            git push origin pages || git push pages
+            git push origin pages || git push -u origin pages
           fi
