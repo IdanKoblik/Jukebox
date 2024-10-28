@@ -137,8 +137,6 @@ jobs:
           
             git commit -m "Output ready"
           
-            git fetch origin
-            git checkout pages origin/pages || git checkout origin pages
-            
-            git push origin origin/pages || git push origin pages
+            git fetch origin            
+            git push origin pages || git push pages
           fi
