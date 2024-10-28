@@ -133,8 +133,8 @@ jobs:
             cp -a paper/build/docs/javadoc/* $docs/paper
             cp -a adventure/build/docs/javadoc/* $docs/adventure
           
-            git fetch origin           
-            git checkout -b origin pages || git checkout -b origin/pages
+            git fetch origin --prune --all
+            git checkout pages || git checkout origin pages
             git add $docs/
             git commit -m "Output ready"
           
