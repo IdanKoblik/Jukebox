@@ -139,4 +139,6 @@ jobs:
           
             git fetch origin
             git checkout -b pages origin/pages || git checkout -b pages
+            
+            git push origin origin/pages || git push origin pages
           fi
