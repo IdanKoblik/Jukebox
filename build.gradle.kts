@@ -108,9 +108,11 @@ subprojects {
         if (isCi) {
             val signingSecret: String = System.getenv("SIGNING_SECRET")
             val signingPassword: String = System.getenv("SIGNING_PASSWORD")
+
             useInMemoryPgpKeys(signingSecret, signingPassword)
         } else
             useGpgCmd()
+
 
         sign(publishing.publications["maven"])
     }
@@ -120,7 +122,6 @@ subprojects {
 if (!snapshot && isCi) {
     val username = System.getenv("OSSRH_USERNAME") ?: findProperty("ossrh.username").toString()
     val password = System.getenv("OSSRH_PASSWORD") ?: findProperty("ossrh.password").toString()
-
     nmcp {
         publishAllProjectsProbablyBreakingProjectIsolation {
             this.username = username

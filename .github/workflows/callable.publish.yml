@@ -1,7 +1,25 @@
-name: Publish to nexus
+name: Publish library
 
 on:
   workflow_call:
+    inputs:
+      VERSION:
+        description: 'Version name'
+        required: true
+        type: string
+    secrets:
+      OSSRH_USERNAME:
+        required: true
+      OSSRH_PASSWORD:
+        required: true
+      SIGNING_SECRET:
+        required: true
+      SIGNING_PASSWORD:
+        required: true
+      APARTIUM_NEXUS_USERNAME:
+        required: true
+      APARTIUM_NEXUS_PASSWORD:
+        required: true
 
 jobs:
   publish:
@@ -20,13 +38,17 @@ jobs:
         uses: gradle/actions/setup-gradle@v3
 
       - name: Publish
-        run: ./gradlew publish
         env:
           OSSRH_USERNAME: ${{ secrets.OSSRH_USERNAME }}
           OSSRH_PASSWORD: ${{ secrets.OSSRH_PASSWORD }}
           SIGNING_SECRET: ${{ secrets.SIGNING_SECRET }}
           SIGNING_PASSWORD: ${{ secrets.SIGNING_PASSWORD }}
-          VERSION: ${{ github.event.inputs.name }}
           APARTIUM_NEXUS_USERNAME: ${{ secrets.APARTIUM_NEXUS_USERNAME }}
           APARTIUM_NEXUS_PASSWORD: ${{ secrets.APARTIUM_NEXUS_PASSWORD }}
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          VERSION: ${{ inputs.VERSION }}
+        run: |
+          if [ "$GITHUB_EVENT_NAME" != "workflow_dispatch" ]; then
+            ./gradlew publish
+          else
+            ./gradlew publishAllPublicationsToCentralPortal
+          fi

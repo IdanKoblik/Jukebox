@@ -7,13 +7,20 @@ on:
   push:
     branches:
       - master
-      - '25-rewrite-cicd'
   workflow_dispatch:
     inputs:
       name:
         description: 'Version name'
         required: true
         type: string
+
+permissions:
+  pull-requests: write
+  contents: write
+  repository-projects: write
+  packages: write
+  pages: write
+  id-token: write
 
 jobs:
   checkout:
@@ -27,21 +34,46 @@ jobs:
   run_tests:
     needs: checkout
     uses: ./.github/workflows/callable.test.yml
+    secrets:
+      OSSRH_USERNAME: ${{ secrets.OSSRH_USERNAME }}
+      OSSRH_PASSWORD: ${{ secrets.OSSRH_PASSWORD }}
+      SIGNING_SECRET: ${{ secrets.SIGNING_SECRET }}
+      SIGNING_PASSWORD: ${{ secrets.SIGNING_PASSWORD }}
 
   publish:
     needs: run_tests
+    if: github.event_name != 'pull_request'
     uses: ./.github/workflows/callable.publish.yml
+    with:
+      VERSION: ${{ github.event.inputs.name || 'dev' }}
+    secrets:
+      OSSRH_USERNAME: ${{ secrets.OSSRH_USERNAME }}
+      OSSRH_PASSWORD: ${{ secrets.OSSRH_PASSWORD }}
+      SIGNING_SECRET: ${{ secrets.SIGNING_SECRET }}
+      SIGNING_PASSWORD: ${{ secrets.SIGNING_PASSWORD }}
+      APARTIUM_NEXUS_USERNAME: ${{ secrets.APARTIUM_NEXUS_USERNAME }}
+      APARTIUM_NEXUS_PASSWORD: ${{ secrets.APARTIUM_NEXUS_PASSWORD }}
 
   changelog:
     needs: publish
     if: github.event_name == 'workflow_dispatch'
     uses: ./.github/workflows/callable.changelog.yml
+    with:
+      VERSION: ${{ github.event.inputs.name }}
+    secrets:
+      GH_PAGES_TOKEN: ${{ secrets.GH_PAGES_TOKEN }}
 
   docs:
-    needs: publish
-    uses: ./.github/workflows/callable.docs.yml
-
-  html:
-    needs: docs
+    needs: changelog
     if: github.event_name == 'workflow_dispatch'
-    uses: ./.github/workflows/callable.update_html.yml
+    uses: ./.github/workflows/callable.docs.yml
+    with:
+      VERSION: ${{ github.event.inputs.name }}
+    secrets:
+      GH_PAGES_TOKEN: ${{ secrets.GH_PAGES_TOKEN }}
+      OSSRH_USERNAME: ${{ secrets.OSSRH_USERNAME }}
+      OSSRH_PASSWORD: ${{ secrets.OSSRH_PASSWORD }}
+      SIGNING_SECRET: ${{ secrets.SIGNING_SECRET }}
+      SIGNING_PASSWORD: ${{ secrets.SIGNING_PASSWORD }}
+      APARTIUM_NEXUS_USERNAME: ${{ secrets.APARTIUM_NEXUS_USERNAME }}
+      APARTIUM_NEXUS_PASSWORD: ${{ secrets.APARTIUM_NEXUS_PASSWORD }}

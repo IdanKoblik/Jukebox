@@ -2,6 +2,15 @@ name: Run tests
 
 on:
   workflow_call:
+    secrets:
+      OSSRH_USERNAME:
+        required: true
+      OSSRH_PASSWORD:
+        required: true
+      SIGNING_SECRET:
+        required: true
+      SIGNING_PASSWORD:
+        required: true
 
 permissions:
   contents: read
@@ -21,14 +30,11 @@ jobs:
       - name: Run integration tests
         run: ./gradlew test
         env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           OSSRH_USERNAME: ${{ secrets.OSSRH_USERNAME }}
           OSSRH_PASSWORD: ${{ secrets.OSSRH_PASSWORD }}
           SIGNING_SECRET: ${{ secrets.SIGNING_SECRET }}
           SIGNING_PASSWORD: ${{ secrets.SIGNING_PASSWORD }}
-          VERSION: ${{ github.event.inputs.name }}
-          APARTIUM_NEXUS_USERNAME: ${{ secrets.APARTIUM_NEXUS_USERNAME }}
-          APARTIUM_NEXUS_PASSWORD: ${{ secrets.APARTIUM_NEXUS_PASSWORD }}
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
       - name: Publish Test Report
         uses: mikepenz/action-junit-report@v4

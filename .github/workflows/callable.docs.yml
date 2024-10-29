@@ -2,6 +2,26 @@ name: Update docs
 
 on:
   workflow_call:
+    inputs:
+      VERSION:
+        description: 'Version name'
+        required: true
+        type: string
+    secrets:
+      GH_PAGES_TOKEN:
+        required: true
+      OSSRH_USERNAME:
+        required: true
+      OSSRH_PASSWORD:
+        required: true
+      SIGNING_SECRET:
+        required: true
+      SIGNING_PASSWORD:
+        required: true
+      APARTIUM_NEXUS_USERNAME:
+        required: true
+      APARTIUM_NEXUS_PASSWORD:
+        required: true
 
 permissions:
   pull-requests: write
@@ -18,17 +38,23 @@ env:
   GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
 jobs:
-  setup:
+  upload:
     runs-on: ubuntu-latest
     env:
-      new_version: ${{ github.event.inputs.name }}
+      new_version: ${{ inputs.VERSION }}
     steps:
-      - name: setup ssh client
+      - name: Checkout repository
+        uses: actions/checkout@v3
+        with:
+          fetch-depth: true
+          token: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Install SSH Client 🔑
         uses: webfactory/ssh-agent@v0.7.0
         with:
           ssh-private-key: ${{ secrets.GH_PAGES_TOKEN }}
 
-      - name: fetch git
+      - name: Setup git
         run: |
           git remote rm origin
           git remote add origin git@github.com:${{ github.repository }}
@@ -46,7 +72,7 @@ jobs:
         run: |
           git fetch origin
           CURRENT_VERSION=${{ steps.perv_version.outputs.version }}
-          INPUT_VERSION=${{ github.event.inputs.name }}
+          INPUT_VERSION=${{ inputs.VERSION }}
           
           CURRENT_VERSION=${CURRENT_VERSION#v}
           INPUT_VERSION=${INPUT_VERSION#v}
@@ -59,84 +85,132 @@ jobs:
           
           echo "::set-output name=is_minor::$([ "${INPUT[0]}" == "${CURRENT[0]}" ] && [ "${INPUT[1]}" == "${CURRENT[1]}" ] && [ "${INPUT[2]}" != "${CURRENT[2]}" ] && echo true || echo false)"
 
-      - name: prepare writerside
+      - uses: actions/setup-java@v3
+        with:
+          java-version: '17'
+          distribution: 'adopt'
+
+      - name: Setup Gradle
+        uses: gradle/actions/setup-gradle@v3
+
+      - name: Pre writerside
+        env:
+          new_version: ${{ inputs.VERSION }}
         run: sh build-scripts/pre-writerside.sh
 
-  upload_docs:
-    needs: setup
-    runs-on: ubuntu-latest
-    steps:
+      - name: javadoc
+        env:
+          OSSRH_USERNAME: ${{ secrets.OSSRH_USERNAME }}
+          OSSRH_PASSWORD: ${{ secrets.OSSRH_PASSWORD }}
+          SIGNING_SECRET: ${{ secrets.SIGNING_SECRET }}
+          SIGNING_PASSWORD: ${{ secrets.SIGNING_PASSWORD }}
+          APARTIUM_NEXUS_USERNAME: ${{ secrets.APARTIUM_NEXUS_USERNAME }}
+          APARTIUM_NEXUS_PASSWORD: ${{ secrets.APARTIUM_NEXUS_PASSWORD }}
+          VERSION: ${{ inputs.VERSION }}
+        run: ./gradlew build
+
+      - name: Build Writerside docs using Docker
+        uses: JetBrains/writerside-github-action@v4
+        with:
+          instance: ${{ env.INSTANCE }}
+          artifact: ${{ env.ARTIFACT }}
+          docker-version: ${{ env.DOCKER_VERSION }}
+
+      - name: run docs script
+        env:
+          docs: ${{ inputs.VERSION }}
+        run: |
+          if [ ! -d $docs ]; then
+            mkdir $docs
+            unzip artifacts/webHelpW2-all.zip -d $docs
+          
+            mkdir -p $docs/shared
+            mkdir -p $docs/paper
+            mkdir -p $docs/adventure
+          
+            ls $docs/
+            cp -a shared/build/docs/javadoc/* $docs/shared
+            cp -a paper/build/docs/javadoc/* $docs/paper
+            cp -a adventure/build/docs/javadoc/* $docs/adventure
+          
+            git fetch origin
+            git checkout gh-pages || git checkout origin gh-pages
+            git add $docs/
+            git commit -m "Output ready"
+          
+            git push -u origin gh-pages
+          fi
+
       - name: Override docs
         if: steps.determine_version.outputs.is_minor == 'true'
         env:
           version: ${{ github.event.inputs.name }}
           perv_version: ${{ steps.perv_version.outputs.version }}
         run: |
-            git fetch origin || true
-            git checkout gh-pages origin/gh-pages || git checkout gh-pages
-            git pull origin gh-pages || true
-            
-            if [ -d "$perv_version" ]; then
-            echo "Creating old version directory for version $perv_version"
-            git rm -rf $perv_version/
-            git commit -m "Removed old version"
-            
-            git add $version/
-            json_file="help-versions.json"
-            
-            new_element=$(cat <<EOF
-            {
-            "version": "$version",
-            "url": "/\($version)\/",
-            "isCurrent": true
-            } 
-            EOF
-            )
-            
-            updated_json=$(jq --arg version "$version" '
-                 .[-1].version = $version |
-                 .[-1].url = "/\($version)\/" |
-                 .[-1].isCurrent = true |
-                 .[0:-1] |= map(.isCurrent = false)
-             ' "$json_file")
-            
-            echo "$updated_json" > "$json_file"
-            
-            git add help-versions.json
-            git commit -m "Overide docs in github pages branch" || echo "No changes to commit"
-            git push origin gh-pages
-            else
-             echo "NOT GOOD"
-             exit 1
-            fi
+          git fetch origin || true
+          git checkout gh-pages origin/gh-pages || git checkout gh-pages
+          git pull origin gh-pages || true
+          
+          if [ -d "$perv_version" ]; then
+          echo "Creating old version directory for version $perv_version"
+          git rm -rf $perv_version/
+          git commit -m "Removed old version"
+          
+          git add $version/
+          json_file="help-versions.json"
+          
+          new_element=$(cat <<EOF
+          {
+          "version": "$version",
+          "url": "/\($version)\/",
+          "isCurrent": true
+          } 
+          EOF
+          )
+          
+          updated_json=$(jq --arg version "$version" '
+               .[-1].version = $version |
+               .[-1].url = "/\($version)\/" |
+               .[-1].isCurrent = true |
+               .[0:-1] |= map(.isCurrent = false)
+           ' "$json_file")
+          
+          echo "$updated_json" > "$json_file"
+          
+          git add help-versions.json
+          git commit -m "Overide docs in github pages branch" || echo "No changes to commit"
+          git push origin gh-pages
+          else
+           echo "NOT GOOD"
+           exit 1
+          fi
 
       - name: Update docs
         if: steps.determine_version.outputs.is_minor == 'false'
         env:
           version: ${{ github.event.inputs.name }}
         run: |
-                git fetch origin
-                git checkout gh-pages origin/gh-pages || git checkout gh-pages
-                git pull origin gh-pages || true
-                
-                json_file="help-versions.json"
-                
-                  new_element=$(cat <<EOF
-                {
-                "version": "$version",
-                "url": "/$version/",
-                "isCurrent": true
-                } 
-                EOF
-                )
-                
-                 updated_json=$(jq --argjson new "$new_element" '
-                     map(.isCurrent = false) + [$new]
-                 ' "$json_file")
-                
-                 echo "$updated_json" > "$json_file"
-                
-                 git add $version/
-                 git add help-versions.json
-                 git commit -m "Update docs in github pages branch" || echo "No changes to commit"
-                 git push origin gh-pages
+          git fetch origin
+          git checkout gh-pages origin/gh-pages || git checkout gh-pages
+          git pull origin gh-pages || true
+          
+          json_file="help-versions.json"
+          
+            new_element=$(cat <<EOF
+          {
+          "version": "$version",
+          "url": "/$version/",
+          "isCurrent": true
+          } 
+          EOF
+          )
+          
+           updated_json=$(jq --argjson new "$new_element" '
+               map(.isCurrent = false) + [$new]
+           ' "$json_file")
+          
+           echo "$updated_json" > "$json_file"
+          
+           git add help-versions.json
+           git commit -m "Update docs in github pages branch" || echo "No changes to commit"
+           git push origin gh-pages

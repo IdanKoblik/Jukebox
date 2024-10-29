@@ -2,21 +2,39 @@ name: Export changelog
 
 on:
   workflow_call:
+    inputs:
+      VERSION:
+        description: 'Version name'
+        required: true
+        type: string
+    secrets:
+      GH_PAGES_TOKEN:
+        required: true
 
 permissions:
-  contents: read
+  contents: write
 
 jobs:
   export_changelog:
     runs-on: ubuntu-latest
     env:
-      TARGET_VERSION: ${{ github.event.inputs.name }}
+      TARGET_VERSION: ${{ inputs.VERSION }}
     steps:
+      - name: Checkout repository
+        uses: actions/checkout@v3
+        with:
+          fetch-depth: true
+          token: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Install SSH Client 🔑
+        uses: webfactory/ssh-agent@v0.9.0
+        with:
+          ssh-private-key: ${{ secrets.GH_PAGES_TOKEN }}
+
       - name: create tag
         run: |
-          TAG_VERSION=${{ github.event.inputs.name }}
-          git tag $TAG_VERSION
-          git push origin $TAG_VERSION
+          git tag $TARGET_VERSION
+          git push origin $TARGET_VERSION
 
       - name: export change and create temp file
         run: |
@@ -82,5 +100,5 @@ jobs:
       - name: release
         uses: softprops/action-gh-release@v2
         with:
-            tag_name: ${{ github.event.inputs.name }}
+            tag_name: ${{ inputs.VERSION }}
             body_path: CHANGELOG_temp.md
