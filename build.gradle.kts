@@ -120,11 +120,13 @@ subprojects {
 }
 
 if (!snapshot && isCi) {
+    val username = System.getenv("OSSRH_USERNAME") ?: findProperty("ossrh.username").toString()
+    val password = System.getenv("OSSRH_PASSWORD") ?: findProperty("ossrh.password").toString()
     nmcp {
         publishAllProjectsProbablyBreakingProjectIsolation {
-            username = System.getenv("OSSRH_USERNAME") ?: findProperty("ossrh.username").toString()
-            password = System.getenv("OSSRH_PASSWORD") ?: findProperty("ossrh.password").toString()
-            publicationType = "AUTOMATIC"
+            this.username = username
+            this.password = password
+            this.publicationType = "AUTOMATIC"
         }
     }
 }
