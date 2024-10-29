@@ -136,10 +136,6 @@ jobs:
       - name: push
         run: git push gh-pages
 
-  deploy:
-    needs: upload
-    runs-on: ubuntu-latest
-    steps:
       - name: Deploy to GitHub Pages
         uses: peaceiris/actions-gh-pages@v3
         with:
