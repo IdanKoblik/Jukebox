@@ -31,13 +31,13 @@ jobs:
         id: perv_version
         run: |
           git fetch origin
-          echo "::set-output name=version::$(git tag -l | sort -V | tail -n 2)"
+          echo "::set-output name=version::$(git tag -l | sort -V | tail -n 2 | head -n 1)"
 
       - name: Fetch current version
         id: current_version
         run: |
           git fetch origin
-          echo "::set-output name=version::$(git tag -l | sort -V | tail -n 2 | head -n 1)"
+          echo "::set-output name=version::$(git tag -l | sort -V | tail -n 1)"
 
       - name: Determine version changes
         id: determine_version
