@@ -1,0 +1,1 @@
+packageSearchIndex = [{"l":"All Packages","u":"allpackages-index.html"},{"l":"io.github.idankoblik.jukebox"},{"l":"io.github.idankoblik.jukebox.manager"}];updateSearchResults();
