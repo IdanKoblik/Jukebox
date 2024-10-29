@@ -717,6 +717,11 @@
   {
     "version": "44.0.0-t",
     "url": "/44.0.0-t/",
+    "isCurrent": false
+  },
+  {
+    "version": "44.0.0-t",
+    "url": "/44.0.0-t/",
     "isCurrent": true
   }
 ]
