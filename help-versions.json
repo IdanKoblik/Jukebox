@@ -17,6 +17,11 @@
   {
     "version": "32.0.0-t",
     "url": "/32.0.0-t/",
+    "isCurrent": false
+  },
+  {
+    "version": "43.0.0-t",
+    "url": "/43.0.0-t/",
     "isCurrent": true
   }
 ]
