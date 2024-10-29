@@ -61,7 +61,7 @@ jobs:
           git config --local user.email "actions@github.com"
           git config --local user.name "GitHub Actions"
 
-      - name: Fetch previous version
+      - name: Fetch previus version
         id: perv_version
         run: |
           git fetch origin
@@ -141,9 +141,76 @@ jobs:
             git push -u origin gh-pages
           fi
 
-      - name: Update docs
+      - name: Override docs
+        if: steps.determine_version.outputs.is_minor == 'true'
         env:
           version: ${{ github.event.inputs.name }}
           perv_version: ${{ steps.perv_version.outputs.version }}
-          is_minor: steps.determine_version.outputs.is_minor
-        run: sh build-scripts/docs.sh
+        run: |
+          git fetch origin || true
+          git checkout gh-pages origin/gh-pages || git checkout gh-pages
+          git pull origin gh-pages || true
+          
+          if [ -d "$perv_version" ]; then
+          echo "Creating old version directory for version $perv_version"
+          git rm -rf $perv_version/
+          git commit -m "Removed old version"
+          
+          git add $version/
+          json_file="help-versions.json"
+          
+          new_element=$(cat <<EOF
+          {
+          "version": "$version",
+          "url": "/\($version)\/",
+          "isCurrent": true
+          } 
+          EOF
+          )
+          
+          updated_json=$(jq --arg version "$version" '
+               .[-1].version = $version |
+               .[-1].url = "/\($version)\/" |
+               .[-1].isCurrent = true |
+               .[0:-1] |= map(.isCurrent = false)
+           ' "$json_file")
+          
+          echo "$updated_json" > "$json_file"
+          
+          git add help-versions.json
+          git commit -m "Overide docs in github pages branch" || echo "No changes to commit"
+          git push origin gh-pages
+          else
+           echo "NOT GOOD"
+           exit 1
+          fi
+
+      - name: Update docs
+        if: steps.determine_version.outputs.is_minor == 'false'
+        env:
+          version: ${{ github.event.inputs.name }}
+        run: |
+          git fetch origin
+          git checkout gh-pages origin/gh-pages || git checkout gh-pages
+          git pull origin gh-pages || true
+          
+          json_file="help-versions.json"
+          
+            new_element=$(cat <<EOF
+          {
+          "version": "$version",
+          "url": "/$version/",
+          "isCurrent": true
+          } 
+          EOF
+          )
+          
+           updated_json=$(jq --argjson new "$new_element" '
+               map(.isCurrent = false) + [$new]
+           ' "$json_file")
+          
+           echo "$updated_json" > "$json_file"
+          
+           git add help-versions.json
+           git commit -m "Update docs in github pages branch" || echo "No changes to commit"
+           git push origin gh-pages
