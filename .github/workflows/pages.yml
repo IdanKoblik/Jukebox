@@ -134,7 +134,9 @@ jobs:
            git commit -m "Update docs in github pages branch" || true          
 
       - name: push
-        run: git push gh-pages
+        run: |
+          git fetch origin
+          git push origin gh-pages
 
       - name: Deploy to GitHub Pages
         uses: peaceiris/actions-gh-pages@v3
