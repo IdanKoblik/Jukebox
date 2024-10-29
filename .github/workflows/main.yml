@@ -2,10 +2,11 @@ name: Main pipeline workflow
 
 on:
   pull_request:
+    branches:
+      - master
   push:
     branches:
       - master
-      - '25-rewrite-cicd'
   workflow_dispatch:
     inputs:
       name:
