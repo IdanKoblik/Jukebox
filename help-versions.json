@@ -7,6 +7,11 @@
   {
     "version": "45.0.0-t",
     "url": "/45.0.0-t/",
+    "isCurrent": false
+  },
+  {
+    "version": "48.0.0-t",
+    "url": "/48.0.0-t/",
     "isCurrent": true
   }
 ]
