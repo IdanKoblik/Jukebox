@@ -1,7 +1,7 @@
 # CHANGELOG
 
-## 48.0.0-t
-- [cicd] testing version for cicd
+## 0.0.4
+- [cicd] Rewrite the whole cicd
 
 ## 0.0.3
 - [paper] New module that impl adventure api
