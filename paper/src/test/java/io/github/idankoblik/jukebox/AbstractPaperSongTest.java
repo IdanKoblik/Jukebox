@@ -2,9 +2,9 @@ package io.github.idankoblik.jukebox;
 
 import be.seeseemelk.mockbukkit.WorldMock;
 import be.seeseemelk.mockbukkit.entity.PlayerMock;
-import io.github.idankoblik.jukebox.dummies.SongEndListenerDummy;
-import io.github.idankoblik.jukebox.dummies.SongStageChangeListenerDummy;
-import io.github.idankoblik.jukebox.dummies.SongStartListenerDummy;
+import io.github.idankoblik.jukebox.SongEndListenerDummy;
+import io.github.idankoblik.jukebox.SongStageChangeListenerDummy;
+import io.github.idankoblik.jukebox.SongStartListenerDummy;
 import io.github.idankoblik.jukebox.events.EventManager;
 import net.apartium.cocoabeans.space.Position;
 import org.bukkit.Location;

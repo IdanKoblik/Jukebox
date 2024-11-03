@@ -1,6 +1,5 @@
-package io.github.idankoblik.jukebox.dummies;
+package io.github.idankoblik.jukebox;
 
-import io.github.idankoblik.jukebox.SongState;
 import io.github.idankoblik.jukebox.events.SongStageChangeEvent;
 
 /**

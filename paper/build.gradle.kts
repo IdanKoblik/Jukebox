@@ -12,6 +12,7 @@ repositories {
 dependencies {
     implementation(project.project(":adventure"))
     implementation(project.project(":shared"))
+    testImplementation(testFixtures(project.project(":shared")))
 
     compileOnly("org.github.paperspigot:paperspigot-api:${findProperty("paperspigot.version")}")
     compileOnly("net.kyori:adventure-api:${project.findProperty("kyori.version")}")

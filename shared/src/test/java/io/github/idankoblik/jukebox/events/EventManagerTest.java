@@ -2,7 +2,7 @@ package io.github.idankoblik.jukebox.events;
 
 import io.github.idankoblik.jukebox.NBSNote;
 import io.github.idankoblik.jukebox.NBSSong;
-import io.github.idankoblik.jukebox.dummies.SongStartListenerDummy;
+import io.github.idankoblik.jukebox.SongStartListenerDummy;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
