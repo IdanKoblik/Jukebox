@@ -1,5 +1,6 @@
 package io.github.idankoblik.jukebox;
 
+import org.intellij.lang.annotations.Subst;
 import org.jetbrains.annotations.NotNull;
 
 /**
@@ -31,6 +32,7 @@ public enum NoteInstrument {
      * Returns the name of the note key
      * @return the name of the note key
      */
+    @Subst("")
     public @NotNull String getName() {
         return name;
     }

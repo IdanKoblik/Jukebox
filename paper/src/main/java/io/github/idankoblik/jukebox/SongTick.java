@@ -14,7 +14,7 @@ import java.util.concurrent.CompletableFuture;
 /* package-private */ class SongTick extends BukkitRunnable {
     private final List<NBSNote> notes;
     private final PaperSong abstractSong;
-    private final CompletableFuture<NBSSong> future;
+    private final CompletableFuture<NBSSong> completionSignal;
     private int tick;
     private final float tickLengthInSeconds;
 
@@ -22,12 +22,12 @@ import java.util.concurrent.CompletableFuture;
      *
      * @param notes the notes to be handled
      * @param abstractSong the song to be handled
-     * @param future a future of the song
+     * @param completionSignal a future of the song
      */
-    public SongTick(@NotNull List<NBSNote> notes, PaperSong abstractSong, CompletableFuture<NBSSong> future) {
+    public SongTick(@NotNull List<NBSNote> notes, PaperSong abstractSong, CompletableFuture<NBSSong> completionSignal) {
         this.notes = notes;
         this.abstractSong = abstractSong;
-        this.future = future;
+        this.completionSignal = completionSignal;
         this.tick = 0;
         this.tickLengthInSeconds = 20f / abstractSong.song.getTempo();
     }
@@ -77,7 +77,7 @@ import java.util.concurrent.CompletableFuture;
      * Completing the song
      */
     private void completeSong() {
-        future.complete(abstractSong.song);
+        completionSignal.complete(abstractSong.song);
         cancel();
     }
 }
