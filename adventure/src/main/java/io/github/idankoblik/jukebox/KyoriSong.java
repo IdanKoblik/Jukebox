@@ -17,7 +17,7 @@ import java.util.concurrent.CompletableFuture;
  * @param <P> the platform of the song
  * @see AbstractSong
  */
-public abstract class KyoriSong<P extends Platform> extends AbstractSong<P> {
+public abstract class KyoriSong<P extends KyoriPlatform> extends AbstractSong<P> {
 
     private final Audience audience;
     private final Position position;
