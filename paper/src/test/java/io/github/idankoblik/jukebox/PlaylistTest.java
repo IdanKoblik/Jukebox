@@ -28,7 +28,7 @@ public class PlaylistTest extends AbstractPaperSongTest {
 
     @Override
     protected void initializeSongs() {
-        this.song = new PaperSong(plugin, 1F, this.nbsSong, Key.key(DEFAULT_NOTE), player, null);
+        this.song = new PaperSong(plugin, 1F, this.wrapper, Key.key(DEFAULT_NOTE), player, null);
 
         this.positionPlaylist = new Playlist<>();
         this.playlist = new Playlist<>();

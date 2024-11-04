@@ -39,7 +39,7 @@ public class SongTest extends AbstractPaperSongTest {
 
     @Override
     protected void initializeSongs() {
-        this.song = new PaperSong(plugin, 1F, this.nbsSong, Key.key(DEFAULT_NOTE), player, null);
-        this.locationSong = new PaperSong(plugin, 1, this.nbsSong, Key.key(DEFAULT_NOTE), world, musicPosition);
+        this.song = new PaperSong(plugin, 1F, this.wrapper, Key.key(DEFAULT_NOTE), player, null);
+        this.locationSong = new PaperSong(plugin, 1, this.wrapper, Key.key(DEFAULT_NOTE), world, musicPosition);
     }
 }

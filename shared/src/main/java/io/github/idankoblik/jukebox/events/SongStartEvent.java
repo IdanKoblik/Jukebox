@@ -1,6 +1,6 @@
 package io.github.idankoblik.jukebox.events;
 
-import io.github.idankoblik.jukebox.NBSSong;
+import io.github.idankoblik.jukebox.NBSSequence;
 import org.jetbrains.annotations.ApiStatus;
 
 /**
@@ -12,7 +12,7 @@ public class SongStartEvent extends SongEvent {
     /**
      * {@inheritDoc}
      */
-    public SongStartEvent(NBSSong song) {
+    public SongStartEvent(NBSSequence song) {
         super(song);
     }
 

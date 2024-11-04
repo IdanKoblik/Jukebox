@@ -1,6 +1,6 @@
 package io.github.idankoblik.jukebox.events;
 
-import io.github.idankoblik.jukebox.NBSSong;
+import io.github.idankoblik.jukebox.NBSSequence;
 import io.github.idankoblik.jukebox.SongState;
 import org.jetbrains.annotations.ApiStatus;
 
@@ -17,7 +17,7 @@ public class SongStageChangeEvent extends SongEvent {
      * @param previous the previous stage of the song
      * @param current the current stage of the song
      */
-    public SongStageChangeEvent(NBSSong song, SongState previous, SongState current) {
+    public SongStageChangeEvent(NBSSequence song, SongState previous, SongState current) {
         super(song);
         this.previous = previous;
         this.current = current;

@@ -1,6 +1,6 @@
 package io.github.idankoblik.jukebox.events;
 
-import io.github.idankoblik.jukebox.NBSSong;
+import io.github.idankoblik.jukebox.NBSSequence;
 import org.jetbrains.annotations.ApiStatus;
 
 /**
@@ -9,13 +9,13 @@ import org.jetbrains.annotations.ApiStatus;
 @ApiStatus.AvailableSince("0.0.3")
 public abstract class SongEvent implements Event {
 
-    protected final NBSSong song;
+    protected final NBSSequence song;
 
     /**
      *
      * @param song the song that the event works on
      */
-    public SongEvent(NBSSong song) {
+    public SongEvent(NBSSequence song) {
         this.song = song;
     }
 
@@ -23,7 +23,7 @@ public abstract class SongEvent implements Event {
      * Returns the song that the events works on
      * @return the song that the events works on
      */
-    public NBSSong getSong() {
+    public NBSSequence getSong() {
         return song;
     }
 }

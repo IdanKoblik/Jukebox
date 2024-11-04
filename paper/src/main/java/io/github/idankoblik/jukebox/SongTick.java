@@ -14,7 +14,7 @@ import java.util.concurrent.CompletableFuture;
 /* package-private */ class SongTick extends BukkitRunnable {
     private final List<NBSNote> notes;
     private final PaperSong abstractSong;
-    private final CompletableFuture<NBSSong> completionSignal;
+    private final CompletableFuture<NBSSequenceWrapper> completionSignal;
     private int tick;
     private final float tickLengthInSeconds;
 
@@ -24,12 +24,12 @@ import java.util.concurrent.CompletableFuture;
      * @param abstractSong the song to be handled
      * @param completionSignal a future of the song
      */
-    public SongTick(@NotNull List<NBSNote> notes, PaperSong abstractSong, CompletableFuture<NBSSong> completionSignal) {
+    public SongTick(@NotNull List<NBSNote> notes, PaperSong abstractSong, CompletableFuture<NBSSequenceWrapper> completionSignal) {
         this.notes = notes;
         this.abstractSong = abstractSong;
         this.completionSignal = completionSignal;
         this.tick = 0;
-        this.tickLengthInSeconds = 20f / abstractSong.song.getTempo();
+        this.tickLengthInSeconds = 20f / abstractSong.sequence.tempo();
     }
 
     /**
@@ -37,8 +37,8 @@ import java.util.concurrent.CompletableFuture;
      */
     @Override
     public void run() {
-        NBSSong song = abstractSong.song;
-        if (song.getState() == SongState.ENDED) {
+        NBSSequenceWrapper wrapper = abstractSong.wrapper;
+        if (wrapper.getState() == SongState.ENDED) {
             completeSong();
             return;
         }
@@ -54,8 +54,8 @@ import java.util.concurrent.CompletableFuture;
 
         if (tick > notes.stream().mapToLong(note -> Math.round(note.getTick() * tickLengthInSeconds)).max().orElse(0)) {
             if (!abstractSong.toLoop()) {
-                EventManager.getInstance().fireEvent(new SongEndEvent(song, false));
-                abstractSong.song.setState(SongState.ENDED);
+                wrapper.getEventManager().fireEvent(new SongEndEvent(abstractSong.sequence, false));
+                wrapper.setState(SongState.ENDED);
                 completeSong();
             } else
                 tick = 0;
@@ -77,7 +77,7 @@ import java.util.concurrent.CompletableFuture;
      * Completing the song
      */
     private void completeSong() {
-        completionSignal.complete(abstractSong.song);
+        completionSignal.complete(abstractSong.wrapper);
         cancel();
     }
 }

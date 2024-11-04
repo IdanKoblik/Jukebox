@@ -7,7 +7,7 @@
 
     <code-block lang="java">
         import io.github.idankoblik.jukebox.NBSFile;
-        import io.github.idankoblik.jukebox.NBSSong;
+        import io.github.idankoblik.jukebox.NBSSequence;
         import io.github.idankoblik.jukebox.PaperSong;
         import net.kyori.adventure.audience.Audience;
         import net.kyori.adventure.key.Key;

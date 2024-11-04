@@ -11,12 +11,10 @@ public class Playlist<P extends Platform> {
 
     private final Queue<AbstractSong<P>> songs = new LinkedList<>();
     private boolean playing = false;
-
     
     public void addSong(AbstractSong<P> song) {
         songs.offer(song);
     }
-
     
     public void playSongs() {
         if (songs.isEmpty() || playing)
@@ -25,7 +23,6 @@ public class Playlist<P extends Platform> {
         playing = true;
         playNextSong();
     }
-
     
     private void playNextSong() {
         if (!playing || songs.isEmpty()) {

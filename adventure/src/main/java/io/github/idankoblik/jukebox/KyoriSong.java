@@ -3,6 +3,7 @@ package io.github.idankoblik.jukebox;
 import io.github.idankoblik.jukebox.events.EventManager;
 import io.github.idankoblik.jukebox.events.SongStartEvent;
 import io.github.idankoblik.jukebox.manager.InstrumentManager;
+import io.github.idankoblik.jukebox.manager.KyoriInstrumentManagerImpl;
 import net.apartium.cocoabeans.space.Position;
 import net.kyori.adventure.audience.Audience;
 import net.kyori.adventure.key.Key;
@@ -25,14 +26,13 @@ public abstract class KyoriSong<P extends KyoriPlatform> extends AbstractSong<P>
 
     /**
      *
-     * @param song the song to be handled
-     * @param volume the volume of the song
+     * {@inheritDoc}
      * @param defaultSound the default note to be played in case that note not found
      * @param audience the audience to play the song to
      * @param position the position of the song to be played (optional)
      */
-    public KyoriSong(@NotNull NBSSong song, float volume, @NotNull Key defaultSound, @NotNull Audience audience, @Nullable Position position) {
-        super(song, volume);
+    public KyoriSong(@NotNull NBSSequenceWrapper wrapper, float volume, @NotNull Key defaultSound, @NotNull Audience audience, @Nullable Position position) {
+        super(wrapper, volume);
         this.audience = audience;
         this.position = position;
         this.defaultSound = defaultSound;
@@ -42,15 +42,15 @@ public abstract class KyoriSong<P extends KyoriPlatform> extends AbstractSong<P>
      * {@inheritDoc}
      */
     @Override
-    public CompletableFuture<NBSSong> playSong() {
-        if (song.getNotes().isEmpty()) {
-            CompletableFuture<NBSSong> future = new CompletableFuture<>();
-            future.complete(song);
+    public CompletableFuture<NBSSequenceWrapper> playSong() {
+        if (sequence.getNotes().isEmpty()) {
+            CompletableFuture<NBSSequenceWrapper> future = new CompletableFuture<>();
+            future.complete(wrapper);
             return future;
         }
 
-        song.setState(SongState.PLAYING);
-        EventManager.getInstance().fireEvent(new SongStartEvent(song));
+        wrapper.setState(SongState.PLAYING);
+        eventManager.fireEvent(new SongStartEvent(sequence));
 
         return handle(volume);
     }
@@ -61,7 +61,7 @@ public abstract class KyoriSong<P extends KyoriPlatform> extends AbstractSong<P>
     @Override
     public void playNote(byte instrument, float pitch) {
         Sound sound = Sound.sound(
-                InstrumentManager.getInstance().getInstrument(instrument).orElse(defaultSound),
+                KyoriInstrumentManagerImpl.getInstance().getInstrument(instrument).orElse(defaultSound),
                 Sound.Source.MASTER,
                 volume,
                 pitch
@@ -78,5 +78,5 @@ public abstract class KyoriSong<P extends KyoriPlatform> extends AbstractSong<P>
      * @param volume the volume of the song
      * @return future of the song
      */
-    public abstract CompletableFuture<NBSSong> handle(float volume);
+    public abstract CompletableFuture<NBSSequenceWrapper> handle(float volume);
 }

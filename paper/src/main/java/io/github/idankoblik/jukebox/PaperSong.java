@@ -19,10 +19,11 @@ public class PaperSong extends KyoriSong<PaperPlatform> {
     private final Plugin plugin;
 
     /**
+     * @param plugin the plugin that handles the song
      * {@inheritDoc}
      */
-    public PaperSong(@NotNull Plugin plugin, float volume, @NotNull NBSSong song, @NotNull Key defaultSound, @NotNull Audience audience, @Nullable Position position) {
-        super(song, volume, defaultSound, audience, position);
+    public PaperSong(@NotNull Plugin plugin, float volume, @NotNull NBSSequenceWrapper wrapper, @NotNull Key defaultSound, @NotNull Audience audience, @Nullable Position position) {
+        super(wrapper, volume, defaultSound, audience, position);
         if (volume < 0.0f || volume > 1.0f)
             throw new IllegalArgumentException("Volume must be between 0.0 and 1.0");
 
@@ -33,12 +34,12 @@ public class PaperSong extends KyoriSong<PaperPlatform> {
      * {@inheritDoc}
      */
     @Override
-    public CompletableFuture<NBSSong> handle(float volume) {
-        List<NBSNote> notes = this.song.getNotes();
+    public CompletableFuture<NBSSequenceWrapper> handle(float volume) {
+        List<NBSNote> notes = sequence.getNotes();
 
-        CompletableFuture<NBSSong> future = new CompletableFuture<>();
+        CompletableFuture<NBSSequenceWrapper> future = new CompletableFuture<>();
         if (notes.isEmpty()) {
-            future.complete(this.song);
+            future.complete(wrapper);
             return future;
         }
 

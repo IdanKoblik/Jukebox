@@ -17,7 +17,7 @@ public class NBSFile {
      * @return decoded version of the nbs song
      * @throws IOException
      */
-    public static NBSSong readNBS(File file) throws IOException {
+    public static NBSSequence readNBS(File file) throws IOException {
         try (DataInputStream dis = new DataInputStream(new FileInputStream(file))) {
             short length = readShort(dis);
             short height = readShort(dis);
@@ -53,7 +53,7 @@ public class NBSFile {
                 }
             }
 
-            return new NBSSong(name, author, length, height, originalAuthor, description,tempo, notes);
+            return new NBSSequence(name, author, length, height, originalAuthor, description,tempo, notes);
         }
     }
 
@@ -63,16 +63,16 @@ public class NBSFile {
      * @param file a file to encode the nbs song into
      * @throws IOException
      */
-    public static void writeNBS(NBSSong song, File file) throws IOException {
+    public static void writeNBS(NBSSequence song, File file) throws IOException {
         try (DataOutputStream dos = new DataOutputStream(new FileOutputStream(file))) {
             // Write header
             writeShort(dos, (short) song.getNotes().size()); // length
             writeShort(dos, (short) 1); // height
-            writeString(dos, song.getName());
-            writeString(dos, song.getAuthor());
+            writeString(dos, song.name());
+            writeString(dos, song.author());
             writeString(dos, ""); // original author
             writeString(dos, ""); // description
-            writeShort(dos, (short) (song.getTempo() * 100)); // tempo
+            writeShort(dos, (short) (song.tempo() * 100)); // tempo
             dos.writeBoolean(false); // Auto-save (default value)
             dos.writeByte(0); // Auto-save duration (default value)
             dos.writeByte(4); // Time signature (default value)

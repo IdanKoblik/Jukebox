@@ -12,11 +12,11 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 
 public class InstrumentManagerTest {
 
-    private InstrumentManager manager;
+    private KyoriInstrumentManagerImpl manager;
 
     @BeforeEach
     public void setUp() {
-        manager = InstrumentManager.getInstance();
+        manager = KyoriInstrumentManagerImpl.getInstance();
         manager.clear();
 
     }
