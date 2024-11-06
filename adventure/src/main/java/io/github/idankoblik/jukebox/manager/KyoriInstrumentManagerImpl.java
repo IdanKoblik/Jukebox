@@ -18,7 +18,6 @@ public class KyoriInstrumentManagerImpl implements InstrumentManager<Key> {
 
     private static KyoriInstrumentManagerImpl instance;
 
-    @SuppressWarnings("unchecked")
     public static KyoriInstrumentManagerImpl getInstance() {
         return (instance == null) ? new KyoriInstrumentManagerImpl() : instance;
     }
