@@ -1,9 +1,6 @@
 package io.github.idankoblik.jukebox;
 
-import io.github.idankoblik.jukebox.events.EventManager;
-import io.github.idankoblik.jukebox.events.SongStageChangeEvent;
 import org.jetbrains.annotations.ApiStatus;
-import org.jetbrains.annotations.NotNull;
 
 import java.util.Collections;
 import java.util.List;

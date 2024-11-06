@@ -1,8 +1,6 @@
 package io.github.idankoblik.jukebox;
 
-import io.github.idankoblik.jukebox.events.EventManager;
 import io.github.idankoblik.jukebox.events.SongStartEvent;
-import io.github.idankoblik.jukebox.manager.InstrumentManager;
 import io.github.idankoblik.jukebox.manager.KyoriInstrumentManagerImpl;
 import net.apartium.cocoabeans.space.Position;
 import net.kyori.adventure.audience.Audience;
@@ -31,8 +29,8 @@ public abstract class KyoriSong<P extends KyoriPlatform> extends AbstractSong<P>
      * @param audience the audience to play the song to
      * @param position the position of the song to be played (optional)
      */
-    public KyoriSong(@NotNull NBSSequenceWrapper wrapper, float volume, @NotNull Key defaultSound, @NotNull Audience audience, @Nullable Position position) {
-        super(wrapper, volume);
+    public KyoriSong(@NotNull NBSSequencePlayer player, float volume, @NotNull Key defaultSound, @NotNull Audience audience, @Nullable Position position) {
+        super(player, volume);
         this.audience = audience;
         this.position = position;
         this.defaultSound = defaultSound;
@@ -42,14 +40,14 @@ public abstract class KyoriSong<P extends KyoriPlatform> extends AbstractSong<P>
      * {@inheritDoc}
      */
     @Override
-    public CompletableFuture<NBSSequenceWrapper> playSong() {
+    public CompletableFuture<NBSSequencePlayer> playSong() {
         if (sequence.getNotes().isEmpty()) {
-            CompletableFuture<NBSSequenceWrapper> future = new CompletableFuture<>();
-            future.complete(wrapper);
+            CompletableFuture<NBSSequencePlayer> future = new CompletableFuture<>();
+            future.complete(player);
             return future;
         }
 
-        wrapper.setState(SongState.PLAYING);
+        player.setState(SongState.PLAYING);
         eventManager.fireEvent(new SongStartEvent(sequence));
 
         return handle(volume);
@@ -78,5 +76,5 @@ public abstract class KyoriSong<P extends KyoriPlatform> extends AbstractSong<P>
      * @param volume the volume of the song
      * @return future of the song
      */
-    public abstract CompletableFuture<NBSSequenceWrapper> handle(float volume);
+    public abstract CompletableFuture<NBSSequencePlayer> handle(float volume);
 }

@@ -14,7 +14,7 @@ import java.util.concurrent.CompletableFuture;
 @SuppressWarnings("unused")
 public abstract class AbstractSong<P extends Platform> {
 
-    protected final NBSSequenceWrapper wrapper;
+    protected final NBSSequencePlayer player;
     protected final NBSSequence sequence;
     protected final EventManager eventManager;
     protected final float volume;
@@ -23,25 +23,25 @@ public abstract class AbstractSong<P extends Platform> {
     private boolean loop;
 
     /**
-     * @param wrapper the wrapper of the sequence that being handled
+     * @param player the player of the sequence that being handled
      * @param volume the volume of the sequence to be played
      */
-    public AbstractSong(@NotNull NBSSequenceWrapper wrapper, float volume) {
-        this.wrapper = wrapper;
+    public AbstractSong(@NotNull NBSSequencePlayer player, float volume) {
+        this.player = player;
         this.volume = volume;
-        this.sequence = wrapper.getNbsSequence();
-        this.eventManager = wrapper.getEventManager();
+        this.sequence = player.getNbsSequence();
+        this.eventManager = player.getEventManager();
     }
 
     /**
      * Stops a song
      */
     public void stopSong() {
-        if (wrapper.getState() == SongState.ENDED)
+        if (player.getState() == SongState.ENDED)
             return;
 
         loop = false;
-        wrapper.setState(SongState.ENDED);
+        player.setState(SongState.ENDED);
         eventManager.fireEvent(new SongEndEvent(sequence, true));
     }
 
@@ -67,7 +67,7 @@ public abstract class AbstractSong<P extends Platform> {
      * An abstract method for handling song playing
      * @return A future of the song
      */
-    public abstract CompletableFuture<NBSSequenceWrapper> playSong();
+    public abstract CompletableFuture<NBSSequencePlayer> playSong();
 
     /**
      * An abstract method for handling note playing

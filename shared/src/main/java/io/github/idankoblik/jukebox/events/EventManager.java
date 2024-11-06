@@ -4,9 +4,6 @@ import org.jetbrains.annotations.ApiStatus;
 
 import java.util.*;
 
-/**
- * A class for managing all events
- */
 @ApiStatus.AvailableSince("0.0.3")
 public class EventManager {
 
@@ -55,4 +52,5 @@ public class EventManager {
     public void clear() {
         this.listeners.clear();
     }
+
 }

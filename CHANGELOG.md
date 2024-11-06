@@ -1,5 +1,11 @@
 # CHANGELOG
 
+## 0.0.5
+- [shared] Change `NBSFile` -> `NBSSequence`, now a immutable record
+- [shared] Add `NBSSequencePlayer` to handle `NBSSequence`
+- [adventure] `InstrumentManager` is now an interface in `shared` module
+- [adventure] Create `KyoriInstrumentManagerImpl` that impl the `InstrumentManager` class
+
 ## 0.0.4
 - [cicd] Rewrite the whole cicd
 
