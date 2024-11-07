@@ -1,10 +1,23 @@
 package io.github.idankoblik.jukebox.manager;
 
+import org.jetbrains.annotations.ApiStatus;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.Map;
 import java.util.Optional;
 
+
+/**
+ * An interface defining a contract for managing a collection of instruments,
+ * where each instrument is associated with a unique byte identifier.
+ * <p>
+ * Implementations of this interface must provide functionality to add, remove, retrieve,
+ * and load instruments based on their byte identifier.
+ * </p>
+ *
+ * @param <T> The type of the instrument, typically a sound key or other representation of an instrument
+ */
+@ApiStatus.AvailableSince("0.0.5")
 public interface InstrumentManager<T> {
 
     /**
