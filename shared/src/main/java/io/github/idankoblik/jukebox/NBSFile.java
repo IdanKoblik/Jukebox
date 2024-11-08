@@ -2,6 +2,7 @@ package io.github.idankoblik.jukebox;
 
 import java.io.*;
 import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.List;
 
 import static io.github.idankoblik.jukebox.utils.ProtocolUtils.*;
@@ -26,21 +27,23 @@ public class NBSFile {
             String originalAuthor = readString(dis);
             String description = readString(dis);
             float tempo = readShort(dis) / 100f;  // Convert tempo to ticks per second
-            dis.readBoolean(); // Auto-save (not used)
-            dis.readByte(); // Auto-save duration (not used)
-            dis.readByte(); // Time signature (not used)
-            readInt(dis); // Minutes spent (not used)
-            readInt(dis); // Left-clicks (not used)
-            readInt(dis); // Right-clicks (not used)
-            readInt(dis); // Note blocks added (not used)
-            readInt(dis); // Note blocks removed (not used)
-            readString(dis); // MIDI/Schematic file name (not used)
+            boolean autoSave = dis.readBoolean();// Auto-save (not used)
+            byte authSaveDuration = dis.readByte(); // Auto-save duration (not used)
+            byte timeSignature = dis.readByte(); // Time signature (not used)
+            int minutesSpent = readInt(dis); // Minutes spent (not used)
+            int leftClicks = readInt(dis); // Left-clicks (not used)
+            int rightClicks = readInt(dis); // Right-clicks (not used)
+            int noteBlocksAdded = readInt(dis); // Note blocks added (not used)
+            int noteBlocksRemoved = readInt(dis); // Note blocks removed (not used)
+            String schematicFileName = readString(dis); // MIDI/Schematic file name (not used)
 
             List<NBSNote> notes = new ArrayList<>();
             short tick = -1;
             while (true) {
                 short jumpTicks = readShort(dis);
-                if (jumpTicks == 0) break;
+                if (jumpTicks == 0)
+                    break;
+
                 tick += jumpTicks;
                 short layer = -1;
                 while (true) {
@@ -53,49 +56,66 @@ public class NBSFile {
                 }
             }
 
-            return new NBSSequence(name, author, length, height, originalAuthor, description,tempo, notes);
+            return new NBSSequence(name, author, length, height, originalAuthor, description, tempo, notes, autoSave, authSaveDuration, timeSignature, minutesSpent, leftClicks, rightClicks, noteBlocksAdded, noteBlocksRemoved, schematicFileName);
         }
     }
 
     /**
      * Encode a file to nbs file
-     * @param song the nbs song to be encoded into a file
-     * @param file a file to encode the nbs song into
+     * @param sequence the nbs sequence to be encoded into a file
+     * @param file a file to encode the nbs sequence into
      * @throws IOException
      */
-    public static void writeNBS(NBSSequence song, File file) throws IOException {
+    public static void writeNBS(NBSSequence sequence, File file) throws IOException {
         try (DataOutputStream dos = new DataOutputStream(new FileOutputStream(file))) {
             // Write header
-            writeShort(dos, (short) song.getNotes().size()); // length
-            writeShort(dos, (short) 1); // height
-            writeString(dos, song.name());
-            writeString(dos, song.author());
-            writeString(dos, ""); // original author
-            writeString(dos, ""); // description
-            writeShort(dos, (short) (song.tempo() * 100)); // tempo
-            dos.writeBoolean(false); // Auto-save (default value)
-            dos.writeByte(0); // Auto-save duration (default value)
-            dos.writeByte(4); // Time signature (default value)
-            writeInt(dos, 0); // Minutes spent (default value)
-            writeInt(dos, 0); // Left-clicks (default value)
-            writeInt(dos, 0); // Right-clicks (default value)
-            writeInt(dos, song.getNotes().size()); // Note blocks added
-            writeInt(dos, 0); // Note blocks removed (default value)
-            writeString(dos, ""); // MIDI/Schematic file name (default value)
+            writeShort(dos, sequence.length()); // Use length from the sequence instead of notes size
+            writeShort(dos, (short) sequence.height());
+            writeString(dos, sequence.name());
+            writeString(dos, sequence.author());
+            writeString(dos, sequence.originalAuthor());
+            writeString(dos, sequence.description());
+            writeShort(dos, (short) (sequence.tempo() * 100));
+            dos.writeBoolean(sequence.autoSave()); // Auto-save
+            dos.writeByte(sequence.autoSaveDuration()); // Auto-save duration
+            dos.writeByte(sequence.timeSignature()); // Time signature
+            writeInt(dos, sequence.minutesSpent()); // Minutes spent
+            writeInt(dos, sequence.leftClicks()); // Left-clicks
+            writeInt(dos, sequence.rightClicks()); // Right-clicks
+            writeInt(dos, sequence.noteBlocksAdded()); // Note blocks added
+            writeInt(dos, sequence.noteBlocksRemoved()); // Note blocks removed
+            writeString(dos, sequence.schematicFileName()); // MIDI/Schematic file name
 
-            // Write notes
-            short lastTick = -1;
-            for (NBSNote note : song.getNotes()) {
-                writeShort(dos, (short) (note.getTick() - lastTick));
-                lastTick = note.getTick();
-                writeShort(dos, (short) (note.getLayer() + 1)); // Add 1 to layer as 0 means end of tick
-                dos.writeByte(note.getInstrument());
-                dos.writeByte(note.getKey());
-                writeShort(dos, (short) 0); // End of tick
+            List<NBSNote> sortedNotes = new ArrayList<>(sequence.notes());
+            sortedNotes.sort(Comparator.comparingInt(NBSNote::tick).thenComparingInt(NBSNote::layer));
+
+            if (!sortedNotes.isEmpty()) {
+                short lastTick = -1;
+                short lastLayer = -1;
+
+                for (NBSNote note : sortedNotes) {
+                    if (note.tick() != lastTick) {
+                        if (lastTick != -1)
+                            writeShort(dos, (short) 0); // End of layers for previous tick
+
+                        // Write jump to new tick
+                        writeShort(dos, (short) (note.tick() - lastTick));
+                        lastTick = note.tick();
+                        lastLayer = -1;
+                    }
+
+                    // Write layer jump and note data
+                    writeShort(dos, (short) (note.layer() - lastLayer));
+                    dos.writeByte(note.instrument());
+                    dos.writeByte(note.key());
+
+                    lastLayer = note.layer();
+                }
+
+                writeShort(dos, (short) 0);
             }
-            writeShort(dos, (short) 0); // End of notes
 
-            dos.writeByte(0); // End of layers
+            writeShort(dos, (short) 0);
         }
     }
 }

@@ -41,7 +41,7 @@ public abstract class KyoriSong<P extends KyoriPlatform> extends AbstractSong<P>
      */
     @Override
     public CompletableFuture<NBSSequencePlayer> playSong() {
-        if (sequence.getNotes().isEmpty()) {
+        if (sequence.notes().isEmpty()) {
             CompletableFuture<NBSSequencePlayer> future = new CompletableFuture<>();
             future.complete(player);
             return future;

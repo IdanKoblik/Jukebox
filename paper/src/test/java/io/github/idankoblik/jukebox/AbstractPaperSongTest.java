@@ -51,7 +51,24 @@ public abstract class AbstractPaperSongTest extends AbstractPaperTest {
         this.notes.add(note2);
         this.notes.add(note3);
 
-        this.nbsSequence = new NBSSequence("test", "tester", (byte) 20, (byte) 1, "test", "test", 20, notes);
+        this.nbsSequence = new NBSSequence(
+                "test",
+                "tester",
+                (byte) 20,
+                (byte) 1,
+                "test",
+                "test",
+                20,
+                notes,
+                false,
+                (byte) 0,
+                (byte) 0,
+                0,
+                0,
+                0,
+                0,
+                0,
+                "testtt");
         this.sequencePlayer = new NBSSequencePlayer(this.nbsSequence, List.of(), this.eventManager);
 
         this.world = new WorldMock();
@@ -81,7 +98,26 @@ public abstract class AbstractPaperSongTest extends AbstractPaperTest {
 
     protected void testTriggeringEvents() {
         NBSSequencePlayer nullEManager = new NBSSequencePlayer(
-                new NBSSequence("test with no event manager", "tester", (byte) 20, (byte) 1, "test", "test", 20, notes),
+                new NBSSequence(
+                        "test with no event manager",
+                        "tester",
+                        (byte) 20,
+                        (byte) 1,
+                        "test",
+                        "test",
+                        20,
+                        notes,
+                        false,
+                        (byte) 0,
+                        (byte) 0,
+                        0,
+                        0,
+                        0,
+                        0,
+                        0,
+                        "testtt"
+                ),
+
                 List.of(
                         stageChangeListener,
                         startListener,

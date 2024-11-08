@@ -35,7 +35,7 @@ public class PaperSong extends KyoriSong<PaperPlatform> {
      */
     @Override
     public CompletableFuture<NBSSequencePlayer> handle(float volume) {
-        List<NBSNote> notes = sequence.getNotes();
+        List<NBSNote> notes = sequence.notes();
 
         CompletableFuture<NBSSequencePlayer> future = new CompletableFuture<>();
         if (notes.isEmpty()) {

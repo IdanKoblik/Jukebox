@@ -21,7 +21,25 @@ public class EventManagerTest {
         NBSNote note = new NBSNote((short) 1, (short) 1, (byte) 1, (byte) 1);
         NBSNote note2 = new NBSNote((short) 2, (short) 1, (byte) 1, (byte) 1);
         NBSNote note3 = new NBSNote((short) 3, (short) 1, (byte) 1, (byte) 1);
-        this.nbsSequence = new NBSSequence("test", "tester", (byte) 20, (byte) 1, "test", "test", 20, List.of(note, note2, note3));
+        this.nbsSequence = new NBSSequence(
+                "test",
+                "tester",
+                (byte) 20,
+                (byte) 1,
+                "test",
+                "test",
+                20,
+                List.of(note, note2, note3),
+                false,
+                (byte) 0,
+                (byte) 0,
+                0,
+                0,
+                0,
+                0,
+                0,
+                "testtt"
+        );
     }
 
     @Test

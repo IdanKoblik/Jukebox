@@ -2,7 +2,6 @@ package io.github.idankoblik.jukebox;
 
 import org.jetbrains.annotations.ApiStatus;
 
-import java.util.Collections;
 import java.util.List;
 
 /**
@@ -16,14 +15,23 @@ public record NBSSequence(
         @ApiStatus.AvailableSince("0.0.2") String originalAuthor,
         @ApiStatus.AvailableSince("0.0.2") String description,
         float tempo,
-        List<NBSNote> notes) {
+        List<NBSNote> notes,
+        @ApiStatus.AvailableSince("0.0.5") boolean autoSave,
+        @ApiStatus.AvailableSince("0.0.5") byte autoSaveDuration,
+        @ApiStatus.AvailableSince("0.0.5") byte timeSignature,
+        @ApiStatus.AvailableSince("0.0.5") int minutesSpent,
+        @ApiStatus.AvailableSince("0.0.5") int leftClicks,
+        @ApiStatus.AvailableSince("0.0.5") int rightClicks,
+        @ApiStatus.AvailableSince("0.0.5") int noteBlocksAdded,
+        @ApiStatus.AvailableSince("0.0.5") int noteBlocksRemoved,
+        @ApiStatus.AvailableSince("0.0.5") String schematicFileName
+) {
 
         /**
-         * Gets an unmodifiable list of notes in the song.
-         *
-         * @return a list of {@link NBSNote} objects representing the notes in the song.
+         * Constructor that ensures the notes list is immutable.
          */
-        public List<NBSNote> getNotes() {
-                return Collections.unmodifiableList(notes);
+        public NBSSequence {
+                notes = List.copyOf(notes);
         }
+
 }

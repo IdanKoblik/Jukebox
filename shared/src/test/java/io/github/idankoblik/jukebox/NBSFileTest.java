@@ -4,17 +4,19 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.io.TempDir;
 
 import java.io.File;
+import java.io.FileInputStream;
 import java.io.IOException;
+import java.net.URI;
+import java.net.URISyntaxException;
+import java.net.URL;
 import java.nio.file.Path;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 
 import static io.github.idankoblik.jukebox.NBSFile.readNBS;
 import static io.github.idankoblik.jukebox.NBSFile.writeNBS;
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.junit.jupiter.api.Assertions.*;
 
 class NBSFileTest {
 
@@ -22,40 +24,92 @@ class NBSFileTest {
     Path tempDir;
 
     @Test
-    void testReadWriteNBS() throws IOException {
-        List<NBSNote> notes = Arrays.asList(
-                new NBSNote((short) 0, (short) 0, (byte) 0, (byte) 60),
-                new NBSNote((short) 4, (short) 1, (byte) 1, (byte) 62),
-                new NBSNote((short) 8, (short) 0, (byte) 0, (byte) 64)
-        );
-        NBSSequence originalSong = new NBSSequence("Test Song", "Test Author", (byte) 20, (byte) 1, "test", "test", 120.0f, notes);
+    void testReadWriteNBS() throws IOException, URISyntaxException {
+        URL resourceUrl = getClass().getClassLoader().getResource("game.nbs");
+        assertNotNull(resourceUrl, "Resource not found!");
 
-        File tempFile = tempDir.resolve("test.nbs").toFile();
-        writeNBS(originalSong, tempFile);
+        URI resourceUri = resourceUrl.toURI();
+        File file = new File(resourceUri);
 
-        assertTrue(tempFile.exists(), "File was not created");
-        assertTrue(tempFile.length() > 0, "File is empty");
+        assertTrue(file.exists(), "File does not exist!");
+        assertTrue(file.isFile(), "The path does not refer to a file!");
 
-        NBSSequence readSong = readNBS(tempFile);
+        NBSSequence originalSequence = readNBS(file);
+        assertEquals("Cranium", originalSequence.author());
+        assertEquals("Reptilia", originalSequence.name());
+        assertEquals(27, originalSequence.height());
+        assertEquals("", originalSequence.description());
+        assertEquals("The Strokes", originalSequence.originalAuthor());
+        assertEquals(2248, originalSequence.length());
+        assertEquals(10, originalSequence.tempo());
+        assertEquals(4121, originalSequence.notes().size());
 
-        assertEquals(originalSong.name(), readSong.name(), "Song name mismatch");
-        assertEquals(originalSong.author(), readSong.author(), "Author mismatch");
-        assertEquals(originalSong.tempo(), readSong.tempo(), 0.001, "Tempo mismatch");
-        assertEquals(originalSong.getNotes().size(), readSong.getNotes().size(), "Number of notes mismatch");
+        File testFile = tempDir.resolve("test.nbs").toFile();
 
-        for (int i = 0; i < originalSong.getNotes().size(); i++) {
-            NBSNote originalNote = originalSong.getNotes().get(i);
-            NBSNote readNote = readSong.getNotes().get(i);
-            assertEquals(originalNote.getTick(), readNote.getTick(), "Tick mismatch at note " + i);
-            assertEquals(originalNote.getLayer(), readNote.getLayer(), "Layer mismatch at note " + i);
-            assertEquals(originalNote.getInstrument(), readNote.getInstrument(), "Instrument mismatch at note " + i);
-            assertEquals(originalNote.getKey(), readNote.getKey(), "Key mismatch at note " + i);
+        writeNBS(originalSequence, testFile);
+
+        FileInputStream inputStream1 = new FileInputStream(file);
+        FileInputStream inputStream2 = new FileInputStream(testFile);
+
+        int byte1, byte2;
+        while ((byte1 = inputStream1.read()) != -1 && (byte2 = inputStream2.read()) != -1)
+            assertEquals(byte1, byte2);
+
+        inputStream1.close();
+        inputStream2.close();
+
+        NBSSequence readSequence = readNBS(testFile);
+
+        assertEquals(originalSequence.name(), readSequence.name(), "Name mismatch");
+        assertEquals(originalSequence.author(), readSequence.author(), "Author mismatch");
+        assertEquals(originalSequence.height(), readSequence.height(), "Height mismatch");
+        assertEquals(originalSequence.description(), readSequence.description(), "Description mismatch");
+        assertEquals(originalSequence.originalAuthor(), readSequence.originalAuthor(), "Original author mismatch");
+        assertEquals(originalSequence.length(), readSequence.length(), "Length mismatch");
+        assertEquals(originalSequence.tempo(), readSequence.tempo(), "Tempo mismatch");
+        assertEquals(originalSequence.notes().size(), readSequence.notes().size(), "Notes size mismatch");
+        assertEquals(originalSequence.autoSave(), readSequence.autoSave(), "Notes size mismatch");
+        assertEquals(originalSequence.autoSaveDuration(), readSequence.autoSaveDuration(), "Notes size mismatch");
+        assertEquals(originalSequence.timeSignature(), readSequence.timeSignature(), "Notes size mismatch");
+        assertEquals(originalSequence.minutesSpent(), readSequence.minutesSpent(), "Notes size mismatch");
+        assertEquals(originalSequence.leftClicks(), readSequence.leftClicks(), "Notes size mismatch");
+        assertEquals(originalSequence.rightClicks(), readSequence.rightClicks(), "Notes size mismatch");
+        assertEquals(originalSequence.noteBlocksAdded(), readSequence.noteBlocksAdded(), "Notes size mismatch");
+        assertEquals(originalSequence.noteBlocksRemoved(), readSequence.noteBlocksRemoved(), "Notes size mismatch");
+        assertEquals(originalSequence.schematicFileName(), readSequence.schematicFileName(), "Notes size mismatch");
+
+        for (int i = 0; i < originalSequence.notes().size(); i++) {
+            NBSNote originalNote = originalSequence.notes().get(i);
+            NBSNote readNote = readSequence.notes().get(i);
+
+            assertEquals(originalNote.tick(), readNote.tick(), "Note tick mismatch at index " + i);
+            assertEquals(originalNote.layer(), readNote.layer(), "Note layer mismatch at index " + i);
+            assertEquals(originalNote.instrument(), readNote.instrument(), "Note instrument mismatch at index " + i);
+            assertEquals(originalNote.key(), readNote.key(), "Note key mismatch at index " + i);
         }
     }
 
     @Test
     void testEmptySong() throws IOException {
-        NBSSequence emptySong = new NBSSequence("Empty Song", "Test Author",(byte) 20, (byte) 1, "test", "test", 100.0f, Collections.emptyList());
+        NBSSequence emptySong = new NBSSequence(
+                "Empty Song",
+                "Test Author",
+                (byte) 20,
+                (byte) 1,
+                "test",
+                "test",
+                100.0f,
+                Collections.emptyList(),
+                false,
+                (byte) 0,
+                (byte) 0,
+                0,
+                0,
+                0,
+                0,
+                0,
+                "testtt"
+        );
 
         File tempFile = tempDir.resolve("empty.nbs").toFile();
         writeNBS(emptySong, tempFile);
@@ -65,13 +119,31 @@ class NBSFileTest {
         assertEquals(emptySong.name(), readSong.name(), "Song name mismatch");
         assertEquals(emptySong.author(), readSong.author(), "Author mismatch");
         assertEquals(emptySong.tempo(), readSong.tempo(), 0.001, "Tempo mismatch");
-        assertTrue(readSong.getNotes().isEmpty(), "Notes should be empty");
+        assertTrue(readSong.notes().isEmpty(), "Notes should be empty");
     }
 
     @Test
     void testLongSong() throws IOException {
         List<NBSNote> longNoteList = generateLongNoteList(10000);
-        NBSSequence longSong = new NBSSequence("Long Song", "Test Author",(byte) 20, (byte) 1, "test", "test", 140.0f, longNoteList);
+        NBSSequence longSong = new NBSSequence(
+                "Long Song",
+                "Test Author",
+                (byte) 20,
+                (byte) 1,
+                "test",
+                "test",
+                140.0f,
+                longNoteList,
+                false,
+                (byte) 0,
+                (byte) 0,
+                0,
+                0,
+                0,
+                0,
+                0,
+                "testtt"
+        );
 
         File tempFile = tempDir.resolve("long.nbs").toFile();
         writeNBS(longSong, tempFile);
@@ -81,14 +153,14 @@ class NBSFileTest {
         assertEquals(longSong.name(), readSong.name(), "Song name mismatch");
         assertEquals(longSong.author(), readSong.author(), "Author mismatch");
         assertEquals(longSong.tempo(), readSong.tempo(), 0.001, "Tempo mismatch");
-        assertEquals(longSong.getNotes().size(), readSong.getNotes().size(), "Number of notes mismatch");
+        assertEquals(longSong.notes().size(), readSong.notes().size(), "Number of notes mismatch");
     }
 
     private List<NBSNote> generateLongNoteList(int count) {
         List<NBSNote> notes = new ArrayList<>(count);
-        for (int i = 0; i < count; i++)
+        for (int i = 0; i < count; i++) {
             notes.add(new NBSNote((short) i, (short) (i % 10), (byte) (i % 16), (byte) (60 + (i % 12))));
-
+        }
         return notes;
     }
 }
