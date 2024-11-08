@@ -68,15 +68,15 @@ class NBSFileTest {
         assertEquals(originalSequence.length(), readSequence.length(), "Length mismatch");
         assertEquals(originalSequence.tempo(), readSequence.tempo(), "Tempo mismatch");
         assertEquals(originalSequence.notes().size(), readSequence.notes().size(), "Notes size mismatch");
-        assertEquals(originalSequence.autoSave(), readSequence.autoSave(), "Notes size mismatch");
-        assertEquals(originalSequence.autoSaveDuration(), readSequence.autoSaveDuration(), "Notes size mismatch");
-        assertEquals(originalSequence.timeSignature(), readSequence.timeSignature(), "Notes size mismatch");
-        assertEquals(originalSequence.minutesSpent(), readSequence.minutesSpent(), "Notes size mismatch");
-        assertEquals(originalSequence.leftClicks(), readSequence.leftClicks(), "Notes size mismatch");
-        assertEquals(originalSequence.rightClicks(), readSequence.rightClicks(), "Notes size mismatch");
-        assertEquals(originalSequence.noteBlocksAdded(), readSequence.noteBlocksAdded(), "Notes size mismatch");
-        assertEquals(originalSequence.noteBlocksRemoved(), readSequence.noteBlocksRemoved(), "Notes size mismatch");
-        assertEquals(originalSequence.schematicFileName(), readSequence.schematicFileName(), "Notes size mismatch");
+        assertEquals(originalSequence.autoSave(), readSequence.autoSave(), "Auto save mismatch");
+        assertEquals(originalSequence.autoSaveDuration(), readSequence.autoSaveDuration(), "Auth save duration mismatch");
+        assertEquals(originalSequence.timeSignature(), readSequence.timeSignature(), "Time signature mismatch");
+        assertEquals(originalSequence.minutesSpent(), readSequence.minutesSpent(), "Minutes spent mismatch");
+        assertEquals(originalSequence.leftClicks(), readSequence.leftClicks(), "Left clicks mismatch");
+        assertEquals(originalSequence.rightClicks(), readSequence.rightClicks(), "Right clicks mismatch");
+        assertEquals(originalSequence.noteBlocksAdded(), readSequence.noteBlocksAdded(), "Note blocks added size mismatch");
+        assertEquals(originalSequence.noteBlocksRemoved(), readSequence.noteBlocksRemoved(), "Note blocks removed mismatch");
+        assertEquals(originalSequence.schematicFileName(), readSequence.schematicFileName(), "Schematic file name mismatch");
 
         for (int i = 0; i < originalSequence.notes().size(); i++) {
             NBSNote originalNote = originalSequence.notes().get(i);
