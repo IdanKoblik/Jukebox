@@ -43,7 +43,7 @@ import java.util.concurrent.CompletableFuture;
         }
 
         List<NBSNote> notesAtCurrentTick = notes.stream()
-                .filter(note -> Math.round(note.getTick() * tickLengthInSeconds) == tick)
+                .filter(note -> Math.round(note.tick() * tickLengthInSeconds) == tick)
                 .toList();
 
         for (NBSNote note : notesAtCurrentTick)
@@ -51,7 +51,7 @@ import java.util.concurrent.CompletableFuture;
 
         tick++;
 
-        if (tick > notes.stream().mapToLong(note -> Math.round(note.getTick() * tickLengthInSeconds)).max().orElse(0)) {
+        if (tick > notes.stream().mapToLong(note -> Math.round(note.tick() * tickLengthInSeconds)).max().orElse(0)) {
             if (!abstractSong.toLoop()) {
                 player.getEventManager().fireEvent(new SongEndEvent(abstractSong.sequence, false));
                 player.setState(SongState.ENDED);
@@ -67,8 +67,8 @@ import java.util.concurrent.CompletableFuture;
      */
     private void playNote(NBSNote note) {
         if (note != null) {
-            float pitch = (float) Math.pow(2, (note.getKey() - 45) / 12.0);
-            this.abstractSong.playNote(note.getInstrument(), pitch);
+            float pitch = (float) Math.pow(2, (note.key() - 45) / 12.0);
+            this.abstractSong.playNote(note.instrument(), pitch);
         }
     }
 
