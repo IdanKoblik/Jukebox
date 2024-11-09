@@ -27,14 +27,11 @@
                     }
 
                     repositories {
-                        maven {
-                            name = "ApartiumNexus"
-                            url = uri("https://nexus.voigon.dev/repository/beta-releases/")
-                        }
+                        mavenCentral()
                     }
 
                     dependencies {
-                        implementation("com.github.idankoblik.jukebox:[module]:[version]")
+                        implementation("io.github.idankoblik.jukebox:[module]:[version]")
                     }
                 </code-block>
             </tab>
@@ -46,14 +43,11 @@
                     }
 
                     repositories {
-                        maven {
-                            name = 'ApartiumNexus'
-                            url = uri('https://nexus.voigon.dev/repository/beta-releases/')
-                        }
+                        mavenCentral()
                     }
 
                     dependencies {
-                        implementation 'com.github.idankoblik.jukebox:[module]:[version]'
+                        implementation 'io.github.idankoblik.jukebox:[module]:[version]'
                     }
                 </code-block>
             </tab>
@@ -67,14 +61,14 @@
 
                     &lt;repositories&gt;
                         &lt;repository&gt;
-                            &lt;id&gt;ApartiumNexus&lt;/id&gt;
-                            &lt;url&gt;https://nexus.voigon.dev/repository/beta-releases/&lt;/url&gt;
+                            &lt;id&gt;central;&lt;/id&gt;
+                            &lt;url&gt;https://repo.maven.apache.org/maven2&lt;/url&gt;
                         &lt;/repository&gt;
                     &lt;/repositories&gt;
 
                     &lt;dependencies&gt;
                         &lt;dependency&gt;
-                            &lt;groupId&gt;com.github.idankoblik.jukebox&lt;/groupId&gt;
+                            &lt;groupId&gt;io.github.idankoblik.jukebox&lt;/groupId&gt;
                             &lt;artifactId&gt;[module]&lt;/artifactId&gt;
                             &lt;version&gt;[version]&lt;/version&gt;
                         &lt;/dependency&gt;

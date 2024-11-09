@@ -70,20 +70,24 @@ jobs:
       - name: Determine version changes
         id: determine_version
         run: |
-          git fetch origin
-          CURRENT_VERSION=${{ steps.perv_version.outputs.version }}
-          INPUT_VERSION=${{ inputs.VERSION }}
-          
-          CURRENT_VERSION=${CURRENT_VERSION#v}
-          INPUT_VERSION=${INPUT_VERSION#v}
-          
-          IFS='.' read -ra CURRENT <<< "$CURRENT_VERSION"
-          IFS='.' read -ra INPUT <<< "$INPUT_VERSION"
-          
-          echo "Current version array: ${CURRENT[@]}"
-          echo "Input version array: ${INPUT[@]}"
-          
-          echo "::set-output name=is_minor::$([ "${INPUT[0]}" == "${CURRENT[0]}" ] && [ "${INPUT[1]}" == "${CURRENT[1]}" ] && [ "${INPUT[2]}" != "${CURRENT[2]}" ] && echo true || echo false)"
+            git fetch origin
+            CURRENT_VERSION=${{ steps.prev_version.outputs.version }}
+            INPUT_VERSION=${{ inputs.VERSION }}
+            
+            CURRENT_VERSION=${CURRENT_VERSION#v}
+            INPUT_VERSION=${INPUT_VERSION#v}
+            
+            IFS='.' read -ra CURRENT <<< "$CURRENT_VERSION"
+            IFS='.' read -ra INPUT <<< "$INPUT_VERSION"
+            
+            echo "Current version array: ${CURRENT[@]}"
+            echo "Input version array: ${INPUT[@]}"
+            
+            if [ "${GITHUB_REF}" == "refs/heads/main" ]; then
+              echo "::set-output name=is_minor::false"
+            else
+              echo "::set-output name=is_minor::$([ "${INPUT[0]}" == "${CURRENT[0]}" ] && [ "${INPUT[1]}" == "${CURRENT[1]}" ] && [ "${INPUT[2]}" != "${CURRENT[2]}" ] && echo true || echo false)"
+            fi
 
       - uses: actions/setup-java@v3
         with:

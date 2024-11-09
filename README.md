@@ -32,14 +32,14 @@ Jukebox is a powerful Java library specifically designed for handling NBS (Note 
 
 <repositories>
     <repository>
-        <id>ApartiumNexus</id>
-        <url>https://nexus.voigon.dev/repository/beta-releases/</url>
+        <id>central</id>
+        <url>https://repo.maven.apache.org/maven2</url>
     </repository>
 </repositories>
 
 <dependencies>
     <dependency>
-        <groupId>com.github.idankoblik.jukebox</groupId>
+        <groupId>io.github.idankoblik.jukebox</groupId>
         <artifactId>[module]</artifactId>
         <version>[version]</version>
     </dependency>
@@ -54,14 +54,11 @@ plugins {
 }
 
 repositories {
-    maven {
-        name = "ApartiumNexus"
-        url = uri("https://nexus.voigon.dev/repository/beta-releases/")
-    }
+    mavenCentral()
 }
 
 dependencies {
-    implementation("com.github.idankoblik.jukebox:[module]:[version]")
+    implementation("io.github.idankoblik.jukebox:[module]:[version]")
 }
 ```
 
@@ -73,14 +70,11 @@ plugins {
 }
 
 repositories {
-    maven {
-        name = 'ApartiumNexus'
-        url = uri('https://nexus.voigon.dev/repository/beta-releases/')
-    }
+    mavenCentral()
 }
 
 dependencies {
-    implementation 'com.github.idankoblik.jukebox:[module]:[version]'
+    implementation 'io.github.idankoblik.jukebox:[module]:[version]'
 }
 ```
 <hr>

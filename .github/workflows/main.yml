@@ -63,6 +63,21 @@ jobs:
     secrets:
       GH_PAGES_TOKEN: ${{ secrets.GH_PAGES_TOKEN }}
 
+  docs-special:
+    if: github.event_name == 'push' && github.ref == 'refs/heads/master'
+    uses: ./.github/workflows/callable.docs.yml
+    with:
+      VERSION: |
+        git describe --tags --abbrev=0
+    secrets:
+      GH_PAGES_TOKEN: ${{ secrets.GH_PAGES_TOKEN }}
+      OSSRH_USERNAME: ${{ secrets.OSSRH_USERNAME }}
+      OSSRH_PASSWORD: ${{ secrets.OSSRH_PASSWORD }}
+      SIGNING_SECRET: ${{ secrets.SIGNING_SECRET }}
+      SIGNING_PASSWORD: ${{ secrets.SIGNING_PASSWORD }}
+      APARTIUM_NEXUS_USERNAME: ${{ secrets.APARTIUM_NEXUS_USERNAME }}
+      APARTIUM_NEXUS_PASSWORD: ${{ secrets.APARTIUM_NEXUS_PASSWORD }}
+
   docs:
     needs: changelog
     if: github.event_name == 'workflow_dispatch'
