@@ -26,10 +26,18 @@ jobs:
   checkout:
     runs-on: ubuntu-latest
     steps:
-      - name: Checkout
+      - name: Checkout code
         uses: actions/checkout@v3
-        with:
-          token: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Get version from git
+        id: get_version
+        run: |
+          VERSION=$(git describe --tags --abbrev=0)
+          echo "VERSION=$VERSION" >> $GITHUB_ENV
+
+      - name: Output version
+        run: echo "The version is ${{ env.VERSION }}"
+
 
   run_tests:
     needs: checkout
@@ -67,8 +75,7 @@ jobs:
     if: github.event_name == 'push' && github.ref == 'refs/heads/master'
     uses: ./.github/workflows/callable.docs.yml
     with:
-      VERSION: |
-        git describe --tags --abbrev=0
+      VERSION: ${{ env.VERSION }}
     secrets:
       GH_PAGES_TOKEN: ${{ secrets.GH_PAGES_TOKEN }}
       OSSRH_USERNAME: ${{ secrets.OSSRH_USERNAME }}
