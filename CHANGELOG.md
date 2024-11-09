@@ -1,6 +1,6 @@
 # CHANGELOG
 
-## 0.0.5
+## 0.0.5-f
 - [shared] Change `NBSFile` -> `NBSSequence`, now an immutable object
 - [shared] Add `NBSSequencePlayer` to handle `NBSSequence`
 - [adventure] `InstrumentManager` is now an interface in `shared` module
