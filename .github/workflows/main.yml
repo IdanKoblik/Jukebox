@@ -25,6 +25,8 @@ permissions:
 jobs:
   checkout:
     runs-on: ubuntu-latest
+    outputs:
+      version: ${{ steps.get_version.outputs.VERSION }}
     steps:
       - name: Checkout code
         uses: actions/checkout@v3
@@ -33,11 +35,10 @@ jobs:
         id: get_version
         run: |
           VERSION=$(git describe --tags --abbrev=0)
-          echo "VERSION=$VERSION" >> $GITHUB_ENV
+          echo "VERSION=$VERSION" >> $GITHUB_OUTPUT
 
       - name: Output version
-        run: echo "The version is ${{ env.VERSION }}"
-
+        run: echo "The version is ${{ steps.get_version.outputs.VERSION }}"
 
   run_tests:
     needs: checkout
@@ -76,15 +77,9 @@ jobs:
     needs: checkout
     uses: ./.github/workflows/callable.docs.yml
     with:
-      VERSION: ${{ env.VERSION }}
+      VERSION: ${{ needs.checkout.outputs.version }}
     secrets:
       GH_PAGES_TOKEN: ${{ secrets.GH_PAGES_TOKEN }}
-      OSSRH_USERNAME: ${{ secrets.OSSRH_USERNAME }}
-      OSSRH_PASSWORD: ${{ secrets.OSSRH_PASSWORD }}
-      SIGNING_SECRET: ${{ secrets.SIGNING_SECRET }}
-      SIGNING_PASSWORD: ${{ secrets.SIGNING_PASSWORD }}
-      APARTIUM_NEXUS_USERNAME: ${{ secrets.APARTIUM_NEXUS_USERNAME }}
-      APARTIUM_NEXUS_PASSWORD: ${{ secrets.APARTIUM_NEXUS_PASSWORD }}
 
   docs:
     needs: changelog
