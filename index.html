@@ -15,7 +15,7 @@
                     const currentVersion = versions.find(version => version.isCurrent);
 
                     if (currentVersion) {
-                        const redirectUrl = `https://idankoblik.github.io/Jukebox/${currentVersion.version}/`;
+                        const redirectUrl = `https://jukebox.idank.dev/${currentVersion.version}/`;
                         document.querySelector('meta[http-equiv="refresh"]').setAttribute('content', `0; url=${redirectUrl}`);
                     } else {
                         console.log('No current version found.');
