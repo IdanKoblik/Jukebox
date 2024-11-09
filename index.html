@@ -1,34 +1,33 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
     <head>
         <meta charset="UTF-8">
         <title>Redirect</title>
         <script>
-            fetch('https://jukebox.idank.dev/help-versions.json')
-                .then(response => {
-                    if (!response.ok) {
-                        throw new Error('Network response was not ok');
-                    }
-                    return response.json();
-                })
-                .then(versions => {
-                    const currentVersion = versions.find(version => version.isCurrent);
-
-                    if (currentVersion) {
-                        const redirectUrl = `https://jukebox.idank.dev/${currentVersion.version}/`;
-                        document.querySelector('meta[http-equiv="refresh"]').setAttribute('content', `0; url=${redirectUrl}`);
-                    } else {
-                        console.log('No current version found.');
-                    }
-                })
-                .catch(error => {
-                    console.error('Error fetching JSON:', error);
-                });
+            document.addEventListener('DOMContentLoaded', () => {
+                fetch('https://jukebox.idank.dev/help-versions.json')
+                    .then(response => {
+                        if (!response.ok) {
+                            throw new Error('Network response was not ok');
+                        }
+                        return response.json();
+                    })
+                    .then(versions => {
+                        const currentVersion = versions.find(version => version.isCurrent);
+                        if (currentVersion) {
+                            const redirectUrl = `https://jukebox.idank.dev/${currentVersion.version}/`;
+                            window.location.href = redirectUrl;  
+                        } else {
+                            console.log('No current version found.');
+                        }
+                    })
+                    .catch(error => {
+                        console.error('Error fetching JSON:', error);
+                    });
+            });
         </script>
     </head>
-
     <body>
         <p>You will be redirected to Jukebox docs soon!</p>
-        <meta http-equiv="refresh" content="0; url=https://jukebox.idank.dev/">
     </body>
 </html>
