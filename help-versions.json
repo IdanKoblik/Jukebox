@@ -22,6 +22,11 @@
   {
     "version": "0.0.5",
     "url": "/0.0.5/",
+    "isCurrent": false
+  },
+  {
+    "version": "0.0.5-f",
+    "url": "/0.0.5-f/",
     "isCurrent": true
   }
 ]
