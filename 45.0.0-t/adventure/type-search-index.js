@@ -1,1 +1,0 @@
-typeSearchIndex = [{"l":"All Classes and Interfaces","u":"allclasses-index.html"},{"p":"io.github.idankoblik.jukebox.manager","l":"InstrumentManager"},{"p":"io.github.idankoblik.jukebox","l":"KyoriSong"},{"p":"io.github.idankoblik.jukebox","l":"NoteInstrument"}];updateSearchResults();

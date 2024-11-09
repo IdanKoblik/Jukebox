@@ -1,1 +1,0 @@
-packageSearchIndex = [{"l":"All Packages","u":"allpackages-index.html"},{"l":"io.github.idankoblik.jukebox"},{"l":"io.github.idankoblik.jukebox.dummies"},{"l":"io.github.idankoblik.jukebox.events"},{"l":"io.github.idankoblik.jukebox.utils"}];updateSearchResults();
