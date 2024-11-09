@@ -4,24 +4,8 @@ import org.jetbrains.annotations.ApiStatus;
 
 import java.util.*;
 
-/**
- * A class for managing all events
- */
 @ApiStatus.AvailableSince("0.0.3")
 public class EventManager {
-
-    private static EventManager instance;
-
-    /**
-     * Returns the instance of the EventManager class
-     * @return EventManager instance
-     */
-    public static EventManager getInstance() {
-        if (instance == null)
-            instance = new EventManager();
-
-        return instance;
-    }
 
     private final Map<Class<? extends Event>, List<EventListener<? extends Event>>> listeners = new HashMap<>();
 
@@ -68,4 +52,5 @@ public class EventManager {
     public void clear() {
         this.listeners.clear();
     }
+
 }

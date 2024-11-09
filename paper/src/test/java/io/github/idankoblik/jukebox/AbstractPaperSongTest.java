@@ -2,13 +2,12 @@ package io.github.idankoblik.jukebox;
 
 import be.seeseemelk.mockbukkit.WorldMock;
 import be.seeseemelk.mockbukkit.entity.PlayerMock;
-import io.github.idankoblik.jukebox.SongEndListenerDummy;
-import io.github.idankoblik.jukebox.SongStageChangeListenerDummy;
-import io.github.idankoblik.jukebox.SongStartListenerDummy;
 import io.github.idankoblik.jukebox.events.EventManager;
 import net.apartium.cocoabeans.space.Position;
+import net.kyori.adventure.key.Key;
 import org.bukkit.Location;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.*;
@@ -18,22 +17,24 @@ public abstract class AbstractPaperSongTest extends AbstractPaperTest {
     protected static final String DEFAULT_NOTE = "note.drum";
     protected PaperSong song;
     protected PaperSong locationSong;
-    protected NBSSong nbsSong;
+    protected NBSSequence nbsSequence;
+    protected NBSSequencePlayer sequencePlayer;
     protected PlayerMock player;
     protected Position musicPosition;
     protected WorldMock world;
-    protected EventManager eventManager;
+    protected EventManager eventManager = new EventManager();
 
     protected SongStageChangeListenerDummy stageChangeListener;
     protected SongStartListenerDummy startListener;
     protected SongEndListenerDummy endListener;
 
+
+    protected List<NBSNote> notes = new ArrayList<>(3);
+
     protected void setUp() throws Exception {
         super.setUp();
 
-        this.eventManager = EventManager.getInstance();
         this.eventManager.clear();
-
         this.stageChangeListener = new SongStageChangeListenerDummy();
         this.startListener = new SongStartListenerDummy();
         this.endListener = new SongEndListenerDummy();
@@ -45,7 +46,30 @@ public abstract class AbstractPaperSongTest extends AbstractPaperTest {
         NBSNote note = new NBSNote((short) 1, (short) 1, (byte) 1, (byte) 1);
         NBSNote note2 = new NBSNote((short) 2, (short) 1, (byte) 1, (byte) 1);
         NBSNote note3 = new NBSNote((short) 3, (short) 1, (byte) 1, (byte) 1);
-        this.nbsSong = new NBSSong("test", "tester", (byte) 20, (byte) 1, "test", "test", 20, List.of(note, note2, note3));
+
+        this.notes.add(note);
+        this.notes.add(note2);
+        this.notes.add(note3);
+
+        this.nbsSequence = new NBSSequence(
+                "test",
+                "tester",
+                (byte) 20,
+                (byte) 1,
+                "test",
+                "test",
+                20,
+                notes,
+                false,
+                (byte) 0,
+                (byte) 0,
+                0,
+                0,
+                0,
+                0,
+                0,
+                "testtt");
+        this.sequencePlayer = new NBSSequencePlayer(this.nbsSequence, List.of(), this.eventManager);
 
         this.world = new WorldMock();
         this.server.addWorld(world);
@@ -73,18 +97,52 @@ public abstract class AbstractPaperSongTest extends AbstractPaperTest {
     }
 
     protected void testTriggeringEvents() {
-        SongState state = this.nbsSong.getState();
+        NBSSequencePlayer nullEManager = new NBSSequencePlayer(
+                new NBSSequence(
+                        "test with no event manager",
+                        "tester",
+                        (byte) 20,
+                        (byte) 1,
+                        "test",
+                        "test",
+                        20,
+                        notes,
+                        false,
+                        (byte) 0,
+                        (byte) 0,
+                        0,
+                        0,
+                        0,
+                        0,
+                        0,
+                        "testtt"
+                ),
+
+                List.of(
+                        stageChangeListener,
+                        startListener,
+                        endListener
+                ), null);
+
+        PaperSong nullEManagerSong = new PaperSong(plugin, 1F, nullEManager, Key.key(DEFAULT_NOTE), player, null);
+        helpTestEvents(song);
+        helpTestEvents(nullEManagerSong);
+    }
+
+    protected void helpTestEvents(PaperSong song) {
+        NBSSequencePlayer sequencePlayer = song.player;
+        SongState state = sequencePlayer.getState();
         assertEquals(state, SongState.IDLE);
 
-        this.song.playSong();
-        assertEquals(this.nbsSong.getState(), SongState.PLAYING);
+        song.playSong();
+        assertEquals(sequencePlayer.getState(), SongState.PLAYING);
         assertTrue(stageChangeListener.isWorking());
         assertEquals(stageChangeListener.getCurrent(), SongState.PLAYING);
         assertEquals(stageChangeListener.getPrevious(), SongState.IDLE);
 
         server.getScheduler().performTicks(100L);
 
-        assertEquals(this.nbsSong.getState(), SongState.ENDED);
+        assertEquals(sequencePlayer.getState(), SongState.ENDED);
         assertFalse(endListener.isForcing());
 
         assertTrue(stageChangeListener.isWorking());
@@ -121,7 +179,7 @@ public abstract class AbstractPaperSongTest extends AbstractPaperTest {
         server.getScheduler().performTicks(4);
         song.stopSong();
         assertEquals(3, this.player.getHeardSounds().size());
-        assertEquals(this.nbsSong.getState(), SongState.ENDED);
+        assertEquals(this.sequencePlayer.getState(), SongState.ENDED);
         assertTrue(endListener.isWorking());
         assertTrue(endListener.isForcing());
     }

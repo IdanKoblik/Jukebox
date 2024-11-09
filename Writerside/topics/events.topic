@@ -1,0 +1,80 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE topic
+        SYSTEM "https://resources.jetbrains.com/writerside/1.0/xhtml-entities.dtd">
+<topic xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xsi:noNamespaceSchemaLocation="https://resources.jetbrains.com/writerside/1.0/topic.v2.xsd"
+       title="⏱ Events" id="events" help-id="Events">
+
+        <p>
+            In the Jukebox system, events can be registered for specific sequences or globally for all sequences. This flexibility allows you to control when and where events are triggered during the playback of music sequences.
+        </p>
+
+        <chapter title="Creating a listener">
+            <p>
+                To create a listener you want to create a class that extends the `EventListener` class and then impl the listener functionality
+            </p>
+
+            <code-block lang="java">
+                public class SongEndListenerDummy extends EventListener<SongEndEvent> {
+
+                    private boolean force = false;
+
+                    @Override
+                    public void handle(SongEndEvent event) {
+                        this.force = event.isForced();
+                    }
+
+                    public boolean isForcing() {
+                        return force;
+                    }
+
+                }
+            </code-block>
+        </chapter>
+
+        <chapter title="Local Event Registration">
+            <p>
+                When creating an instance of the NBSSequencePlayer, you can specify a list of event listeners that are associated specifically with the current sequence. These listeners will only be triggered during the playback of that particular sequence.
+            </p>
+
+            <p>
+                <b>Example of Local Event Registration</b> <br/>
+                To register events locally, pass a list of event listeners to the NBSSequencePlayer constructor, like so:
+
+                <br/>
+            </p>
+
+            <code-block lang="java">
+                // Define your event listeners
+                EventListener l1 = new EventListener(...);
+                EventListener l2 = new EventListener(...);
+                EventListener l3 = new EventListener(...);
+
+                // Create a sequence player instance with local listeners
+                NBSSequencePlayer player = new NBSSequencePlayer(sequence, List.of(l1, l2, l3), null);
+            </code-block>
+        </chapter>
+
+        <chapter title="Global Event Registration">
+            <p>
+                Alternatively, events can be registered globally using an EventManager instance. This allows listeners to be triggered across all sequence players that reference the same event manager, providing a more centralized way to handle events for multiple sequences.
+            </p>
+
+            <p>
+                <b>Example of Global Event Registration</b> <br/>
+                To register events globally, first create an EventManager and register your listeners with it. Then, when creating the NBSSequencePlayer, pass the EventManager instance as the third parameter.
+
+                <br/>
+            </p>
+
+            <code-block lang="java">
+                // Create an EventManager and register global listeners
+                EventManager em = new EventManager();
+                em.registerListener(l1);
+                em.registerListener(l2);
+
+                // Create a sequence player with global event manager
+                NBSSequencePlayer player = new NBSSequencePlayer(sequence, List.of(), em);
+            </code-block>
+        </chapter>
+</topic>

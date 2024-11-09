@@ -7,7 +7,7 @@
 
     <code-block lang="java">
         import io.github.idankoblik.jukebox.NBSFile;
-        import io.github.idankoblik.jukebox.NBSSong;
+        import io.github.idankoblik.jukebox.NBSSequence;
         import io.github.idankoblik.jukebox.PaperSong;
         import net.kyori.adventure.audience.Audience;
         import net.kyori.adventure.key.Key;
@@ -16,15 +16,16 @@
 
         Plugin plugin = /*paper plugin*/;
         float volume = 1.0;
-        NBSSong nbsSong = NBSFile.readNBS(new File("game.nbs"));
+        NBSSequence nbsSequence = NBSFile.readNBS(new File("game.nbs"));
         Key defaultKey = Key.key("note.harp");
         Audience audience = /*audience*/;
         Position position = null; // (optional)
 
+        NBSSequencePlayer player = new NBSSequencePlayer(nbsSequence, List.of(), null);
         PaperSong song = new PaperSong(
                 plugin,
                 volume,
-                nbsSong,
+                player,
                 defaultKey,
                 audience,
                 position

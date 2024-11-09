@@ -1,6 +1,5 @@
 package io.github.idankoblik.jukebox;
 
-import io.github.idankoblik.jukebox.events.EventManager;
 import io.github.idankoblik.jukebox.events.SongEndEvent;
 import org.bukkit.scheduler.BukkitRunnable;
 import org.jetbrains.annotations.NotNull;
@@ -14,7 +13,7 @@ import java.util.concurrent.CompletableFuture;
 /* package-private */ class SongTick extends BukkitRunnable {
     private final List<NBSNote> notes;
     private final PaperSong abstractSong;
-    private final CompletableFuture<NBSSong> completionSignal;
+    private final CompletableFuture<NBSSequencePlayer> completionSignal;
     private int tick;
     private final float tickLengthInSeconds;
 
@@ -24,12 +23,12 @@ import java.util.concurrent.CompletableFuture;
      * @param abstractSong the song to be handled
      * @param completionSignal a future of the song
      */
-    public SongTick(@NotNull List<NBSNote> notes, PaperSong abstractSong, CompletableFuture<NBSSong> completionSignal) {
+    public SongTick(@NotNull List<NBSNote> notes, PaperSong abstractSong, CompletableFuture<NBSSequencePlayer> completionSignal) {
         this.notes = notes;
         this.abstractSong = abstractSong;
         this.completionSignal = completionSignal;
         this.tick = 0;
-        this.tickLengthInSeconds = 20f / abstractSong.song.getTempo();
+        this.tickLengthInSeconds = 20f / abstractSong.sequence.tempo();
     }
 
     /**
@@ -37,14 +36,14 @@ import java.util.concurrent.CompletableFuture;
      */
     @Override
     public void run() {
-        NBSSong song = abstractSong.song;
-        if (song.getState() == SongState.ENDED) {
+        NBSSequencePlayer player = abstractSong.player;
+        if (player.getState() == SongState.ENDED) {
             completeSong();
             return;
         }
 
         List<NBSNote> notesAtCurrentTick = notes.stream()
-                .filter(note -> Math.round(note.getTick() * tickLengthInSeconds) == tick)
+                .filter(note -> Math.round(note.tick() * tickLengthInSeconds) == tick)
                 .toList();
 
         for (NBSNote note : notesAtCurrentTick)
@@ -52,10 +51,10 @@ import java.util.concurrent.CompletableFuture;
 
         tick++;
 
-        if (tick > notes.stream().mapToLong(note -> Math.round(note.getTick() * tickLengthInSeconds)).max().orElse(0)) {
+        if (tick > notes.stream().mapToLong(note -> Math.round(note.tick() * tickLengthInSeconds)).max().orElse(0)) {
             if (!abstractSong.toLoop()) {
-                EventManager.getInstance().fireEvent(new SongEndEvent(song, false));
-                abstractSong.song.setState(SongState.ENDED);
+                player.getEventManager().fireEvent(new SongEndEvent(abstractSong.sequence, false));
+                player.setState(SongState.ENDED);
                 completeSong();
             } else
                 tick = 0;
@@ -68,8 +67,8 @@ import java.util.concurrent.CompletableFuture;
      */
     private void playNote(NBSNote note) {
         if (note != null) {
-            float pitch = (float) Math.pow(2, (note.getKey() - 45) / 12.0);
-            this.abstractSong.playNote(note.getInstrument(), pitch);
+            float pitch = (float) Math.pow(2, (note.key() - 45) / 12.0);
+            this.abstractSong.playNote(note.instrument(), pitch);
         }
     }
 
@@ -77,7 +76,7 @@ import java.util.concurrent.CompletableFuture;
      * Completing the song
      */
     private void completeSong() {
-        completionSignal.complete(abstractSong.song);
+        completionSignal.complete(abstractSong.player);
         cancel();
     }
 }

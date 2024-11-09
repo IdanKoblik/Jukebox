@@ -1,6 +1,6 @@
 package io.github.idankoblik.jukebox.events;
 
-import io.github.idankoblik.jukebox.NBSSong;
+import io.github.idankoblik.jukebox.NBSSequence;
 import org.jetbrains.annotations.ApiStatus;
 
 /**
@@ -15,7 +15,7 @@ public class SongEndEvent extends SongEvent {
      * {@inheritDoc}
      * @param force true if the song ended by external force and not because the time of the song has passed
      */
-    public SongEndEvent(NBSSong song, boolean force) {
+    public SongEndEvent(NBSSequence song, boolean force) {
         super(song);
         this.force = force;
     }

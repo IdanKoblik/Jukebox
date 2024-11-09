@@ -8,8 +8,8 @@
 
     <toc-element topic="home.topic"/>
     <toc-element topic="installation.topic"/>
+    <toc-element topic="events.topic"/>
     <toc-element topic="nbs.topic"/>
-    <toc-element topic="listeners.topic"/>
     <toc-element topic="usage.topic">
         <toc-element topic="playlist.topic"/>
         <toc-element topic="song.topic"/>
