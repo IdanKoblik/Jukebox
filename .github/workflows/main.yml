@@ -73,6 +73,7 @@ jobs:
 
   docs-special:
     if: github.event_name == 'push' && github.ref == 'refs/heads/master'
+    needs: checkout
     uses: ./.github/workflows/callable.docs.yml
     with:
       VERSION: ${{ env.VERSION }}
