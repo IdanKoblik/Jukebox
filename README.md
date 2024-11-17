@@ -79,4 +79,6 @@ dependencies {
 ```
 <hr>
 
+![Alt](https://repobeats.axiom.co/api/embed/8b0b65ded30d61eb1b895d9de29cc0d150fe44f5.svg "Repobeats analytics image")
+
 If you have any questions or need further assistance, feel free to reach out!
